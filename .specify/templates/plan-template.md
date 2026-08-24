@@ -23,6 +23,9 @@
 **Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 **Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
+**Supported Environments**: [target browsers/devices/viewports/input methods or NEEDS CLARIFICATION]
+**Security & Privacy**: [trust boundaries, sensitive data, permissions, dependency risks or N/A with rationale]
+**UX & Accessibility**: [interaction patterns, semantic controls, responsive and accessibility targets or N/A with rationale]
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
 **Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
@@ -31,7 +34,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Code quality**: Identify module boundaries and public contracts; confirm configured
+  formatting, linting, static/type checks, documentation, and any complexity justification.
+- **Security**: Identify trust boundaries, sensitive data, authorization points, input and
+  output handling, secrets, third-party dependency risk, and the checks that prove controls.
+- **Testing**: Map changed behavior, boundaries, and critical journeys to deterministic
+  automated tests; define regression-first handling for defect fixes and any manual evidence.
+- **User experience**: Define consistent interaction patterns; normal, loading, empty,
+  error, disabled, and recovery states; accessibility checks; and representative environments.
+- **Performance**: State measurable budgets, representative workloads, target environments,
+  baseline method, release-equivalent measurement, and the evidence required to pass.
+
+Any inapplicable gate MUST be marked `N/A` with a concrete rationale. Any violation MUST be
+recorded in Complexity Tracking with scope, risk, owner, expiration condition, and remediation.
 
 ## Project Structure
 

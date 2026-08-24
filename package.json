@@ -1,0 +1,43 @@
+{
+  "name": "wasteland-flight-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "20.20.2",
+    "npm": "10.8.2"
+  },
+  "scripts": {
+    "serve": "http-server . -a 127.0.0.1 -p 4173 -c-1 -s",
+    "format": "prettier --write index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence",
+    "format:check": "prettier --check index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence",
+    "lint": "eslint eslint.config.js playwright.config.js tests --max-warnings 0",
+    "typecheck": "tsc --project jsconfig.json",
+    "verify:runtime-deps": "node tests/helpers/runtime-dependencies.js",
+    "verify:forbidden-runtime-apis": "node tests/helpers/runtime-dependencies.js static",
+    "audit:dependencies": "node tests/helpers/runtime-dependencies.js audit",
+    "test": "playwright test",
+    "test:unit": "playwright test tests/unit",
+    "test:integration": "playwright test tests/integration",
+    "test:e2e": "playwright test tests/e2e/desktop-flight.spec.js tests/e2e/mobile-flight.spec.js",
+    "test:accessibility": "playwright test tests/e2e/accessibility.spec.js",
+    "test:performance:smoke": "node tests/helpers/metrics.js run smoke",
+    "test:performance:full": "node tests/helpers/metrics.js run full",
+    "test:network": "playwright test tests/integration/dependency-loader.spec.js",
+    "qualify:preflight": "node tests/helpers/metrics.js preflight",
+    "qualify:desktop": "node tests/helpers/metrics.js qualify desktop-m1",
+    "qualify:android": "node tests/helpers/metrics.js qualify android-pixel7",
+    "qualify:ios": "node tests/helpers/metrics.js qualify ios-iphone13",
+    "qualify:report": "node tests/helpers/metrics.js report",
+    "validate:automated": "npm run format:check && npm run lint && npm run typecheck && npm run verify:forbidden-runtime-apis && npm run verify:runtime-deps && npm test",
+    "validate": "npm run validate:automated && npm run qualify:report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@types/node": "20.19.43",
+    "eslint": "10.9.0",
+    "http-server": "14.1.1",
+    "prettier": "3.9.6",
+    "typescript": "7.0.2"
+  }
+}
