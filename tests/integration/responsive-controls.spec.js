@@ -25,8 +25,8 @@ async function layoutSample(page) {
     /** @param {string} selector */
     const rect = (selector) => {
       const element = document.querySelector(selector);
-      if (!visible(element)) return null;
       if (!element) throw new Error(`missing element: ${selector}`);
+      if (!visible(element)) return null;
       const bounds = element.getBoundingClientRect();
       return {
         left: bounds.left,
