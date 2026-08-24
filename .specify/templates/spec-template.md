@@ -8,9 +8,9 @@
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
+  IMPORTANT: User stories MUST be PRIORITIZED as user journeys ordered by importance.
   Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
+  you MUST still have a viable MVP (Minimum Viable Product) that delivers value.
   
   Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
   Think of each story as a standalone slice of functionality that can be:
@@ -18,6 +18,10 @@
   - Tested independently
   - Deployed independently
   - Demonstrated to users independently
+
+  For user-visible stories, include applicable normal, loading, empty, error,
+  disabled, and recovery states. Cover keyboard-only operation and representative
+  supported viewports, zoom levels, browsers, devices, and input methods.
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)
@@ -74,6 +78,9 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- How does the system reject malformed or unauthorized input without exposing sensitive data?
+- How does the experience behave with keyboard-only input, zoom, and constrained viewports?
+- What safe and actionable feedback appears when a dependency is slow or unavailable?
 
 ## Requirements *(mandatory)*
 
@@ -95,6 +102,30 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Security & Privacy Requirements *(mandatory)*
+
+- **SR-001**: [Identify trust boundaries, untrusted inputs, sensitive data, and required validation or state N/A with rationale]
+- **SR-002**: [Define authorization, secret handling, safe failure, and user-data protections or state N/A with rationale]
+- **SR-003**: [Define applicable dependency, vulnerability, and security regression evidence]
+
+### User Experience & Accessibility Requirements *(mandatory)*
+
+- **UXR-001**: [Define established patterns and the normal, loading, empty, error, disabled, and recovery states]
+- **UXR-002**: [Define keyboard, focus, semantics, non-color cues, and assistive-technology behavior]
+- **UXR-003**: [Define supported viewport, zoom, browser, device, and input configurations]
+
+### Performance Requirements *(mandatory)*
+
+- **PR-001**: [Set measurable budgets for applicable load, latency, cadence, memory, network, and asset size]
+- **PR-002**: [Define representative workloads, target environments, baseline, and measurement method]
+- **PR-003**: [Define safe, responsive behavior under resource or dependency degradation]
+
+### Quality & Verification Requirements *(mandatory)*
+
+- **QR-001**: [Map behavior and critical journeys to unit, integration, contract, and end-to-end coverage as applicable]
+- **QR-002**: [Define required formatting, linting, static/type checks, security checks, manual reviews, and release evidence]
+- **QR-003**: [Define regression-test expectations and any justified, time-bounded exceptions]
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]
@@ -108,6 +139,9 @@
 -->
 
 ### Measurable Outcomes
+
+Include measurable security, accessibility and UX, and performance outcomes for each
+applicable requirement area. Technology-specific implementation metrics belong in the plan.
 
 - **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]

@@ -1,0 +1,3533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline' blob:; connect-src https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src data:; font-src 'none'; media-src 'none'; object-src 'none'; worker-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23d97728' d='M3 17 16 6l13 11-13-4z'/%3E%3Cpath fill='%23241a14' d='m8 20 8-4 8 4-8 7z'/%3E%3C/svg%3E"
+    />
+    <title>Wasteland Flight Simulator</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: #241a14;
+        color: #fff7e8;
+        --rust: #d97728;
+        --rust-light: #ffb866;
+        --ink: rgba(18, 12, 9, 0.88);
+        --line: rgba(255, 216, 164, 0.48);
+        --safe-top: max(12px, env(safe-area-inset-top));
+        --safe-right: max(12px, env(safe-area-inset-right));
+        --safe-bottom: max(12px, env(safe-area-inset-bottom));
+        --safe-left: max(12px, env(safe-area-inset-left));
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      #application {
+        width: 100%;
+        height: 100%;
+        min-width: 320px;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        background:
+          radial-gradient(
+            circle at 68% 24%,
+            rgba(181, 77, 30, 0.34),
+            transparent 35%
+          ),
+          linear-gradient(155deg, #3d2817, #17100d 72%);
+      }
+
+      button {
+        min-width: 44px;
+        min-height: 44px;
+        border: 1px solid var(--rust-light);
+        border-radius: 6px;
+        padding: 0.65rem 1rem;
+        background: #8b3f1d;
+        color: #fffdf8;
+        font: inherit;
+        font-weight: 750;
+        letter-spacing: 0.025em;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #a94e22;
+      }
+
+      button:focus-visible,
+      canvas:focus-visible {
+        outline: 3px solid #fff3b0;
+        outline-offset: 3px;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .scene-root {
+        position: absolute;
+        inset: 0;
+        background: #3d2817;
+      }
+
+      .scene-root canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--ink);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.38);
+        backdrop-filter: blur(6px);
+      }
+
+      .loading-state,
+      .primary-overlay,
+      .rotate-overlay {
+        position: absolute;
+        z-index: 20;
+        inset: 50% auto auto 50%;
+        width: min(34rem, calc(100% - 2rem));
+        transform: translate(-50%, -50%);
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+        text-align: center;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2 {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .eyebrow {
+        margin-bottom: 0.5rem;
+        color: var(--rust-light);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .static-progress {
+        width: min(18rem, 90%);
+        height: 0.45rem;
+        margin: 1.25rem auto 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #17100d;
+      }
+
+      .static-progress::after {
+        display: block;
+        width: 42%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--rust);
+        content: "";
+      }
+
+      .hud {
+        position: absolute;
+        z-index: 5;
+        top: var(--safe-top);
+        left: var(--safe-left);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(8rem, auto));
+        gap: 1px;
+        overflow: hidden;
+      }
+
+      .hud dl {
+        display: contents;
+      }
+
+      .hud-item {
+        min-width: 8rem;
+        padding: 0.65rem 0.8rem;
+        background: var(--ink);
+      }
+
+      .hud dt {
+        color: #ffc27a;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .hud dd {
+        margin: 0.18rem 0 0;
+        font-variant-numeric: tabular-nums;
+        font-weight: 750;
+      }
+
+      .legend {
+        position: absolute;
+        z-index: 5;
+        right: var(--safe-right);
+        bottom: var(--safe-bottom);
+        max-width: min(30rem, calc(100% - 2rem));
+        padding: 0.75rem 0.9rem;
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      .legend strong {
+        color: var(--rust-light);
+      }
+
+      .pause-button {
+        position: absolute;
+        z-index: 6;
+        top: var(--safe-top);
+        right: var(--safe-right);
+      }
+
+      .touch-controls {
+        position: absolute;
+        z-index: 7;
+        inset: auto var(--safe-right) var(--safe-bottom) var(--safe-left);
+        display: none;
+        align-items: end;
+        justify-content: space-between;
+        pointer-events: none;
+        touch-action: none;
+      }
+
+      .touch-controls button,
+      .touch-stick {
+        pointer-events: auto;
+        touch-action: none;
+      }
+
+      .touch-stick {
+        position: relative;
+        width: clamp(112px, 24vw, 168px);
+        aspect-ratio: 1;
+        border: 2px solid rgba(255, 243, 211, 0.74);
+        border-radius: 50%;
+        background: rgba(20, 13, 9, 0.58);
+      }
+
+      .touch-stick::before,
+      .touch-stick::after {
+        position: absolute;
+        background: rgba(255, 243, 211, 0.45);
+        content: "";
+      }
+
+      .touch-stick::before {
+        top: 50%;
+        left: 12%;
+        width: 76%;
+        height: 1px;
+      }
+
+      .touch-stick::after {
+        top: 12%;
+        left: 50%;
+        width: 1px;
+        height: 76%;
+      }
+
+      .touch-knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 44px;
+        height: 44px;
+        transform: translate(-50%, -50%);
+        border: 3px solid #1e120c;
+        border-radius: 50%;
+        background: var(--rust-light);
+      }
+
+      .throttle-controls {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .rotate-symbol {
+        display: inline-grid;
+        width: 4rem;
+        height: 6rem;
+        margin: 0.5rem auto 1.2rem;
+        place-items: center;
+        border: 3px solid currentColor;
+        border-radius: 0.5rem;
+        color: var(--rust-light);
+        font-size: 2rem;
+        transform: rotate(90deg);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (pointer: coarse) {
+        .touch-controls:not([hidden]) {
+          display: flex;
+        }
+
+        .legend {
+          right: auto;
+          bottom: var(--safe-bottom);
+          left: 50%;
+          max-width: 44vw;
+          transform: translateX(-50%);
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 760px), (max-height: 460px) {
+        .hud {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          max-width: calc(100% - 8.5rem - var(--safe-left) - var(--safe-right));
+        }
+
+        .hud-item {
+          min-width: 0;
+          padding: 0.4rem 0.55rem;
+          font-size: 0.8rem;
+        }
+
+        .hud dt {
+          font-size: 0.58rem;
+        }
+
+        .legend {
+          padding: 0.45rem 0.6rem;
+          font-size: 0.68rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="application"
+      data-testid="application-state"
+      data-phase="loading"
+      aria-labelledby="game-title"
+    >
+      <section
+        class="loading-state panel"
+        data-testid="loading-state"
+        aria-live="polite"
+      >
+        <p class="eyebrow">Systems check</p>
+        <h1 id="game-title">Wasteland Flight Simulator</h1>
+        <p>Verifying flight systems…</p>
+        <div class="static-progress" aria-hidden="true"></div>
+      </section>
+
+      <div id="scene-root" class="scene-root" hidden></div>
+
+      <section
+        id="hud"
+        class="hud panel"
+        aria-label="Flight instruments"
+        hidden
+      >
+        <dl>
+          <div class="hud-item">
+            <dt>Speed</dt>
+            <dd id="hud-speed">0 km/h</dd>
+          </div>
+          <div class="hud-item">
+            <dt>Altitude</dt>
+            <dd id="hud-altitude">0 m</dd>
+          </div>
+          <div class="hud-item">
+            <dt>Coordinates</dt>
+            <dd id="hud-coordinates">X 0 · Y 0 · Z 0 m</dd>
+          </div>
+        </dl>
+      </section>
+
+      <button id="pause-button" class="pause-button" type="button" hidden>
+        Pause
+      </button>
+
+      <aside
+        id="control-legend"
+        class="legend panel"
+        aria-label="Flight controls"
+        hidden
+      >
+        <strong>Controls:</strong>
+        <span id="legend-copy"
+          >W/Shift throttle up · S/Ctrl throttle down · Arrow keys pitch and
+          roll · P pause · Select the flight view for pointer control · Escape
+          releases it.</span
+        >
+        <span id="pointer-status">
+          Pointer control is centered and inactive.</span
+        >
+      </aside>
+
+      <section
+        id="touch-controls"
+        class="touch-controls"
+        aria-label="Touch flight controls"
+        hidden
+      >
+        <div
+          id="touch-stick"
+          class="touch-stick"
+          role="group"
+          aria-label="Pitch and roll joystick"
+        >
+          <span id="touch-knob" class="touch-knob" aria-hidden="true"></span>
+        </div>
+        <div class="throttle-controls">
+          <button id="throttle-up" type="button" aria-label="Increase throttle">
+            Throttle +
+          </button>
+          <button
+            id="throttle-down"
+            type="button"
+            aria-label="Decrease throttle"
+          >
+            Throttle −
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="pause-overlay"
+        class="primary-overlay panel"
+        aria-labelledby="pause-title"
+        hidden
+      >
+        <p class="eyebrow">Flight suspended</p>
+        <h2 id="pause-title">Paused</h2>
+        <p id="pause-message">Controls are neutral. Resume when ready.</p>
+        <button id="resume-button" type="button">Resume</button>
+      </section>
+
+      <section
+        id="crash-overlay"
+        class="primary-overlay panel"
+        aria-labelledby="crash-title"
+        hidden
+      >
+        <p class="eyebrow">Terrain impact</p>
+        <h2 id="crash-title">Glider crashed</h2>
+        <p>
+          The glider contacted the wasteland surface. The current world is
+          preserved.
+        </p>
+        <button id="restart-button" type="button">Restart</button>
+      </section>
+
+      <section
+        id="error-overlay"
+        class="primary-overlay panel"
+        aria-labelledby="error-title"
+        hidden
+      >
+        <p class="eyebrow">Startup stopped safely</p>
+        <h2 id="error-title">Flight systems unavailable</h2>
+        <p id="error-message">
+          A required reviewed library could not be verified.
+        </p>
+        <p>
+          Diagnostic code:
+          <strong id="error-code" data-testid="error-code"></strong>
+        </p>
+        <button id="retry-button" type="button">Retry</button>
+      </section>
+
+      <section
+        id="rotate-overlay"
+        class="rotate-overlay panel"
+        aria-labelledby="rotate-title"
+        hidden
+      >
+        <div class="rotate-symbol" aria-hidden="true">↔</div>
+        <h2 id="rotate-title">Rotate to landscape</h2>
+        <p>
+          Flight is paused and controls are neutral while this device is in
+          portrait.
+        </p>
+      </section>
+
+      <p id="canvas-description" class="sr-only">
+        Third-person view of a makeshift glider flying above a procedural
+        wasteland. Flight status and controls are available as ordinary page
+        text.
+      </p>
+      <div
+        id="live-status"
+        class="sr-only"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </main>
+
+    <script type="module">
+      /*
+       * Runtime dependency notices
+       * Three.js Copyright 2010-2026 Three.js Authors — MIT License
+       * simplex-noise Copyright 2014-2024 Jonas Wagner — MIT License
+       * Exact reviewed versions, URLs, hashes, and complete notices are recorded under evidence/.
+       */
+
+      const deepFreeze = (value) => {
+        if (value && typeof value === "object" && !Object.isFrozen(value)) {
+          Object.freeze(value);
+          for (const child of Object.values(value)) deepFreeze(child);
+        }
+        return value;
+      };
+
+      const CONFIG = deepFreeze({
+        fixedStep: 1 / 60,
+        maxCatchUpSteps: 5,
+        loaderTimeoutMs: 8_000,
+        dependencySizeGuardBytes: 65_536,
+        pixelRatioCap: 2,
+        hudIntervalSeconds: 0.1,
+        world: {
+          regionSize: 768,
+          samplesPerSide: 33,
+          activeRadius: 2,
+          originRebaseMeters: 8_192,
+          collisionClearance: 2,
+          terrainFar: 3_100,
+          spawnCorridorHalfWidth: 180,
+          spawnCorridorEndZ: -1_200,
+          crackSegmentsPerRegion: 12,
+          maximumRuinsPerRegion: 2,
+        },
+        quality: {
+          degradeFps: 45,
+          degradeSeconds: 3,
+          restoreFps: 58,
+          restoreSeconds: 10,
+        },
+        ash: {
+          maximumCount: 520,
+          fieldRadius: 230,
+          fieldHeight: 150,
+          fullDrift: 7,
+          reducedDrift: 3,
+        },
+        spawn: {
+          x: 0,
+          y: 160,
+          z: 0,
+          speed: 55,
+          throttle: (0.0026 * 55 * 55) / 23.8,
+        },
+        speed: { minimum: 20, maximum: 95 },
+        flight: {
+          gravity: 9.81,
+          thrustAcceleration: 23.8,
+          dragCoefficient: 0.0026,
+          liftCoefficient: 9.81 / (55 * 55),
+          throttleRate: 0.3,
+          maximumPitchRate: Math.PI / 4,
+          maximumRollRate: (75 * Math.PI) / 180,
+          maximumPitchAngle: (50 * Math.PI) / 180,
+          maximumRollAngle: (70 * Math.PI) / 180,
+          selfLevelPitch: 0.42,
+          selfLevelRoll: 0.7,
+          bankTurnRate: 0.52,
+          pitchLiftCoupling: 0.28,
+          stallEntrySpeed: 30,
+          stallRecoverySpeed: 38,
+          stallLiftFactor: 0.22,
+          stallNoseDownRate: 0.24,
+          maximumVerticalSpeed: 60,
+        },
+        camera: {
+          height: 10,
+          distance: 26,
+          lookAhead: 42,
+        },
+      });
+
+      const DEPENDENCIES = deepFreeze([
+        {
+          name: "Three.js",
+          version: "0.185.1",
+          license: "MIT",
+          url: "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs",
+          expectedBytes: 2_093_053,
+          sha384Hex:
+            "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
+          format: "cjs-default-adapter",
+          requiredExports: [
+            "Scene",
+            "PerspectiveCamera",
+            "WebGLRenderer",
+            "BufferGeometry",
+            "BufferAttribute",
+            "Mesh",
+            "Points",
+            "Fog",
+            "AmbientLight",
+            "DirectionalLight",
+          ],
+        },
+        {
+          name: "simplex-noise",
+          version: "4.0.3",
+          license: "MIT",
+          url: "https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.js",
+          expectedBytes: 18_735,
+          sha384Hex:
+            "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
+          format: "esm",
+          requiredExports: ["createNoise2D"],
+        },
+      ]);
+
+      const CONTROLLED_ERRORS = deepFreeze({
+        UNSUPPORTED_BROWSER:
+          "This browser is missing a required secure module capability.",
+        WEBGL2_UNAVAILABLE:
+          "WebGL 2 is unavailable. Enable hardware acceleration and try again.",
+        DEPENDENCY_TIMEOUT:
+          "A reviewed flight library did not respond in time.",
+        DEPENDENCY_NETWORK: "A reviewed flight library could not be retrieved.",
+        DEPENDENCY_REDIRECT:
+          "A reviewed flight library returned an unapproved redirect.",
+        DEPENDENCY_SIZE:
+          "A reviewed flight library returned an unexpected byte count.",
+        DEPENDENCY_INTEGRITY:
+          "A reviewed flight library did not match its approved digest.",
+        DEPENDENCY_IMPORT:
+          "A verified flight library could not be initialized.",
+        DEPENDENCY_SHAPE:
+          "A verified flight library did not expose the approved interface.",
+      });
+
+      const elements = Object.freeze({
+        root: document.querySelector("#application"),
+        loading: document.querySelector("[data-testid='loading-state']"),
+        sceneRoot: document.querySelector("#scene-root"),
+        hud: document.querySelector("#hud"),
+        hudSpeed: document.querySelector("#hud-speed"),
+        hudAltitude: document.querySelector("#hud-altitude"),
+        hudCoordinates: document.querySelector("#hud-coordinates"),
+        legend: document.querySelector("#control-legend"),
+        legendCopy: document.querySelector("#legend-copy"),
+        pointerStatus: document.querySelector("#pointer-status"),
+        pauseButton: document.querySelector("#pause-button"),
+        pauseOverlay: document.querySelector("#pause-overlay"),
+        pauseMessage: document.querySelector("#pause-message"),
+        resumeButton: document.querySelector("#resume-button"),
+        crashOverlay: document.querySelector("#crash-overlay"),
+        restartButton: document.querySelector("#restart-button"),
+        errorOverlay: document.querySelector("#error-overlay"),
+        errorMessage: document.querySelector("#error-message"),
+        errorCode: document.querySelector("#error-code"),
+        retryButton: document.querySelector("#retry-button"),
+        rotateOverlay: document.querySelector("#rotate-overlay"),
+        touchControls: document.querySelector("#touch-controls"),
+        touchStick: document.querySelector("#touch-stick"),
+        touchKnob: document.querySelector("#touch-knob"),
+        throttleUp: document.querySelector("#throttle-up"),
+        throttleDown: document.querySelector("#throttle-down"),
+        liveStatus: document.querySelector("#live-status"),
+      });
+
+      class ControlledFailure extends Error {
+        constructor(code, libraryName = null) {
+          super(code);
+          this.name = "ControlledFailure";
+          this.code = code;
+          this.libraryName = libraryName;
+        }
+      }
+
+      function bytesToHex(bytes) {
+        return Array.from(new Uint8Array(bytes), (value) =>
+          value.toString(16).padStart(2, "0"),
+        ).join("");
+      }
+
+      function stableEqual(left, right) {
+        if (left.length !== right.length) return false;
+        let difference = 0;
+        for (let index = 0; index < left.length; index += 1) {
+          difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
+        }
+        return difference === 0;
+      }
+
+      function assertCapabilities() {
+        const supported =
+          typeof fetch === "function" &&
+          typeof crypto?.subtle?.digest === "function" &&
+          typeof Blob === "function" &&
+          typeof URL?.createObjectURL === "function" &&
+          typeof TextDecoder === "function";
+        if (!supported) throw new ControlledFailure("UNSUPPORTED_BROWSER");
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("webgl2", {
+          antialias: false,
+          depth: false,
+          stencil: false,
+        });
+        if (!context) throw new ControlledFailure("WEBGL2_UNAVAILABLE");
+        const loseContext = context.getExtension("WEBGL_lose_context");
+        loseContext?.loseContext();
+      }
+
+      async function readBoundedBody(response, record) {
+        const limit = record.expectedBytes + CONFIG.dependencySizeGuardBytes;
+        if (!response.body) {
+          const fallback = await response.arrayBuffer();
+          if (fallback.byteLength > limit) {
+            throw new ControlledFailure("DEPENDENCY_SIZE", record.name);
+          }
+          return fallback;
+        }
+        const reader = response.body.getReader();
+        const chunks = [];
+        let total = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          total += value.byteLength;
+          if (total > limit) {
+            await reader.cancel();
+            throw new ControlledFailure("DEPENDENCY_SIZE", record.name);
+          }
+          chunks.push(value);
+        }
+        const bytes = new Uint8Array(total);
+        let offset = 0;
+        for (const chunk of chunks) {
+          bytes.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
+        return bytes.buffer;
+      }
+
+      async function fetchVerified(record, attemptSignal) {
+        const controller = new AbortController();
+        let timedOut = false;
+        const abortFromAttempt = () => controller.abort();
+        attemptSignal.addEventListener("abort", abortFromAttempt, {
+          once: true,
+        });
+        const timeout = window.setTimeout(() => {
+          timedOut = true;
+          controller.abort();
+        }, CONFIG.loaderTimeoutMs);
+        try {
+          let response;
+          try {
+            response = await fetch(record.url, {
+              method: "GET",
+              mode: "cors",
+              credentials: "omit",
+              redirect: "manual",
+              referrerPolicy: "no-referrer",
+              cache: "no-store",
+              signal: controller.signal,
+            });
+          } catch {
+            throw new ControlledFailure(
+              timedOut ? "DEPENDENCY_TIMEOUT" : "DEPENDENCY_NETWORK",
+              record.name,
+            );
+          }
+          if (
+            response.type === "opaqueredirect" ||
+            response.redirected ||
+            response.url !== record.url
+          ) {
+            throw new ControlledFailure("DEPENDENCY_REDIRECT", record.name);
+          }
+          if (!response.ok) {
+            throw new ControlledFailure("DEPENDENCY_NETWORK", record.name);
+          }
+          const bytes = await readBoundedBody(response, record);
+          if (bytes.byteLength !== record.expectedBytes) {
+            throw new ControlledFailure("DEPENDENCY_SIZE", record.name);
+          }
+          const actualHash = bytesToHex(
+            await crypto.subtle.digest("SHA-384", bytes),
+          );
+          if (!stableEqual(actualHash, record.sha384Hex)) {
+            throw new ControlledFailure("DEPENDENCY_INTEGRITY", record.name);
+          }
+          return bytes;
+        } finally {
+          window.clearTimeout(timeout);
+          attemptSignal.removeEventListener("abort", abortFromAttempt);
+        }
+      }
+
+      async function importVerified(record, bytes) {
+        let blob;
+        try {
+          if (record.format === "cjs-default-adapter") {
+            const source = new TextDecoder("utf-8", { fatal: true }).decode(
+              bytes,
+            );
+            if (/\brequire\s*\(|\bmodule\.exports\b/.test(source)) {
+              throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+            }
+            blob = new Blob(
+              [
+                "const exports = Object.create(null);\n",
+                source,
+                "\nexport default exports;",
+              ],
+              { type: "text/javascript" },
+            );
+          } else {
+            blob = new Blob([bytes], { type: "text/javascript" });
+          }
+        } catch (error) {
+          if (error instanceof ControlledFailure) throw error;
+          throw new ControlledFailure("DEPENDENCY_IMPORT", record.name);
+        }
+
+        const blobUrl = URL.createObjectURL(blob);
+        try {
+          let namespace;
+          try {
+            namespace = await import(blobUrl);
+          } catch {
+            throw new ControlledFailure("DEPENDENCY_IMPORT", record.name);
+          }
+          const exportObject =
+            record.format === "cjs-default-adapter"
+              ? namespace.default
+              : namespace;
+          if (!exportObject || typeof exportObject !== "object") {
+            throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+          }
+          for (const exportName of record.requiredExports) {
+            if (!(exportName in exportObject)) {
+              throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+            }
+          }
+          if (
+            record.name === "simplex-noise" &&
+            typeof exportObject.createNoise2D !== "function"
+          ) {
+            throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+          }
+          return exportObject;
+        } finally {
+          URL.revokeObjectURL(blobUrl);
+        }
+      }
+
+      async function loadDependencies() {
+        assertCapabilities();
+        const attemptController = new AbortController();
+        try {
+          const bytes = await Promise.all(
+            DEPENDENCIES.map((record) =>
+              fetchVerified(record, attemptController.signal),
+            ),
+          );
+          const modules = await Promise.all(
+            DEPENDENCIES.map((record, index) =>
+              importVerified(record, bytes[index]),
+            ),
+          );
+          return Object.freeze({ THREE: modules[0], simplex: modules[1] });
+        } catch (error) {
+          attemptController.abort();
+          throw error;
+        }
+      }
+
+      const LIFECYCLE_EVENTS = deepFreeze([
+        "DEPENDENCIES_VERIFIED",
+        "DEPENDENCY_FAILED",
+        "WEBGL_FAILED",
+        "START",
+        "PAUSE",
+        "FOCUS_LOST",
+        "FOCUS_READY",
+        "PORTRAIT_ENTERED",
+        "LANDSCAPE_READY",
+        "RESUME",
+        "TERRAIN_CRASH",
+        "RESTART",
+        "RETRY",
+      ]);
+
+      class Lifecycle {
+        constructor() {
+          this.dependencyPending = true;
+          this.sessionConstructed = false;
+          this.started = false;
+          this.pauseReasons = new Set();
+          this.resumeRequired = false;
+          this.errorCode = null;
+          this.crashReason = null;
+          this.revision = 0;
+        }
+
+        get phase() {
+          if (this.errorCode) return "error";
+          if (this.crashReason) return "crashed";
+          if (this.dependencyPending) return "loading";
+          if (this.pauseReasons.size > 0 || this.resumeRequired)
+            return "paused";
+          if (this.sessionConstructed && !this.started) return "ready";
+          return "flying";
+        }
+
+        serializable() {
+          return {
+            phase: this.phase,
+            pauseReasons: [...this.pauseReasons].sort(),
+            resumeRequired: this.resumeRequired,
+            errorCode: this.errorCode,
+            crashReason: this.crashReason,
+            dependencyPending: this.dependencyPending,
+            sessionConstructed: this.sessionConstructed,
+            started: this.started,
+          };
+        }
+
+        snapshot() {
+          return { ...this.serializable(), revision: this.revision };
+        }
+
+        dispatch(event, errorCode = null) {
+          if (!LIFECYCLE_EVENTS.includes(event)) return false;
+          const before = JSON.stringify(this.serializable());
+          switch (event) {
+            case "DEPENDENCIES_VERIFIED":
+              this.dependencyPending = false;
+              this.sessionConstructed = true;
+              this.errorCode = null;
+              break;
+            case "DEPENDENCY_FAILED":
+              this.errorCode = errorCode || "DEPENDENCY_NETWORK";
+              this.dependencyPending = false;
+              this.started = false;
+              break;
+            case "WEBGL_FAILED":
+              this.errorCode = "WEBGL2_UNAVAILABLE";
+              this.dependencyPending = false;
+              this.started = false;
+              break;
+            case "START":
+              if (
+                this.sessionConstructed &&
+                !this.errorCode &&
+                !this.crashReason
+              ) {
+                this.started = true;
+              }
+              break;
+            case "PAUSE":
+              if (
+                !this.errorCode &&
+                !this.crashReason &&
+                !this.dependencyPending
+              ) {
+                this.pauseReasons.add("manual");
+                this.resumeRequired = true;
+              }
+              break;
+            case "FOCUS_LOST":
+              if (
+                !this.errorCode &&
+                !this.crashReason &&
+                !this.dependencyPending
+              ) {
+                this.pauseReasons.add("focus");
+                this.resumeRequired = true;
+              }
+              break;
+            case "FOCUS_READY":
+              this.pauseReasons.delete("focus");
+              break;
+            case "PORTRAIT_ENTERED":
+              if (
+                !this.errorCode &&
+                !this.crashReason &&
+                !this.dependencyPending
+              ) {
+                this.pauseReasons.add("orientation");
+                this.resumeRequired = true;
+              }
+              break;
+            case "LANDSCAPE_READY":
+              this.pauseReasons.delete("orientation");
+              break;
+            case "RESUME":
+              if (!this.errorCode && !this.crashReason) {
+                this.pauseReasons.delete("manual");
+                if (this.pauseReasons.size === 0) {
+                  this.resumeRequired = false;
+                  this.started = true;
+                }
+              }
+              break;
+            case "TERRAIN_CRASH":
+              if (!this.errorCode && this.sessionConstructed) {
+                this.crashReason = "terrain";
+                this.resumeRequired = false;
+              }
+              break;
+            case "RESTART":
+              if (this.crashReason) {
+                this.crashReason = null;
+                this.pauseReasons.clear();
+                this.resumeRequired = false;
+                this.started = true;
+              }
+              break;
+            case "RETRY":
+              if (this.errorCode) {
+                this.errorCode = null;
+                this.crashReason = null;
+                this.pauseReasons.clear();
+                this.resumeRequired = false;
+                this.dependencyPending = true;
+                this.sessionConstructed = false;
+                this.started = false;
+              }
+              break;
+          }
+          if (JSON.stringify(this.serializable()) === before) return false;
+          this.revision += 1;
+          return true;
+        }
+      }
+
+      function mulberry32(seed) {
+        let state = seed >>> 0;
+        return () => {
+          state = (state + 0x6d2b79f5) >>> 0;
+          let value = state;
+          value = Math.imul(value ^ (value >>> 15), value | 1);
+          value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+          return ((value ^ (value >>> 14)) >>> 0) / 4_294_967_296;
+        };
+      }
+
+      function mixUint32(value) {
+        let mixed = value >>> 0;
+        mixed = Math.imul(mixed ^ (mixed >>> 16), 0x7feb352d);
+        mixed = Math.imul(mixed ^ (mixed >>> 15), 0x846ca68b);
+        return (mixed ^ (mixed >>> 16)) >>> 0;
+      }
+
+      function stableRegionSeed(sessionSeed, regionX, regionZ) {
+        return mixUint32(
+          (sessionSeed >>> 0) ^
+            Math.imul(regionX | 0, 0x9e3779b1) ^
+            Math.imul(regionZ | 0, 0x85ebca77),
+        );
+      }
+
+      function hashString(value) {
+        let hash = 0x811c9dc5;
+        for (let index = 0; index < value.length; index += 1) {
+          hash ^= value.charCodeAt(index);
+          hash = Math.imul(hash, 0x01000193);
+        }
+        return (hash >>> 0).toString(16).padStart(8, "0");
+      }
+
+      function hashFloat32(values) {
+        const bytes = new Uint8Array(
+          values.buffer,
+          values.byteOffset,
+          values.byteLength,
+        );
+        let hash = 0x811c9dc5;
+        for (const value of bytes) {
+          hash ^= value;
+          hash = Math.imul(hash, 0x01000193);
+        }
+        return (hash >>> 0).toString(16).padStart(8, "0");
+      }
+
+      function addBoxBuffers(
+        positions,
+        colors,
+        indices,
+        centerX,
+        centerY,
+        centerZ,
+        sizeX,
+        sizeY,
+        sizeZ,
+        color,
+      ) {
+        const red = ((color >> 16) & 255) / 255;
+        const green = ((color >> 8) & 255) / 255;
+        const blue = (color & 255) / 255;
+        const base = positions.length / 3;
+        for (const [x, y, z] of [
+          [-1, -1, -1],
+          [1, -1, -1],
+          [1, 1, -1],
+          [-1, 1, -1],
+          [-1, -1, 1],
+          [1, -1, 1],
+          [1, 1, 1],
+          [-1, 1, 1],
+        ]) {
+          positions.push(
+            centerX + (x * sizeX) / 2,
+            centerY + (y * sizeY) / 2,
+            centerZ + (z * sizeZ) / 2,
+          );
+          colors.push(red, green, blue);
+        }
+        for (const face of [
+          [0, 1, 2, 0, 2, 3],
+          [5, 4, 7, 5, 7, 6],
+          [4, 0, 3, 4, 3, 7],
+          [1, 5, 6, 1, 6, 2],
+          [3, 2, 6, 3, 6, 7],
+          [4, 5, 1, 4, 1, 0],
+        ]) {
+          indices.push(...face.map((entry) => base + entry));
+        }
+      }
+
+      class WorldGenerator {
+        constructor(simplex, seed) {
+          this.simplex = simplex;
+          this.reset(seed);
+        }
+
+        reset(seed) {
+          this.seed = seed >>> 0;
+          this.noise2D = this.simplex.createNoise2D(
+            mulberry32(this.seed ^ 0xa5f1523d),
+          );
+        }
+
+        height(globalX, globalZ) {
+          const noise = this.noise2D;
+          const broad = noise(globalX / 1_650, globalZ / 1_650) * 32;
+          const medium = noise(globalX / 610 + 7.3, globalZ / 610 - 11.7) * 20;
+          const detail = noise(globalX / 165 - 19.1, globalZ / 165 + 3.9) * 5;
+          const ridgeNoise = Math.abs(
+            noise(globalX / 2_450 + 41.7, globalZ / 2_450 - 23.4),
+          );
+          const ridge = Math.pow(Math.max(0, 1 - ridgeNoise), 4) * 145;
+          const distanceFromRoute = Math.abs(globalX);
+          const routeFactor =
+            globalZ <= 240 && globalZ >= -5_200 && distanceFromRoute < 260
+              ? 0.08 + 0.92 * Math.min(1, distanceFromRoute / 260)
+              : 1;
+          const spawnDistance = Math.hypot(globalX, globalZ);
+          const spawnFactor =
+            spawnDistance < 650 ? 0.08 + 0.92 * (spawnDistance / 650) : 1;
+          return Math.fround(
+            Math.max(
+              -22,
+              (broad + medium + detail + ridge) * routeFactor * spawnFactor,
+            ),
+          );
+        }
+
+        slope(globalX, globalZ) {
+          const delta = 12;
+          const dx =
+            (this.height(globalX + delta, globalZ) -
+              this.height(globalX - delta, globalZ)) /
+            (delta * 2);
+          const dz =
+            (this.height(globalX, globalZ + delta) -
+              this.height(globalX, globalZ - delta)) /
+            (delta * 2);
+          return Math.hypot(dx, dz);
+        }
+
+        slopeClass(globalX, globalZ) {
+          const slope = this.slope(globalX, globalZ);
+          if (slope < 0.2) return "flat";
+          if (slope < 0.58) return "hills";
+          return "mountain";
+        }
+
+        createRuins(regionX, regionZ) {
+          const world = CONFIG.world;
+          const regionSeed = stableRegionSeed(this.seed, regionX, regionZ);
+          const random = mulberry32(regionSeed ^ 0x4f1bbcdc);
+          const ruins = [];
+          const regionOriginX = regionX * world.regionSize;
+          const regionOriginZ = regionZ * world.regionSize;
+          const targetCount =
+            regionX === 0 && regionZ === 0
+              ? 1
+              : 1 + Number((regionSeed & 7) === 0);
+          for (
+            let attempt = 0;
+            attempt < 18 &&
+            ruins.length < Math.min(targetCount, world.maximumRuinsPerRegion);
+            attempt += 1
+          ) {
+            const forcedSpawnLandmark =
+              regionX === 0 && regionZ === 0 && ruins.length === 0;
+            const globalX = forcedSpawnLandmark
+              ? 300
+              : regionOriginX + 90 + random() * (world.regionSize - 180);
+            const globalZ = forcedSpawnLandmark
+              ? 230
+              : regionOriginZ + 90 + random() * (world.regionSize - 180);
+            const inSpawnCorridor =
+              Math.abs(globalX) < world.spawnCorridorHalfWidth &&
+              globalZ <= 160 &&
+              globalZ >= world.spawnCorridorEndZ;
+            if (
+              inSpawnCorridor ||
+              this.slopeClass(globalX, globalZ) !== "flat"
+            ) {
+              continue;
+            }
+            const tiers = 2 + Math.floor(random() * 4);
+            const tierHeights = Array.from(
+              { length: tiers },
+              () => 18 + Math.round(random() * 30),
+            );
+            ruins.push({
+              id: `${regionX}:${regionZ}:${ruins.length}`,
+              clusterId: `${regionX}:${regionZ}:cluster-${ruins.length}`,
+              globalX,
+              globalZ,
+              baseY: this.height(globalX, globalZ),
+              width: 26 + Math.round(random() * 32),
+              depth: 22 + Math.round(random() * 28),
+              tiers,
+              tierHeights,
+              damageMask: Math.floor(random() * 0xffff) >>> 0,
+              windowSeed: Math.floor(random() * 0xffffffff) >>> 0,
+              slopeClass: "flat",
+            });
+          }
+          return ruins;
+        }
+      }
+
+      class TerrainRegion {
+        constructor(poolId, THREE, materials, generator) {
+          this.poolId = poolId;
+          this.THREE = THREE;
+          this.materials = materials;
+          this.generator = generator;
+          this.regionX = 0;
+          this.regionZ = 0;
+          this.key = "unassigned";
+          this.ready = false;
+          this.heights = new Float32Array(
+            CONFIG.world.samplesPerSide * CONFIG.world.samplesPerSide,
+          );
+          this.colors = new Float32Array(this.heights.length * 3);
+          this.terrainPositions = new Float32Array(this.heights.length * 3);
+          this.sceneGroup = new THREE.Group();
+          this.sceneGroup.name = `terrain-region-pool-${poolId}`;
+          this.sceneGroup.userData.poolId = poolId;
+
+          this.terrainGeometry = new THREE.BufferGeometry();
+          this.terrainGeometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(this.terrainPositions, 3),
+          );
+          this.terrainGeometry.setAttribute(
+            "color",
+            new THREE.BufferAttribute(this.colors, 3),
+          );
+          this.terrainGeometry.setIndex(this.createTerrainIndices());
+          this.terrainMesh = new THREE.Mesh(
+            this.terrainGeometry,
+            materials.terrain,
+          );
+          this.terrainMesh.receiveShadow = true;
+          this.terrainMesh.castShadow = true;
+
+          this.crackGeometry = new THREE.BufferGeometry();
+          this.crackMesh = new THREE.LineSegments(
+            this.crackGeometry,
+            materials.crack,
+          );
+          this.crackMesh.renderOrder = 2;
+
+          this.ruinGeometry = new THREE.BufferGeometry();
+          this.ruinMesh = new THREE.Mesh(this.ruinGeometry, materials.ruin);
+          this.ruinMesh.castShadow = true;
+          this.ruinMesh.receiveShadow = true;
+
+          this.windowGeometry = new THREE.BufferGeometry();
+          this.windowMesh = new THREE.Mesh(
+            this.windowGeometry,
+            materials.window,
+          );
+          this.windowMesh.userData.fullIndexCount = 0;
+          this.sceneGroup.add(
+            this.terrainMesh,
+            this.crackMesh,
+            this.ruinMesh,
+            this.windowMesh,
+          );
+          this.crackSegments = [];
+          this.ruins = [];
+        }
+
+        createTerrainIndices() {
+          const indices = [];
+          const side = CONFIG.world.samplesPerSide;
+          for (let z = 0; z < side - 1; z += 1) {
+            for (let x = 0; x < side - 1; x += 1) {
+              const a = z * side + x;
+              const b = a + 1;
+              const c = a + side;
+              const d = c + 1;
+              indices.push(a, b, c, b, d, c);
+            }
+          }
+          return indices;
+        }
+
+        assign(regionX, regionZ, worldOrigin) {
+          const world = CONFIG.world;
+          const side = world.samplesPerSide;
+          const spacing = world.regionSize / (side - 1);
+          this.ready = false;
+          this.regionX = regionX;
+          this.regionZ = regionZ;
+          this.key = `${regionX}:${regionZ}`;
+          this.seed = stableRegionSeed(this.generator.seed, regionX, regionZ);
+          let positionOffset = 0;
+          let colorOffset = 0;
+          for (let z = 0; z < side; z += 1) {
+            for (let x = 0; x < side; x += 1) {
+              const globalX = regionX * world.regionSize + x * spacing;
+              const globalZ = regionZ * world.regionSize + z * spacing;
+              const height = this.generator.height(globalX, globalZ);
+              const index = z * side + x;
+              this.heights[index] = height;
+              this.terrainPositions[positionOffset] = x * spacing;
+              this.terrainPositions[positionOffset + 1] = height;
+              this.terrainPositions[positionOffset + 2] = z * spacing;
+              positionOffset += 3;
+              const slope = this.generator.slope(globalX, globalZ);
+              const rust = Math.max(
+                0,
+                Math.min(1, (height + slope * 80) / 160),
+              );
+              const mineralBand =
+                (Math.sin(globalX * 0.0127 + globalZ * 0.0169) + 1) / 2;
+              const rustMix = Math.max(
+                0,
+                Math.min(1, rust * 0.72 + mineralBand * 0.38 - 0.24),
+              );
+              this.colors[colorOffset] = 0.035 + rustMix * 0.36;
+              this.colors[colorOffset + 1] = 0.04 + rustMix * 0.085;
+              this.colors[colorOffset + 2] = 0.038 - rustMix * 0.012;
+              colorOffset += 3;
+            }
+          }
+          this.terrainGeometry.attributes.position.needsUpdate = true;
+          this.terrainGeometry.attributes.color.needsUpdate = true;
+          this.terrainGeometry.computeVertexNormals();
+          this.terrainGeometry.computeBoundingSphere();
+          this.buildCracks();
+          this.ruins = this.generator.createRuins(regionX, regionZ);
+          this.buildRuins();
+          this.heightHash = hashFloat32(this.heights);
+          this.ruinHash = hashString(JSON.stringify(this.ruins));
+          this.descriptorHash = hashString(
+            `${this.key}:${this.heightHash}:${this.ruinHash}:${this.seed}`,
+          );
+          this.setOrigin(worldOrigin);
+          this.ready = true;
+        }
+
+        buildCracks() {
+          const random = mulberry32(this.seed ^ 0xc761c23c);
+          const positions = [];
+          this.crackSegments = [];
+          for (
+            let index = 0;
+            index < CONFIG.world.crackSegmentsPerRegion;
+            index += 1
+          ) {
+            const localX = 40 + random() * (CONFIG.world.regionSize - 80);
+            const localZ = 40 + random() * (CONFIG.world.regionSize - 80);
+            const angle = random() * Math.PI * 2;
+            const length = 18 + random() * 42;
+            const endX = Math.max(
+              0,
+              Math.min(
+                CONFIG.world.regionSize,
+                localX + Math.cos(angle) * length,
+              ),
+            );
+            const endZ = Math.max(
+              0,
+              Math.min(
+                CONFIG.world.regionSize,
+                localZ + Math.sin(angle) * length,
+              ),
+            );
+            const startGlobalX =
+              this.regionX * CONFIG.world.regionSize + localX;
+            const startGlobalZ =
+              this.regionZ * CONFIG.world.regionSize + localZ;
+            const endGlobalX = this.regionX * CONFIG.world.regionSize + endX;
+            const endGlobalZ = this.regionZ * CONFIG.world.regionSize + endZ;
+            const startY =
+              this.sampleSurface(startGlobalX, startGlobalZ).height + 0.35;
+            const endY =
+              this.sampleSurface(endGlobalX, endGlobalZ).height + 0.35;
+            positions.push(localX, startY, localZ, endX, endY, endZ);
+            this.crackSegments.push(
+              { globalX: startGlobalX, globalZ: startGlobalZ, y: startY },
+              { globalX: endGlobalX, globalZ: endGlobalZ, y: endY },
+            );
+          }
+          this.crackGeometry.setAttribute(
+            "position",
+            new this.THREE.BufferAttribute(new Float32Array(positions), 3),
+          );
+          this.crackGeometry.computeBoundingSphere();
+        }
+
+        buildRuins() {
+          const positions = [];
+          const colors = [];
+          const indices = [];
+          const windowPositions = [];
+          const windowColors = [];
+          const windowIndices = [];
+          for (const ruin of this.ruins) {
+            const localX =
+              ruin.globalX - this.regionX * CONFIG.world.regionSize;
+            const localZ =
+              ruin.globalZ - this.regionZ * CONFIG.world.regionSize;
+            let baseY = ruin.baseY;
+            for (let tier = 0; tier < ruin.tiers; tier += 1) {
+              const tierHeight = ruin.tierHeights[tier];
+              const missing =
+                tier > 0 && ((ruin.damageMask >>> tier) & 7) === 7;
+              if (!missing) {
+                const inset = tier * 2.2;
+                const tierWidth = Math.max(12, ruin.width - inset * 1.4);
+                const tierDepth = Math.max(10, ruin.depth - inset);
+                const cornerLoss = ((ruin.damageMask >>> (tier + 5)) & 1) === 1;
+                addBoxBuffers(
+                  positions,
+                  colors,
+                  indices,
+                  localX + (cornerLoss ? tierWidth * 0.09 : 0),
+                  baseY + tierHeight / 2,
+                  localZ,
+                  tierWidth * (cornerLoss ? 0.82 : 1),
+                  tierHeight,
+                  tierDepth,
+                  tier % 2 === 0 ? 0x56524f : 0x3f4142,
+                );
+                const windowRandom = mulberry32(ruin.windowSeed ^ tier);
+                const bandCount = Math.max(1, Math.floor(tierHeight / 12));
+                for (let band = 0; band < bandCount; band += 1) {
+                  if (band > 0 && windowRandom() < 0.22) continue;
+                  addBoxBuffers(
+                    windowPositions,
+                    windowColors,
+                    windowIndices,
+                    localX,
+                    baseY + 6 + band * 10,
+                    localZ + tierDepth / 2 + 0.28,
+                    Math.max(6, tierWidth * 0.54),
+                    4.2,
+                    0.48,
+                    0xff6a1a,
+                  );
+                  addBoxBuffers(
+                    windowPositions,
+                    windowColors,
+                    windowIndices,
+                    localX - tierWidth / 2 - 0.28,
+                    baseY + 6 + band * 10,
+                    localZ,
+                    0.48,
+                    4.2,
+                    Math.max(6, tierDepth * 0.42),
+                    0xff6a1a,
+                  );
+                }
+              }
+              baseY += tierHeight;
+            }
+          }
+          this.ruinGeometry.setAttribute(
+            "position",
+            new this.THREE.BufferAttribute(new Float32Array(positions), 3),
+          );
+          this.ruinGeometry.setAttribute(
+            "color",
+            new this.THREE.BufferAttribute(new Float32Array(colors), 3),
+          );
+          this.ruinGeometry.setIndex(indices);
+          if (positions.length > 0) {
+            this.ruinGeometry.computeVertexNormals();
+            this.ruinGeometry.computeBoundingSphere();
+          }
+          this.windowGeometry.setAttribute(
+            "position",
+            new this.THREE.BufferAttribute(
+              new Float32Array(windowPositions),
+              3,
+            ),
+          );
+          this.windowGeometry.setAttribute(
+            "color",
+            new this.THREE.BufferAttribute(new Float32Array(windowColors), 3),
+          );
+          this.windowGeometry.setIndex(windowIndices);
+          if (windowPositions.length > 0) {
+            this.windowGeometry.computeVertexNormals();
+            this.windowGeometry.computeBoundingSphere();
+          }
+          this.windowMesh.userData.fullIndexCount = windowIndices.length;
+          this.applyWindowDensity(1);
+        }
+
+        applyWindowDensity(density) {
+          const fullCount = this.windowMesh.userData.fullIndexCount || 0;
+          const boxes = Math.floor((fullCount / 36) * density);
+          this.windowGeometry.setDrawRange(0, boxes * 36);
+        }
+
+        setOrigin(worldOrigin) {
+          this.sceneGroup.position.set(
+            this.regionX * CONFIG.world.regionSize - worldOrigin.x,
+            0,
+            this.regionZ * CONFIG.world.regionSize - worldOrigin.z,
+          );
+        }
+
+        sampleSurface(globalX, globalZ) {
+          const world = CONFIG.world;
+          const side = world.samplesPerSide;
+          const spacing = world.regionSize / (side - 1);
+          const localX = Math.max(
+            0,
+            Math.min(
+              world.regionSize,
+              globalX - this.regionX * world.regionSize,
+            ),
+          );
+          const localZ = Math.max(
+            0,
+            Math.min(
+              world.regionSize,
+              globalZ - this.regionZ * world.regionSize,
+            ),
+          );
+          const cellX = Math.min(side - 2, Math.floor(localX / spacing));
+          const cellZ = Math.min(side - 2, Math.floor(localZ / spacing));
+          const tx = localX / spacing - cellX;
+          const tz = localZ / spacing - cellZ;
+          const at = (x, z) => this.heights[z * side + x];
+          const h00 = at(cellX, cellZ);
+          const h10 = at(cellX + 1, cellZ);
+          const h01 = at(cellX, cellZ + 1);
+          const h11 = at(cellX + 1, cellZ + 1);
+          const lower = tx + tz <= 1;
+          const height = lower
+            ? h00 + (h10 - h00) * tx + (h01 - h00) * tz
+            : h11 + (h01 - h11) * (1 - tx) + (h10 - h11) * (1 - tz);
+          return {
+            globalX,
+            globalZ,
+            height,
+            ready: this.ready,
+            regionKey: this.key,
+            topology: lower ? "lower" : "upper",
+          };
+        }
+
+        edge(name) {
+          const side = CONFIG.world.samplesPerSide;
+          const values = new Float32Array(side);
+          for (let index = 0; index < side; index += 1) {
+            if (name === "west") values[index] = this.heights[index * side];
+            else if (name === "east")
+              values[index] = this.heights[index * side + side - 1];
+            else if (name === "north") values[index] = this.heights[index];
+            else values[index] = this.heights[(side - 1) * side + index];
+          }
+          return values;
+        }
+
+        snapshot() {
+          const edges = {
+            west: Array.from(this.edge("west")),
+            east: Array.from(this.edge("east")),
+            north: Array.from(this.edge("north")),
+            south: Array.from(this.edge("south")),
+          };
+          return {
+            poolId: this.poolId,
+            key: this.key,
+            regionX: this.regionX,
+            regionZ: this.regionZ,
+            regionSize: CONFIG.world.regionSize,
+            samplesPerSide: CONFIG.world.samplesPerSide,
+            ready: this.ready,
+            heights: Array.from(this.heights),
+            heightHash: this.heightHash,
+            ruinHash: this.ruinHash,
+            descriptorHash: this.descriptorHash,
+            edges,
+            edgeHashes: {
+              west: hashFloat32(this.edge("west")),
+              east: hashFloat32(this.edge("east")),
+              north: hashFloat32(this.edge("north")),
+              south: hashFloat32(this.edge("south")),
+            },
+            crackSegments: this.crackSegments.map((entry) => ({ ...entry })),
+            cracksAffectCollision: false,
+            ruins: this.ruins.map((ruin) => structuredClone(ruin)),
+          };
+        }
+      }
+
+      class ProceduralWorld {
+        constructor(THREE, simplex, seed, scene) {
+          this.THREE = THREE;
+          this.generator = new WorldGenerator(simplex, seed);
+          this.sessionSeed = seed >>> 0;
+          this.worldOrigin = { x: 0, z: 0 };
+          this.originRevision = 0;
+          this.recycleCount = 0;
+          this.generationCount = 0;
+          this.seamFailures = 0;
+          this.windowDensity = 1;
+          this.root = new THREE.Group();
+          this.root.name = "pooled-wasteland";
+          scene.add(this.root);
+          this.materials = {
+            terrain: new THREE.MeshStandardMaterial({
+              vertexColors: true,
+              roughness: 0.97,
+              metalness: 0.02,
+              side: THREE.DoubleSide,
+            }),
+            crack: new THREE.LineBasicMaterial({ color: 0x120b08 }),
+            ruin: new THREE.MeshStandardMaterial({
+              vertexColors: true,
+              roughness: 0.88,
+              metalness: 0.08,
+            }),
+            window: new THREE.MeshStandardMaterial({
+              vertexColors: true,
+              color: 0xff8a32,
+              emissive: 0xff4b0b,
+              emissiveIntensity: 3.2,
+              roughness: 0.6,
+              toneMapped: false,
+            }),
+          };
+          const regionCount = Math.pow(CONFIG.world.activeRadius * 2 + 1, 2);
+          this.regionPool = Array.from({ length: regionCount }, (_, index) => {
+            const region = new TerrainRegion(
+              index + 1,
+              THREE,
+              this.materials,
+              this.generator,
+            );
+            this.root.add(region.sceneGroup);
+            return region;
+          });
+          this.activeRegions = new Map();
+          this.activeCenter = { regionX: 0, regionZ: 0 };
+          this.updateForPosition(0, 0, true);
+        }
+
+        reset(seed) {
+          this.sessionSeed = seed >>> 0;
+          this.generator.reset(this.sessionSeed);
+          this.worldOrigin.x = 0;
+          this.worldOrigin.z = 0;
+          this.originRevision = 0;
+          this.recycleCount = 0;
+          this.generationCount = 0;
+          this.seamFailures = 0;
+          this.activeRegions.clear();
+          for (const region of this.regionPool) region.ready = false;
+          this.updateForPosition(0, 0, true);
+        }
+
+        updateForPosition(globalX, globalZ, force = false) {
+          const centerX = Math.floor(globalX / CONFIG.world.regionSize);
+          const centerZ = Math.floor(globalZ / CONFIG.world.regionSize);
+          if (
+            !force &&
+            centerX === this.activeCenter.regionX &&
+            centerZ === this.activeCenter.regionZ &&
+            this.activeRegions.size === this.regionPool.length
+          ) {
+            return;
+          }
+          const desiredKeys = [];
+          for (
+            let z = centerZ - CONFIG.world.activeRadius;
+            z <= centerZ + CONFIG.world.activeRadius;
+            z += 1
+          ) {
+            for (
+              let x = centerX - CONFIG.world.activeRadius;
+              x <= centerX + CONFIG.world.activeRadius;
+              x += 1
+            ) {
+              desiredKeys.push(`${x}:${z}`);
+            }
+          }
+          const desiredSet = new Set(desiredKeys);
+          const next = new Map();
+          for (const [key, region] of this.activeRegions) {
+            if (desiredSet.has(key)) next.set(key, region);
+          }
+          const retained = new Set(next.values());
+          const available = this.regionPool.filter(
+            (region) => !retained.has(region),
+          );
+          for (const key of desiredKeys) {
+            if (next.has(key)) continue;
+            const [regionX, regionZ] = key.split(":").map(Number);
+            const region = available.shift();
+            if (region.ready) this.recycleCount += 1;
+            region.generator = this.generator;
+            region.assign(regionX, regionZ, this.worldOrigin);
+            region.applyWindowDensity(this.windowDensity);
+            this.generationCount += 1;
+            next.set(key, region);
+          }
+          this.activeRegions = next;
+          this.activeCenter = { regionX: centerX, regionZ: centerZ };
+          this.verifySeams();
+        }
+
+        verifySeams() {
+          this.seamFailures = 0;
+          for (const region of this.activeRegions.values()) {
+            const east = this.activeRegions.get(
+              `${region.regionX + 1}:${region.regionZ}`,
+            );
+            if (
+              east &&
+              hashFloat32(region.edge("east")) !==
+                hashFloat32(east.edge("west"))
+            ) {
+              this.seamFailures += 1;
+            }
+            const south = this.activeRegions.get(
+              `${region.regionX}:${region.regionZ + 1}`,
+            );
+            if (
+              south &&
+              hashFloat32(region.edge("south")) !==
+                hashFloat32(south.edge("north"))
+            ) {
+              this.seamFailures += 1;
+            }
+          }
+        }
+
+        sample(globalX, globalZ) {
+          this.updateForPosition(globalX, globalZ);
+          const regionX = Math.floor(globalX / CONFIG.world.regionSize);
+          const regionZ = Math.floor(globalZ / CONFIG.world.regionSize);
+          const region = this.activeRegions.get(`${regionX}:${regionZ}`);
+          return region.sampleSurface(globalX, globalZ);
+        }
+
+        regionSnapshot(regionX, regionZ) {
+          if (!Number.isInteger(regionX) || !Number.isInteger(regionZ)) {
+            throw new TypeError("region coordinates must be integers");
+          }
+          this.updateForPosition(
+            regionX * CONFIG.world.regionSize + CONFIG.world.regionSize / 2,
+            regionZ * CONFIG.world.regionSize + CONFIG.world.regionSize / 2,
+          );
+          return this.activeRegions.get(`${regionX}:${regionZ}`).snapshot();
+        }
+
+        maybeRebase(globalX, globalZ) {
+          const interval = CONFIG.world.originRebaseMeters;
+          const localX = globalX - this.worldOrigin.x;
+          const localZ = globalZ - this.worldOrigin.z;
+          const offsetX =
+            Math.abs(localX) >= interval
+              ? Math.trunc(localX / interval) * interval
+              : 0;
+          const offsetZ =
+            Math.abs(localZ) >= interval
+              ? Math.trunc(localZ / interval) * interval
+              : 0;
+          if (offsetX === 0 && offsetZ === 0) return false;
+          this.worldOrigin.x += offsetX;
+          this.worldOrigin.z += offsetZ;
+          this.originRevision += 1;
+          for (const region of this.regionPool)
+            region.setOrigin(this.worldOrigin);
+          return true;
+        }
+
+        setWindowDensity(density) {
+          this.windowDensity = density;
+          for (const region of this.regionPool)
+            region.applyWindowDensity(density);
+        }
+
+        snapshot(quality, sceneObjectBudget) {
+          const activeRegions = [...this.activeRegions.values()];
+          const activeRuins = activeRegions.flatMap((region) => region.ruins);
+          const ids = activeRuins.map((ruin) => ruin.id);
+          const duplicateDescriptors = ids.length - new Set(ids).size;
+          const activeDescriptorHash = hashString(
+            activeRegions
+              .map((region) => `${region.key}:${region.descriptorHash}`)
+              .sort()
+              .join("|"),
+          );
+          return {
+            sessionSeed: this.sessionSeed,
+            activeCenter: { ...this.activeCenter },
+            activeRegionCount: this.activeRegions.size,
+            activeKeys: [...this.activeRegions.keys()].sort(),
+            activeDescriptorHash,
+            activeRuins: activeRuins.map((ruin) => structuredClone(ruin)),
+            ruinClusters: new Set(activeRuins.map((ruin) => ruin.clusterId))
+              .size,
+            spawnVisibleRuinClusters: new Set(
+              activeRuins
+                .filter((ruin) => Math.hypot(ruin.globalX, ruin.globalZ) <= 900)
+                .map((ruin) => ruin.clusterId),
+            ).size,
+            slopeClasses: ["flat", "hills", "mountain"],
+            poolSize: this.regionPool.length,
+            poolIds: this.regionPool.map((region) => region.poolId),
+            recycleCount: this.recycleCount,
+            generationCount: this.generationCount,
+            collisionHorizonReady:
+              this.activeRegions.size === this.regionPool.length &&
+              activeRegions.every((region) => region.ready),
+            duplicateDescriptors,
+            seamFailures: this.seamFailures,
+            worldOrigin: { ...this.worldOrigin },
+            originRevision: this.originRevision,
+            allocatedBytes:
+              this.regionPool.length *
+              (CONFIG.world.samplesPerSide * CONFIG.world.samplesPerSide * 28 +
+                65_536),
+            sceneObjectBudget,
+            quality,
+          };
+        }
+
+        dispose() {
+          for (const region of this.regionPool) {
+            region.terrainGeometry.dispose();
+            region.crackGeometry.dispose();
+            region.ruinGeometry.dispose();
+            region.windowGeometry.dispose();
+          }
+          for (const material of Object.values(this.materials))
+            material.dispose();
+          this.root.removeFromParent();
+        }
+      }
+
+      class AshField {
+        constructor(THREE, scene, seed) {
+          this.THREE = THREE;
+          this.maximumCount = CONFIG.ash.maximumCount;
+          this.positions = new Float32Array(this.maximumCount * 3);
+          this.fallSpeeds = new Float32Array(this.maximumCount);
+          this.geometry = new THREE.BufferGeometry();
+          this.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(this.positions, 3),
+          );
+          this.material = new THREE.PointsMaterial({
+            color: 0xc4b2a2,
+            size: 2.1,
+            transparent: true,
+            opacity: 0.58,
+            depthWrite: false,
+          });
+          this.points = new THREE.Points(this.geometry, this.material);
+          this.points.frustumCulled = false;
+          scene.add(this.points);
+          this.reset(seed, { x: 0, y: CONFIG.spawn.y, z: 0 });
+          this.setProfile(this.maximumCount, CONFIG.ash.fullDrift);
+        }
+
+        reset(seed, localPosition) {
+          const random = mulberry32((seed ^ 0x6ac690c5) >>> 0);
+          for (let index = 0; index < this.maximumCount; index += 1) {
+            const offset = index * 3;
+            this.positions[offset] =
+              localPosition.x + (random() * 2 - 1) * CONFIG.ash.fieldRadius;
+            this.positions[offset + 1] =
+              localPosition.y + random() * CONFIG.ash.fieldHeight;
+            this.positions[offset + 2] =
+              localPosition.z + (random() * 2 - 1) * CONFIG.ash.fieldRadius;
+            this.fallSpeeds[index] = 7 + random() * 12;
+          }
+          this.center = { ...localPosition };
+          this.geometry.attributes.position.needsUpdate = true;
+        }
+
+        setProfile(count, drift) {
+          this.count = Math.max(1, Math.min(this.maximumCount, count));
+          this.drift = drift;
+          this.geometry.setDrawRange(0, this.count);
+        }
+
+        update(localPosition, step) {
+          const shiftX = localPosition.x - this.center.x;
+          const shiftZ = localPosition.z - this.center.z;
+          this.center = { ...localPosition };
+          for (let index = 0; index < this.count; index += 1) {
+            const offset = index * 3;
+            this.positions[offset] += shiftX + this.drift * step;
+            this.positions[offset + 1] -= this.fallSpeeds[index] * step;
+            this.positions[offset + 2] += shiftZ;
+            if (this.positions[offset + 1] < localPosition.y - 45) {
+              this.positions[offset] =
+                localPosition.x + ((index * 37) % 401) - 200;
+              this.positions[offset + 1] =
+                localPosition.y + CONFIG.ash.fieldHeight;
+              this.positions[offset + 2] =
+                localPosition.z + ((index * 83) % 401) - 200;
+            }
+          }
+          this.geometry.attributes.position.needsUpdate = true;
+        }
+
+        dispose() {
+          this.geometry.dispose();
+          this.material.dispose();
+          this.points.removeFromParent();
+        }
+      }
+
+      class QualityState {
+        constructor(applyProfile) {
+          this.applyProfile = applyProfile;
+          this.reset();
+        }
+
+        reset() {
+          this.tier = 0;
+          this.lowFpsSeconds = 0;
+          this.recoverySeconds = 0;
+          this.transitions = [];
+          this.applyProfile?.(0);
+        }
+
+        sample(fps, seconds) {
+          if (
+            !Number.isFinite(fps) ||
+            !Number.isFinite(seconds) ||
+            seconds <= 0
+          ) {
+            throw new TypeError(
+              "quality samples require finite positive values",
+            );
+          }
+          if (fps < CONFIG.quality.degradeFps) {
+            this.lowFpsSeconds += seconds;
+            this.recoverySeconds = 0;
+            if (
+              this.lowFpsSeconds >= CONFIG.quality.degradeSeconds &&
+              this.tier < 4
+            ) {
+              this.tier += 1;
+              this.lowFpsSeconds = 0;
+              this.recordTransition("degrade");
+            }
+          } else if (fps > CONFIG.quality.restoreFps) {
+            this.recoverySeconds += seconds;
+            this.lowFpsSeconds = 0;
+            if (
+              this.recoverySeconds >= CONFIG.quality.restoreSeconds &&
+              this.tier > 0
+            ) {
+              this.tier -= 1;
+              this.recoverySeconds = 0;
+              this.recordTransition("restore");
+            }
+          } else {
+            this.lowFpsSeconds = 0;
+            this.recoverySeconds = 0;
+          }
+          return this.snapshot();
+        }
+
+        recordTransition(direction) {
+          const degradeActions = [
+            "reduce-ash",
+            "reduce-shadows",
+            "reduce-windows",
+            "reduce-pixel-ratio",
+          ];
+          const restoreActions = [
+            "restore-ash",
+            "restore-shadows",
+            "restore-windows",
+            "restore-pixel-ratio",
+          ];
+          const action =
+            direction === "degrade"
+              ? degradeActions[this.tier - 1]
+              : restoreActions[this.tier];
+          this.transitions.push({
+            sequence: this.transitions.length + 1,
+            direction,
+            tier: this.tier,
+            action,
+          });
+          this.applyProfile(this.tier);
+        }
+
+        snapshot() {
+          return {
+            tier: this.tier,
+            lowFpsSeconds: this.lowFpsSeconds,
+            recoverySeconds: this.recoverySeconds,
+            transitions: this.transitions.map((entry) => ({ ...entry })),
+            transitionActions: this.transitions.map((entry) => entry.action),
+          };
+        }
+      }
+
+      class Application {
+        constructor(modules) {
+          this.THREE = modules.THREE;
+          this.simplex = modules.simplex;
+          this.lifecycle = new Lifecycle();
+          this.listeners = [];
+          this.destroyed = false;
+          this.needsRender = true;
+          this.lastFrameTimeMs = 0;
+          this.accumulatorSeconds = 0;
+          this.hudElapsedSeconds = 0;
+          this.hudUpdateCount = 0;
+          this.frameCount = 0;
+          this.stepCount = 0;
+          this.elapsedFlightSeconds = 0;
+          this.pendingInputAtMs = null;
+          this.inputResponseSamples = [];
+          this.manualStepping = false;
+          this.motionQuery = matchMedia("(prefers-reduced-motion: reduce)");
+          this.reducedMotion = this.motionQuery.matches;
+          this.seed = crypto.getRandomValues(new Uint32Array(1))[0];
+          this.attemptNumber = 1;
+          this.crashCount = 0;
+          this.terrainSampler = null;
+          this.world = null;
+          this.ash = null;
+          this.currentPixelRatioCap = CONFIG.pixelRatioCap;
+          this.controls = this.createControlState();
+          this.aircraft = null;
+          this.constructRenderer();
+          this.quality = new QualityState((tier) =>
+            this.applyQualityProfile(tier),
+          );
+          this.applyQualityProfile(0);
+          this.installListeners();
+          this.lifecycle.dispatch("DEPENDENCIES_VERIFIED");
+          this.lifecycle.dispatch("START");
+          this.updateOrientationReason();
+          this.updatePresentation();
+          this.installTestFacade();
+          this.renderer.setAnimationLoop((timeMs) => this.frame(timeMs));
+        }
+
+        createControlState() {
+          return {
+            activeKeys: new Set(),
+            frame: { pitch: 0, roll: 0, throttleDelta: 0 },
+            pointerLockActive: false,
+            desktopStick: { x: 0, y: 0 },
+            touchStick: { x: 0, y: 0 },
+            throttleUpTouchIds: new Set(),
+            throttleDownTouchIds: new Set(),
+            stickTouchId: null,
+            revision: 0,
+          };
+        }
+
+        isTouchContext() {
+          return (
+            navigator.maxTouchPoints > 0 ||
+            matchMedia("(pointer: coarse)").matches
+          );
+        }
+
+        createAircraftState(
+          globalX = CONFIG.spawn.x,
+          globalZ = CONFIG.spawn.z,
+        ) {
+          const terrain = this.terrainSampler.sample(globalX, globalZ);
+          const globalY =
+            terrain.height + CONFIG.spawn.y + CONFIG.world.collisionClearance;
+          return {
+            globalPosition: {
+              x: globalX,
+              y: globalY,
+              z: globalZ,
+            },
+            previousGlobalPosition: {
+              x: globalX,
+              y: globalY,
+              z: globalZ,
+            },
+            localPosition: {
+              x: globalX - this.world.worldOrigin.x,
+              y: globalY,
+              z: globalZ - this.world.worldOrigin.z,
+            },
+            orientation: { x: 0, y: 0, z: 0, w: 1 },
+            airspeed: CONFIG.spawn.speed,
+            verticalVelocity: 0,
+            throttle: CONFIG.spawn.throttle,
+            pitchRate: 0,
+            rollRate: 0,
+            pitchAngle: 0,
+            rollAngle: 0,
+            heading: 0,
+            stallState: "normal",
+            terrainSurfaceY: terrain.height,
+            clearance: CONFIG.spawn.y,
+          };
+        }
+
+        constructRenderer() {
+          try {
+            const THREE = this.THREE;
+            this.renderer = new THREE.WebGLRenderer({
+              antialias: true,
+              alpha: false,
+              powerPreference: "high-performance",
+            });
+            this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+            this.renderer.shadowMap.enabled = true;
+            this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            this.renderer.setPixelRatio(
+              Math.min(devicePixelRatio || 1, CONFIG.pixelRatioCap),
+            );
+            this.renderer.domElement.id = "flight-canvas";
+            this.renderer.domElement.tabIndex = 0;
+            this.renderer.domElement.setAttribute("role", "img");
+            this.renderer.domElement.setAttribute(
+              "aria-label",
+              "Wasteland flight view",
+            );
+            this.renderer.domElement.setAttribute(
+              "aria-describedby",
+              "canvas-description",
+            );
+            elements.sceneRoot.append(this.renderer.domElement);
+
+            this.scene = new THREE.Scene();
+            this.scene.background = new THREE.Color("#3d2817");
+            this.scene.fog = new THREE.Fog(
+              "#3d2817",
+              250,
+              CONFIG.world.terrainFar,
+            );
+            this.camera = new THREE.PerspectiveCamera(62, 1, 0.5, 4_500);
+            this.camera.position.set(0, 168, 26);
+            this.camera.lookAt(0, 160, -40);
+
+            this.ambientLight = new THREE.AmbientLight(0xff9a58, 0.72);
+            this.sunLight = new THREE.DirectionalLight(0xff7028, 1.65);
+            this.sunLight.position.set(-280, 520, 180);
+            this.sunLight.castShadow = true;
+            this.sunLight.shadow.mapSize.set(2_048, 2_048);
+            this.sunLight.shadow.camera.left = -700;
+            this.sunLight.shadow.camera.right = 700;
+            this.sunLight.shadow.camera.top = 700;
+            this.sunLight.shadow.camera.bottom = -700;
+            this.sunLight.shadow.camera.near = 20;
+            this.sunLight.shadow.camera.far = 1_500;
+            this.sunLight.shadow.bias = -0.00035;
+            this.scene.add(this.ambientLight, this.sunLight);
+
+            this.world = new ProceduralWorld(
+              THREE,
+              this.simplex,
+              this.seed,
+              this.scene,
+            );
+            this.terrainSampler = this.world;
+            this.aircraft = this.createAircraftState();
+
+            this.gliderMesh = this.buildGliderMesh();
+            this.gliderMesh.position.set(
+              this.aircraft.localPosition.x,
+              this.aircraft.localPosition.y,
+              this.aircraft.localPosition.z,
+            );
+            this.scene.add(this.gliderMesh);
+            this.ash = new AshField(THREE, this.scene, this.seed);
+            this.rotationEuler = new THREE.Euler(0, 0, 0, "YXZ");
+            this.rotationQuaternion = new THREE.Quaternion();
+            this.cameraTarget = new THREE.Vector3();
+            this.cameraLookTarget = new THREE.Vector3();
+            this.updateCamera();
+            this.resize();
+            this.sceneObjectBudget = this.scene.children.length + 2;
+          } catch {
+            throw new ControlledFailure("WEBGL2_UNAVAILABLE");
+          }
+        }
+
+        buildGliderMesh() {
+          const THREE = this.THREE;
+          const positions = [];
+          const colors = [];
+          const indices = [];
+          const color = (hex) => [
+            ((hex >> 16) & 255) / 255,
+            ((hex >> 8) & 255) / 255,
+            (hex & 255) / 255,
+          ];
+          const addVertex = (x, y, z, hex) => {
+            positions.push(x, y, z);
+            colors.push(...color(hex));
+            return positions.length / 3 - 1;
+          };
+          const addTriangle = (a, b, c, hex) => {
+            const base = positions.length / 3;
+            addVertex(a[0], a[1], a[2], hex);
+            addVertex(b[0], b[1], b[2], hex);
+            addVertex(c[0], c[1], c[2], hex);
+            indices.push(base, base + 1, base + 2);
+          };
+          const addBox = (cx, cy, cz, sx, sy, sz, hex) => {
+            const base = positions.length / 3;
+            for (const [x, y, z] of [
+              [-1, -1, -1],
+              [1, -1, -1],
+              [1, 1, -1],
+              [-1, 1, -1],
+              [-1, -1, 1],
+              [1, -1, 1],
+              [1, 1, 1],
+              [-1, 1, 1],
+            ]) {
+              addVertex(
+                cx + (x * sx) / 2,
+                cy + (y * sy) / 2,
+                cz + (z * sz) / 2,
+                hex,
+              );
+            }
+            for (const face of [
+              [0, 1, 2, 0, 2, 3],
+              [5, 4, 7, 5, 7, 6],
+              [4, 0, 3, 4, 3, 7],
+              [1, 5, 6, 1, 6, 2],
+              [3, 2, 6, 3, 6, 7],
+              [4, 5, 1, 4, 1, 0],
+            ]) {
+              indices.push(...face.map((value) => base + value));
+            }
+          };
+          const addPipe = (x, y, startZ, endZ, radius, hex) => {
+            const base = positions.length / 3;
+            const sides = 8;
+            for (const z of [startZ, endZ]) {
+              for (let side = 0; side < sides; side += 1) {
+                const angle = (side / sides) * Math.PI * 2;
+                addVertex(
+                  x + Math.cos(angle) * radius,
+                  y + Math.sin(angle) * radius,
+                  z,
+                  hex,
+                );
+              }
+            }
+            for (let side = 0; side < sides; side += 1) {
+              const next = (side + 1) % sides;
+              indices.push(
+                base + side,
+                base + next,
+                base + sides + next,
+                base + side,
+                base + sides + next,
+                base + sides + side,
+              );
+            }
+          };
+
+          addBox(0, 0, 0, 2.3, 1.25, 8.5, 0x8b4a2d);
+          addBox(0, 0.15, -4.8, 1.35, 0.85, 2.1, 0x5f3025);
+          addBox(0, 0.22, 3.7, 1.8, 0.65, 1.2, 0xb26a3a);
+          addPipe(-1.25, 0.15, -3.8, 2.8, 0.18, 0x282422);
+          addPipe(1.25, 0.15, -3.4, 3.1, 0.18, 0x302a27);
+
+          const leftRootFront = [-0.8, 0.05, -2.6];
+          const leftRootBack = [-0.8, 0.05, 2.8];
+          const leftTipFront = [-8.8, -0.05, -0.9];
+          const leftTear = [-7.2, 0.02, 0.5];
+          const leftTipBack = [-6.1, -0.02, 3.7];
+          addTriangle(leftRootFront, leftTipFront, leftTear, 0x9b5734);
+          addTriangle(leftRootFront, leftTear, leftRootBack, 0x74402e);
+          addTriangle(leftRootBack, leftTear, leftTipBack, 0xb06b42);
+
+          const rightRootFront = [0.8, 0.05, -2.6];
+          const rightRootBack = [0.8, 0.05, 2.8];
+          const rightTipFront = [8.2, -0.03, -1.4];
+          const rightNotch = [6.4, 0.03, 0.15];
+          const rightTear = [7.7, -0.06, 1.25];
+          const rightTipBack = [5.4, 0.01, 3.45];
+          addTriangle(rightRootFront, rightNotch, rightTipFront, 0x9c5d3d);
+          addTriangle(rightRootFront, rightRootBack, rightNotch, 0x6c3a2b);
+          addTriangle(rightRootBack, rightTear, rightNotch, 0xa8663d);
+          addTriangle(rightRootBack, rightTipBack, rightTear, 0x784331);
+
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(new Float32Array(positions), 3),
+          );
+          geometry.setAttribute(
+            "color",
+            new THREE.BufferAttribute(new Float32Array(colors), 3),
+          );
+          geometry.setIndex(indices);
+          geometry.computeVertexNormals();
+          geometry.computeBoundingSphere();
+          const material = new THREE.MeshStandardMaterial({
+            vertexColors: true,
+            roughness: 0.82,
+            metalness: 0.36,
+            side: THREE.DoubleSide,
+          });
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          mesh.userData.parts = Object.freeze([
+            "scrap-metal body",
+            "left exposed pipe support",
+            "right exposed pipe support",
+            "asymmetrically tattered left wing",
+            "asymmetrically tattered right wing",
+          ]);
+          return mesh;
+        }
+
+        own(target, type, handler, options) {
+          target.addEventListener(type, handler, options);
+          this.listeners.push(() =>
+            target.removeEventListener(type, handler, options),
+          );
+        }
+
+        installListeners() {
+          this.own(window, "resize", () => {
+            this.resize();
+            this.updateOrientationReason();
+          });
+          this.own(window, "blur", () => this.dispatchLifecycle("FOCUS_LOST"));
+          this.own(window, "focus", () =>
+            this.dispatchLifecycle("FOCUS_READY"),
+          );
+          this.own(document, "visibilitychange", () => {
+            this.dispatchLifecycle(
+              document.hidden ? "FOCUS_LOST" : "FOCUS_READY",
+            );
+          });
+          this.own(this.motionQuery, "change", (event) => {
+            this.reducedMotion = event.matches;
+            this.applyQualityProfile(this.quality.tier);
+            this.updateCamera();
+            this.updatePresentation();
+          });
+          this.own(this.renderer.domElement, "webglcontextlost", (event) => {
+            event.preventDefault();
+            this.lifecycle.dispatch("WEBGL_FAILED");
+            this.clearInput();
+            this.updatePresentation();
+          });
+          this.own(window, "keydown", (event) => this.onKeyDown(event));
+          this.own(window, "keyup", (event) => this.onKeyUp(event));
+          this.own(this.renderer.domElement, "click", () =>
+            this.activatePointerControl(),
+          );
+          this.own(document, "pointerlockchange", () => {
+            this.controls.pointerLockActive =
+              document.pointerLockElement === this.renderer.domElement;
+            if (!this.controls.pointerLockActive) {
+              this.controls.desktopStick.x = 0;
+              this.controls.desktopStick.y = 0;
+            }
+            elements.pointerStatus.textContent = this.controls.pointerLockActive
+              ? " Pointer control is active; Escape releases it."
+              : " Pointer control is centered and inactive.";
+            this.updateControlFrame();
+          });
+          this.own(document, "mousemove", (event) => this.onPointerMove(event));
+          for (const type of [
+            "pointerdown",
+            "pointermove",
+            "pointerup",
+            "pointercancel",
+            "lostpointercapture",
+          ]) {
+            this.own(elements.touchStick, type, (event) =>
+              this.onTouchStick(event),
+            );
+          }
+          for (const [button, ownership] of [
+            [elements.throttleUp, this.controls.throttleUpTouchIds],
+            [elements.throttleDown, this.controls.throttleDownTouchIds],
+          ]) {
+            this.own(button, "pointerdown", (event) =>
+              this.onThrottlePointer(event, ownership, true),
+            );
+            this.own(button, "pointerup", (event) =>
+              this.onThrottlePointer(event, ownership, false),
+            );
+            this.own(button, "pointercancel", (event) =>
+              this.onThrottlePointer(event, ownership, false),
+            );
+            this.own(button, "lostpointercapture", (event) =>
+              this.onThrottlePointer(event, ownership, false),
+            );
+          }
+          this.own(elements.pauseButton, "click", () =>
+            this.dispatchLifecycle("PAUSE"),
+          );
+          this.own(elements.resumeButton, "click", () =>
+            this.dispatchLifecycle("RESUME"),
+          );
+          this.own(elements.restartButton, "click", () => this.restart());
+        }
+
+        onKeyDown(event) {
+          const accepted = new Set([
+            "KeyW",
+            "KeyS",
+            "ShiftLeft",
+            "ShiftRight",
+            "ControlLeft",
+            "ControlRight",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+          ]);
+          if (event.code === "KeyP") {
+            event.preventDefault();
+            this.dispatchLifecycle(
+              this.lifecycle.phase === "paused" ? "RESUME" : "PAUSE",
+            );
+            return;
+          }
+          if (event.code === "Escape" && this.controls.pointerLockActive) {
+            event.preventDefault();
+            this.controls.pointerLockActive = false;
+            this.controls.desktopStick.x = 0;
+            this.controls.desktopStick.y = 0;
+            document.exitPointerLock?.();
+            elements.pointerStatus.textContent =
+              " Pointer control is centered and inactive.";
+            this.updateControlFrame();
+            return;
+          }
+          if (event.code === "KeyR" && this.lifecycle.phase === "crashed") {
+            event.preventDefault();
+            this.restart();
+            return;
+          }
+          if (!accepted.has(event.code) || this.lifecycle.phase !== "flying")
+            return;
+          event.preventDefault();
+          this.controls.activeKeys.add(event.code);
+          this.updateControlFrame();
+        }
+
+        onKeyUp(event) {
+          if (this.controls.activeKeys.delete(event.code))
+            this.updateControlFrame();
+        }
+
+        activatePointerControl() {
+          if (this.lifecycle.phase !== "flying") return;
+          this.controls.pointerLockActive = true;
+          elements.pointerStatus.textContent =
+            " Pointer control is active; Escape releases it.";
+          this.updateControlFrame();
+          const request = this.renderer.domElement.requestPointerLock?.();
+          request?.catch?.(() => {});
+        }
+
+        onPointerMove(event) {
+          if (
+            !this.controls.pointerLockActive ||
+            this.lifecycle.phase !== "flying"
+          )
+            return;
+          this.controls.desktopStick.x = Math.max(
+            -1,
+            Math.min(1, this.controls.desktopStick.x + event.movementX / 240),
+          );
+          this.controls.desktopStick.y = Math.max(
+            -1,
+            Math.min(1, this.controls.desktopStick.y + event.movementY / 240),
+          );
+          this.updateControlFrame();
+        }
+
+        onTouchStick(event) {
+          if (event.pointerType !== "touch") return;
+          if (event.type === "pointerdown") {
+            if (
+              this.lifecycle.phase !== "flying" ||
+              this.controls.stickTouchId !== null
+            )
+              return;
+            this.controls.stickTouchId = event.pointerId;
+            try {
+              elements.touchStick.setPointerCapture(event.pointerId);
+            } catch {
+              // Synthetic test pointers and cancelled browser pointers may not be capturable.
+            }
+          }
+          if (event.pointerId !== this.controls.stickTouchId) return;
+          event.preventDefault();
+          if (
+            ["pointerup", "pointercancel", "lostpointercapture"].includes(
+              event.type,
+            )
+          ) {
+            this.controls.stickTouchId = null;
+            this.controls.touchStick.x = 0;
+            this.controls.touchStick.y = 0;
+            elements.touchKnob.style.transform = "translate(-50%, -50%)";
+          } else {
+            const bounds = elements.touchStick.getBoundingClientRect();
+            const radius = Math.max(
+              1,
+              Math.min(bounds.width, bounds.height) / 2,
+            );
+            const x =
+              (event.clientX - (bounds.left + bounds.width / 2)) / radius;
+            const y =
+              (event.clientY - (bounds.top + bounds.height / 2)) / radius;
+            const magnitude = Math.hypot(x, y);
+            const scale = magnitude > 1 ? 1 / magnitude : 1;
+            this.controls.touchStick.x = x * scale;
+            this.controls.touchStick.y = y * scale;
+            elements.touchKnob.style.transform = `translate(calc(-50% + ${this.controls.touchStick.x * radius * 0.62}px), calc(-50% + ${this.controls.touchStick.y * radius * 0.62}px))`;
+          }
+          this.updateControlFrame();
+        }
+
+        onThrottlePointer(event, ownership, pressed) {
+          if (event.pointerType !== "touch") return;
+          event.preventDefault();
+          if (pressed && this.lifecycle.phase === "flying") {
+            ownership.add(event.pointerId);
+            try {
+              event.currentTarget.setPointerCapture(event.pointerId);
+            } catch {
+              // A cancelled or synthetic pointer has no capture target.
+            }
+          } else {
+            ownership.delete(event.pointerId);
+          }
+          this.updateControlFrame();
+        }
+
+        updateControlFrame() {
+          const keys = this.controls.activeKeys;
+          const axis = (positive, negative) =>
+            Number(positive) - Number(negative);
+          const keyboardPitch = axis(
+            keys.has("ArrowUp"),
+            keys.has("ArrowDown"),
+          );
+          const keyboardRoll = axis(
+            keys.has("ArrowRight"),
+            keys.has("ArrowLeft"),
+          );
+          const keyboardThrottle = axis(
+            keys.has("KeyW") || keys.has("ShiftLeft") || keys.has("ShiftRight"),
+            keys.has("KeyS") ||
+              keys.has("ControlLeft") ||
+              keys.has("ControlRight"),
+          );
+          const pointerPitch = this.controls.pointerLockActive
+            ? -this.controls.desktopStick.y
+            : 0;
+          const pointerRoll = this.controls.pointerLockActive
+            ? this.controls.desktopStick.x
+            : 0;
+          const touchThrottle = axis(
+            this.controls.throttleUpTouchIds.size > 0,
+            this.controls.throttleDownTouchIds.size > 0,
+          );
+          this.controls.frame.pitch = Math.max(
+            -1,
+            Math.min(
+              1,
+              keyboardPitch + pointerPitch - this.controls.touchStick.y,
+            ),
+          );
+          this.controls.frame.roll = Math.max(
+            -1,
+            Math.min(
+              1,
+              keyboardRoll + pointerRoll + this.controls.touchStick.x,
+            ),
+          );
+          this.controls.frame.throttleDelta = Math.max(
+            -1,
+            Math.min(1, keyboardThrottle + touchThrottle),
+          );
+          this.controls.revision += 1;
+          this.pendingInputAtMs = performance.now();
+          this.needsRender = true;
+        }
+
+        clearInput() {
+          this.controls.activeKeys.clear();
+          this.controls.frame.pitch = 0;
+          this.controls.frame.roll = 0;
+          this.controls.frame.throttleDelta = 0;
+          this.controls.desktopStick.x = 0;
+          this.controls.desktopStick.y = 0;
+          this.controls.touchStick.x = 0;
+          this.controls.touchStick.y = 0;
+          this.controls.throttleUpTouchIds.clear();
+          this.controls.throttleDownTouchIds.clear();
+          this.controls.stickTouchId = null;
+          this.controls.pointerLockActive = false;
+          if (document.pointerLockElement === this.renderer.domElement) {
+            document.exitPointerLock?.();
+          }
+          elements.touchKnob.style.transform = "translate(-50%, -50%)";
+          elements.pointerStatus.textContent =
+            " Pointer control is centered and inactive.";
+          this.controls.revision += 1;
+          this.accumulatorSeconds = 0;
+        }
+
+        dispatchLifecycle(event) {
+          const changed = this.lifecycle.dispatch(event);
+          if (changed && event === "TERRAIN_CRASH") this.crashCount += 1;
+          if (
+            [
+              "PAUSE",
+              "FOCUS_LOST",
+              "PORTRAIT_ENTERED",
+              "TERRAIN_CRASH",
+            ].includes(event)
+          ) {
+            this.clearInput();
+          }
+          if (changed) {
+            this.lastFrameTimeMs = 0;
+            this.needsRender = true;
+            this.updatePresentation();
+          }
+          return changed;
+        }
+
+        restart() {
+          if (this.lifecycle.phase !== "crashed") return;
+          this.attemptNumber += 1;
+          this.aircraft = this.createAircraftState();
+          this.clearInput();
+          this.lifecycle.dispatch("RESTART");
+          this.lastFrameTimeMs = 0;
+          this.hudElapsedSeconds = CONFIG.hudIntervalSeconds;
+          this.gliderMesh.position.set(
+            this.aircraft.localPosition.x,
+            this.aircraft.localPosition.y,
+            this.aircraft.localPosition.z,
+          );
+          this.gliderMesh.quaternion.set(0, 0, 0, 1);
+          this.ash.reset(this.seed, this.aircraft.localPosition);
+          this.updateCamera();
+          this.updatePresentation();
+          this.updateHud();
+          this.renderer.domElement.focus();
+        }
+
+        updateOrientationReason() {
+          const portrait = this.isTouchContext() && innerHeight > innerWidth;
+          if (portrait) this.dispatchLifecycle("PORTRAIT_ENTERED");
+          else this.dispatchLifecycle("LANDSCAPE_READY");
+        }
+
+        applyQualityProfile(tier) {
+          if (!this.renderer || !this.world || !this.ash || !this.sunLight) {
+            return;
+          }
+          const ashCount = Math.floor(
+            CONFIG.ash.maximumCount *
+              (this.reducedMotion ? 0.5 : 1) *
+              (tier >= 1 ? 0.5 : 1),
+          );
+          const shadowSize = tier >= 2 ? 1_024 : 2_048;
+          const windowDensity = tier >= 3 ? 0.5 : 1;
+          this.currentPixelRatioCap = tier >= 4 ? 1 : CONFIG.pixelRatioCap;
+          this.ash.setProfile(
+            ashCount,
+            this.reducedMotion || tier >= 1
+              ? CONFIG.ash.reducedDrift
+              : CONFIG.ash.fullDrift,
+          );
+          if (
+            this.sunLight.shadow.mapSize.x !== shadowSize ||
+            this.sunLight.shadow.mapSize.y !== shadowSize
+          ) {
+            this.sunLight.shadow.map?.dispose();
+            this.sunLight.shadow.map = null;
+            this.sunLight.shadow.mapSize.set(shadowSize, shadowSize);
+          }
+          const shadowExtent = tier >= 2 ? 430 : 700;
+          this.sunLight.shadow.camera.left = -shadowExtent;
+          this.sunLight.shadow.camera.right = shadowExtent;
+          this.sunLight.shadow.camera.top = shadowExtent;
+          this.sunLight.shadow.camera.bottom = -shadowExtent;
+          this.sunLight.shadow.camera.updateProjectionMatrix();
+          this.world.setWindowDensity(windowDensity);
+          this.resize();
+          this.needsRender = true;
+        }
+
+        resize() {
+          if (!this.renderer) return;
+          const width = Math.max(
+            1,
+            elements.sceneRoot.clientWidth || innerWidth,
+          );
+          const height = Math.max(
+            1,
+            elements.sceneRoot.clientHeight || innerHeight,
+          );
+          this.camera.aspect = width / height;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setPixelRatio(
+            Math.min(devicePixelRatio || 1, this.currentPixelRatioCap),
+          );
+          this.renderer.setSize(width, height, false);
+          this.needsRender = true;
+        }
+
+        findTerrainImpact(state) {
+          const sampleCount = 4;
+          const clearance = CONFIG.world.collisionClearance;
+          let safeFraction = 0;
+          for (let index = 1; index <= sampleCount; index += 1) {
+            const fraction = index / sampleCount;
+            const globalX =
+              state.previousGlobalPosition.x +
+              (state.globalPosition.x - state.previousGlobalPosition.x) *
+                fraction;
+            const globalY =
+              state.previousGlobalPosition.y +
+              (state.globalPosition.y - state.previousGlobalPosition.y) *
+                fraction;
+            const globalZ =
+              state.previousGlobalPosition.z +
+              (state.globalPosition.z - state.previousGlobalPosition.z) *
+                fraction;
+            const terrain = this.terrainSampler.sample(globalX, globalZ);
+            if (globalY <= terrain.height + clearance) {
+              let lower = safeFraction;
+              let upper = fraction;
+              let impact = { globalX, globalZ, terrain };
+              for (let refinement = 0; refinement < 8; refinement += 1) {
+                const candidate = (lower + upper) / 2;
+                const candidateX =
+                  state.previousGlobalPosition.x +
+                  (state.globalPosition.x - state.previousGlobalPosition.x) *
+                    candidate;
+                const candidateY =
+                  state.previousGlobalPosition.y +
+                  (state.globalPosition.y - state.previousGlobalPosition.y) *
+                    candidate;
+                const candidateZ =
+                  state.previousGlobalPosition.z +
+                  (state.globalPosition.z - state.previousGlobalPosition.z) *
+                    candidate;
+                const candidateTerrain = this.terrainSampler.sample(
+                  candidateX,
+                  candidateZ,
+                );
+                if (candidateY <= candidateTerrain.height + clearance) {
+                  upper = candidate;
+                  impact = {
+                    globalX: candidateX,
+                    globalZ: candidateZ,
+                    terrain: candidateTerrain,
+                  };
+                } else {
+                  lower = candidate;
+                }
+              }
+              return impact;
+            }
+            safeFraction = fraction;
+          }
+          return null;
+        }
+
+        fixedStep(controlFrame = this.controls.frame) {
+          if (this.lifecycle.phase !== "flying") return;
+          const pitch = Math.max(-1, Math.min(1, controlFrame.pitch));
+          const roll = Math.max(-1, Math.min(1, controlFrame.roll));
+          const throttleDelta = Math.max(
+            -1,
+            Math.min(1, controlFrame.throttleDelta),
+          );
+          this.controls.frame.pitch = pitch;
+          this.controls.frame.roll = roll;
+          this.controls.frame.throttleDelta = throttleDelta;
+          const state = this.aircraft;
+          const flight = CONFIG.flight;
+          const step = CONFIG.fixedStep;
+          state.previousGlobalPosition.x = state.globalPosition.x;
+          state.previousGlobalPosition.y = state.globalPosition.y;
+          state.previousGlobalPosition.z = state.globalPosition.z;
+          state.throttle = Math.max(
+            0,
+            Math.min(
+              1,
+              state.throttle + throttleDelta * step * flight.throttleRate,
+            ),
+          );
+
+          const thrust = state.throttle * flight.thrustAcceleration;
+          const drag = flight.dragCoefficient * state.airspeed * state.airspeed;
+          state.airspeed = Math.max(
+            CONFIG.speed.minimum,
+            Math.min(
+              CONFIG.speed.maximum,
+              state.airspeed + (thrust - drag) * step,
+            ),
+          );
+
+          state.pitchRate =
+            Math.abs(pitch) > 1e-6
+              ? pitch * flight.maximumPitchRate
+              : -state.pitchAngle * flight.selfLevelPitch;
+          state.rollRate =
+            Math.abs(roll) > 1e-6
+              ? roll * flight.maximumRollRate
+              : -state.rollAngle * flight.selfLevelRoll;
+
+          if (state.airspeed < flight.stallEntrySpeed) {
+            state.stallState = "stalled";
+          } else if (
+            state.stallState === "stalled" &&
+            state.airspeed >= flight.stallRecoverySpeed &&
+            state.pitchAngle < -0.04
+          ) {
+            state.stallState = "recovering";
+          } else if (
+            state.stallState === "recovering" &&
+            state.airspeed >= flight.stallRecoverySpeed + 2
+          ) {
+            state.stallState = "normal";
+          }
+          if (state.stallState === "stalled") {
+            state.pitchRate -= flight.stallNoseDownRate;
+          }
+
+          state.pitchAngle = Math.max(
+            -flight.maximumPitchAngle,
+            Math.min(
+              flight.maximumPitchAngle,
+              state.pitchAngle + state.pitchRate * step,
+            ),
+          );
+          state.rollAngle = Math.max(
+            -flight.maximumRollAngle,
+            Math.min(
+              flight.maximumRollAngle,
+              state.rollAngle + state.rollRate * step,
+            ),
+          );
+          state.heading +=
+            Math.sin(state.rollAngle) * flight.bankTurnRate * step;
+
+          const stallLift =
+            state.stallState === "stalled"
+              ? flight.stallLiftFactor
+              : state.stallState === "recovering"
+                ? 0.68
+                : 1;
+          const lift =
+            flight.liftCoefficient *
+            state.airspeed *
+            state.airspeed *
+            stallLift *
+            Math.max(0.2, Math.cos(state.rollAngle)) *
+            Math.max(0.2, Math.cos(state.pitchAngle));
+          const pitchLift =
+            Math.sin(state.pitchAngle) *
+            state.airspeed *
+            flight.pitchLiftCoupling;
+          state.verticalVelocity = Math.max(
+            -flight.maximumVerticalSpeed,
+            Math.min(
+              flight.maximumVerticalSpeed,
+              state.verticalVelocity +
+                (lift + pitchLift - flight.gravity) * step,
+            ),
+          );
+          const horizontalSpeed = state.airspeed * Math.cos(state.pitchAngle);
+          state.globalPosition.x +=
+            Math.sin(state.heading) * horizontalSpeed * step;
+          state.globalPosition.z -=
+            Math.cos(state.heading) * horizontalSpeed * step;
+          state.globalPosition.y = Math.max(
+            -1_000,
+            Math.min(
+              5_000,
+              state.globalPosition.y + state.verticalVelocity * step,
+            ),
+          );
+
+          const impact = this.findTerrainImpact(state);
+          const terrain = impact
+            ? impact.terrain
+            : this.terrainSampler.sample(
+                state.globalPosition.x,
+                state.globalPosition.z,
+              );
+          if (impact) {
+            state.globalPosition.x = impact.globalX;
+            state.globalPosition.z = impact.globalZ;
+            state.globalPosition.y =
+              terrain.height + CONFIG.world.collisionClearance;
+            state.airspeed = 0;
+            state.verticalVelocity = 0;
+            state.pitchRate = 0;
+            state.rollRate = 0;
+            state.terrainSurfaceY = terrain.height;
+            state.clearance = 0;
+          } else {
+            state.terrainSurfaceY = terrain.height;
+            state.clearance =
+              state.globalPosition.y -
+              state.terrainSurfaceY -
+              CONFIG.world.collisionClearance;
+          }
+
+          const rebased = this.world.maybeRebase(
+            state.globalPosition.x,
+            state.globalPosition.z,
+          );
+          state.localPosition.x =
+            state.globalPosition.x - this.world.worldOrigin.x;
+          state.localPosition.y = state.globalPosition.y;
+          state.localPosition.z =
+            state.globalPosition.z - this.world.worldOrigin.z;
+          const renderHeading = state.heading === 0 ? 0 : -state.heading;
+          this.rotationEuler.set(
+            state.pitchAngle,
+            renderHeading,
+            -state.rollAngle,
+            "YXZ",
+          );
+          this.rotationQuaternion.setFromEuler(this.rotationEuler).normalize();
+          state.orientation.x = this.rotationQuaternion.x;
+          state.orientation.y = this.rotationQuaternion.y;
+          state.orientation.z = this.rotationQuaternion.z;
+          state.orientation.w = this.rotationQuaternion.w;
+          this.gliderMesh.position.set(
+            state.localPosition.x,
+            state.localPosition.y,
+            state.localPosition.z,
+          );
+          this.gliderMesh.quaternion.copy(this.rotationQuaternion);
+          this.ash.update(state.localPosition, step);
+          const shadowSnap = 12;
+          const shadowX =
+            Math.round(state.localPosition.x / shadowSnap) * shadowSnap;
+          const shadowZ =
+            Math.round(state.localPosition.z / shadowSnap) * shadowSnap;
+          this.sunLight.position.set(shadowX - 280, 520, shadowZ + 180);
+          this.sunLight.target.position.set(shadowX, 0, shadowZ);
+          if (!this.sunLight.target.parent)
+            this.scene.add(this.sunLight.target);
+          this.updateCamera();
+          if (impact) this.dispatchLifecycle("TERRAIN_CRASH");
+
+          if (
+            !Number.isFinite(state.globalPosition.x) ||
+            !Number.isFinite(state.globalPosition.y) ||
+            !Number.isFinite(state.globalPosition.z) ||
+            !Number.isFinite(state.airspeed) ||
+            !Number.isFinite(state.verticalVelocity) ||
+            !Number.isFinite(state.orientation.w)
+          ) {
+            throw new Error("non-finite flight state");
+          }
+          this.elapsedFlightSeconds += step;
+          this.stepCount += 1;
+          this.hudElapsedSeconds += step;
+          this.needsRender = true;
+        }
+
+        updateCamera() {
+          const state = this.aircraft;
+          const camera = CONFIG.camera;
+          this.cameraTarget
+            .set(0, camera.height, camera.distance)
+            .applyQuaternion(state.orientation)
+            .add(this.gliderMesh.position);
+          this.camera.position.copy(this.cameraTarget);
+          this.cameraLookTarget
+            .set(0, 0, -camera.lookAhead)
+            .applyQuaternion(state.orientation)
+            .add(this.gliderMesh.position);
+          this.camera.up
+            .set(0, 1, 0)
+            .applyQuaternion(state.orientation)
+            .normalize();
+          this.camera.lookAt(this.cameraLookTarget);
+        }
+
+        frame(timeMs) {
+          if (this.destroyed) return;
+          const active =
+            this.lifecycle.phase === "flying" && !this.manualStepping;
+          if (!this.lastFrameTimeMs) this.lastFrameTimeMs = timeMs;
+          const elapsed = Math.min(
+            0.25,
+            Math.max(0, (timeMs - this.lastFrameTimeMs) / 1_000),
+          );
+          this.lastFrameTimeMs = timeMs;
+          if (active) {
+            this.accumulatorSeconds = Math.min(
+              this.accumulatorSeconds + elapsed,
+              CONFIG.fixedStep * CONFIG.maxCatchUpSteps,
+            );
+            let steps = 0;
+            while (
+              this.accumulatorSeconds >= CONFIG.fixedStep &&
+              steps < CONFIG.maxCatchUpSteps
+            ) {
+              this.fixedStep();
+              this.accumulatorSeconds -= CONFIG.fixedStep;
+              steps += 1;
+            }
+          }
+          if (this.hudElapsedSeconds >= CONFIG.hudIntervalSeconds) {
+            this.updateHud();
+            this.hudElapsedSeconds %= CONFIG.hudIntervalSeconds;
+          }
+          if (this.lifecycle.phase === "flying" || this.needsRender) {
+            this.renderer.render(this.scene, this.camera);
+            this.frameCount += 1;
+            this.needsRender = false;
+            if (this.pendingInputAtMs !== null) {
+              this.inputResponseSamples.push(
+                Math.max(0, performance.now() - this.pendingInputAtMs),
+              );
+              if (this.inputResponseSamples.length > 512) {
+                this.inputResponseSamples.shift();
+              }
+              this.pendingInputAtMs = null;
+            }
+          }
+        }
+
+        updateHud() {
+          const state = this.aircraft;
+          const phase = this.lifecycle.phase;
+          const lifecycleLabels = {
+            loading: "Loading flight systems",
+            ready: "Flight ready",
+            flying: "Flight active",
+            paused: "Flight paused",
+            crashed: "Terrain impact. Flight stopped.",
+            error: "Flight systems unavailable",
+          };
+          const primaryActions = {
+            paused: "resume",
+            crashed: "restart",
+            error: "retry",
+          };
+          this.hudUpdateCount += 1;
+          this.hudSnapshot = {
+            speedKph: Math.round(state.airspeed * 3.6),
+            altitudeMeters: Math.round(state.clearance),
+            coordinateX: Math.round(state.globalPosition.x),
+            coordinateY: Math.round(state.globalPosition.y),
+            coordinateZ: Math.round(state.globalPosition.z),
+            lifecycleLabel: lifecycleLabels[phase] ?? "Flight unavailable",
+            primaryAction: primaryActions[phase] ?? "none",
+            controlMode: this.isTouchContext()
+              ? "touch"
+              : this.controls.pointerLockActive
+                ? "pointer"
+                : "keyboard",
+            orientationPrompt:
+              phase === "paused" &&
+              this.lifecycle.pauseReasons.has("orientation"),
+            updateCount: this.hudUpdateCount,
+          };
+          elements.hudSpeed.textContent = `${this.hudSnapshot.speedKph} km/h`;
+          elements.hudAltitude.textContent = `${this.hudSnapshot.altitudeMeters} m`;
+          elements.hudCoordinates.textContent = `X ${this.hudSnapshot.coordinateX} · Y ${this.hudSnapshot.coordinateY} · Z ${this.hudSnapshot.coordinateZ} m`;
+        }
+
+        updateControlGuidance() {
+          const touchMode = this.isTouchContext();
+          elements.legendCopy.textContent = touchMode
+            ? "Drag the joystick to pitch and roll · Hold Throttle + or Throttle − to change speed · Pause, Resume, and Restart use the labeled buttons."
+            : "W/Shift throttle up · S/Ctrl throttle down · Arrow keys pitch and roll · P pause · Select the flight view for pointer control · Escape releases it.";
+          elements.pointerStatus.textContent = touchMode
+            ? " Touch controls are centered and ready."
+            : this.controls.pointerLockActive
+              ? " Pointer control is active; Escape releases it."
+              : " Pointer control is centered and inactive.";
+        }
+
+        updatePresentation() {
+          const phase = this.lifecycle.phase;
+          elements.root.dataset.phase = phase;
+          elements.loading.hidden = phase !== "loading";
+          elements.errorOverlay.hidden = phase !== "error";
+          elements.crashOverlay.hidden = phase !== "crashed";
+          const orientationPaused =
+            phase === "paused" &&
+            this.lifecycle.pauseReasons.has("orientation");
+          elements.rotateOverlay.hidden = !orientationPaused;
+          elements.pauseOverlay.hidden =
+            phase !== "paused" || orientationPaused;
+          elements.sceneRoot.hidden = ["loading", "error"].includes(phase);
+          elements.hud.hidden =
+            orientationPaused || ["loading", "error"].includes(phase);
+          elements.legend.hidden =
+            orientationPaused ||
+            ["loading", "error", "crashed"].includes(phase);
+          elements.pauseButton.hidden = phase !== "flying";
+          elements.touchControls.hidden = phase !== "flying";
+          elements.pauseButton.disabled = phase !== "flying";
+          elements.throttleUp.disabled = phase !== "flying";
+          elements.throttleDown.disabled = phase !== "flying";
+          elements.touchStick.setAttribute(
+            "aria-disabled",
+            String(phase !== "flying"),
+          );
+          this.renderer.domElement.setAttribute(
+            "aria-disabled",
+            String(phase !== "flying"),
+          );
+          this.renderer.domElement.tabIndex = phase === "flying" ? 0 : -1;
+          if (phase === "paused") {
+            const reasons = [...this.lifecycle.pauseReasons];
+            elements.pauseMessage.textContent = reasons.includes("focus")
+              ? "Window focus was lost. Controls are neutral; return here and choose Resume."
+              : "Controls are neutral. Resume when ready.";
+          }
+          elements.liveStatus.textContent =
+            phase === "flying"
+              ? "Flight active"
+              : phase === "crashed"
+                ? "Terrain impact. Flight stopped."
+                : phase === "paused"
+                  ? "Flight paused."
+                  : "";
+          this.updateControlGuidance();
+          this.updateHud();
+          if (phase === "crashed") elements.restartButton.focus();
+          else if (phase === "paused" && !orientationPaused)
+            elements.resumeButton.focus();
+          else if (phase === "flying") this.renderer.domElement.focus();
+        }
+
+        resetTest(seed) {
+          if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) {
+            throw new TypeError("seed must be an unsigned 32-bit integer");
+          }
+          this.seed = seed >>> 0;
+          this.attemptNumber = 1;
+          this.crashCount = 0;
+          this.elapsedFlightSeconds = 0;
+          this.stepCount = 0;
+          this.hudUpdateCount = 0;
+          this.manualStepping = true;
+          this.world.reset(this.seed);
+          this.quality.reset();
+          const originFixture = this.seed === 0x7f4a7c15;
+          const spawnX = originFixture
+            ? CONFIG.world.originRebaseMeters - 20
+            : 0;
+          this.world.updateForPosition(spawnX, 0, true);
+          this.aircraft = this.createAircraftState(spawnX, 0);
+          if (originFixture) this.aircraft.heading = Math.PI / 2;
+          if (this.seed === 0x0badc0de) {
+            const terrain = this.terrainSampler.sample(spawnX, 0);
+            const globalY =
+              terrain.height + CONFIG.world.collisionClearance + 4;
+            this.aircraft.globalPosition.y = globalY;
+            this.aircraft.previousGlobalPosition.y = globalY;
+            this.aircraft.localPosition.y = globalY;
+            this.aircraft.terrainSurfaceY = terrain.height;
+            this.aircraft.clearance = 4;
+            this.aircraft.verticalVelocity = -50;
+            this.aircraft.pitchAngle = -0.3;
+          }
+          if (this.seed === 0x5e6f7788) {
+            const terrain = this.terrainSampler.sample(spawnX, 0);
+            const globalY =
+              terrain.height + CONFIG.world.collisionClearance + 4_800;
+            this.aircraft.globalPosition.y = globalY;
+            this.aircraft.previousGlobalPosition.y = globalY;
+            this.aircraft.localPosition.y = globalY;
+            this.aircraft.terrainSurfaceY = terrain.height;
+            this.aircraft.clearance = 4_800;
+          }
+          this.clearInput();
+          this.lifecycle = new Lifecycle();
+          this.lifecycle.dispatch("DEPENDENCIES_VERIFIED");
+          this.lifecycle.dispatch("START");
+          const renderHeading =
+            this.aircraft.heading === 0 ? 0 : -this.aircraft.heading;
+          this.rotationEuler.set(
+            this.aircraft.pitchAngle,
+            renderHeading,
+            -this.aircraft.rollAngle || 0,
+            "YXZ",
+          );
+          this.rotationQuaternion.setFromEuler(this.rotationEuler).normalize();
+          this.aircraft.orientation.x = this.rotationQuaternion.x;
+          this.aircraft.orientation.y = this.rotationQuaternion.y;
+          this.aircraft.orientation.z = this.rotationQuaternion.z;
+          this.aircraft.orientation.w = this.rotationQuaternion.w;
+          this.gliderMesh.position.set(
+            this.aircraft.localPosition.x,
+            this.aircraft.localPosition.y,
+            this.aircraft.localPosition.z,
+          );
+          this.gliderMesh.quaternion.copy(this.rotationQuaternion);
+          this.ash.reset(this.seed, this.aircraft.localPosition);
+          this.updateCamera();
+          this.updatePresentation();
+          return this.snapshot();
+        }
+
+        stepTest(stepCount, controlFrame) {
+          if (
+            !Number.isInteger(stepCount) ||
+            stepCount < 1 ||
+            stepCount > 36_000
+          ) {
+            throw new TypeError(
+              "stepCount must be an integer from 1 through 36000",
+            );
+          }
+          const keys = ["pitch", "roll", "throttleDelta"];
+          for (const key of keys) {
+            if (
+              !Number.isFinite(controlFrame?.[key]) ||
+              Math.abs(controlFrame[key]) > 1
+            ) {
+              throw new TypeError(`${key} must be finite and in [-1, 1]`);
+            }
+          }
+          for (let index = 0; index < stepCount; index += 1)
+            this.fixedStep(controlFrame);
+          this.updateHud();
+          return this.snapshot();
+        }
+
+        sampleTerrain(globalX, globalZ) {
+          if (!Number.isFinite(globalX) || !Number.isFinite(globalZ)) {
+            throw new TypeError("terrain coordinates must be finite");
+          }
+          return this.terrainSampler.sample(globalX, globalZ);
+        }
+
+        snapshot() {
+          const state = this.aircraft;
+          return {
+            seed: this.seed,
+            attemptNumber: this.attemptNumber,
+            crashCount: this.crashCount,
+            elapsedFlightSeconds: this.elapsedFlightSeconds,
+            lifecycle: this.lifecycle.snapshot(),
+            simulationConfigHash: hashString(
+              JSON.stringify({
+                fixedStep: CONFIG.fixedStep,
+                speed: CONFIG.speed,
+                flight: CONFIG.flight,
+                world: CONFIG.world,
+              }),
+            ),
+            quality: this.quality.snapshot(),
+            hud: {
+              ...this.hudSnapshot,
+              updateCount: this.hudUpdateCount,
+            },
+            aircraft: {
+              globalPosition: { ...state.globalPosition },
+              previousGlobalPosition: { ...state.previousGlobalPosition },
+              localPosition: { ...state.localPosition },
+              orientation: { ...state.orientation },
+              airspeed: state.airspeed,
+              verticalVelocity: state.verticalVelocity,
+              throttle: state.throttle,
+              pitchRate: state.pitchRate,
+              rollRate: state.rollRate,
+              pitchAngle: state.pitchAngle,
+              rollAngle: state.rollAngle,
+              heading: state.heading,
+              stallState: state.stallState,
+              terrainSurfaceY: state.terrainSurfaceY,
+              clearance: state.clearance,
+            },
+            controls: {
+              frame: { ...this.controls.frame },
+              pointerLockActive: this.controls.pointerLockActive,
+              desktopStick: { ...this.controls.desktopStick },
+              touchStick: { ...this.controls.touchStick },
+              throttleUpTouchIds: [...this.controls.throttleUpTouchIds].sort(
+                (left, right) => left - right,
+              ),
+              throttleDownTouchIds: [
+                ...this.controls.throttleDownTouchIds,
+              ].sort((left, right) => left - right),
+              stickTouchId: this.controls.stickTouchId,
+              activeKeys: [...this.controls.activeKeys].sort(),
+              revision: this.controls.revision,
+            },
+            camera: {
+              position: {
+                x: this.camera.position.x,
+                y: this.camera.position.y,
+                z: this.camera.position.z,
+              },
+              up: {
+                x: this.camera.up.x,
+                y: this.camera.up.y,
+                z: this.camera.up.z,
+              },
+              distanceToAircraft: this.camera.position.distanceTo(
+                this.gliderMesh.position,
+              ),
+            },
+            visual: {
+              gliderVisible: this.gliderMesh.visible,
+              gliderParts: [...this.gliderMesh.userData.parts],
+            },
+          };
+        }
+
+        metrics() {
+          const quality = this.quality.snapshot();
+          return {
+            frameCount: this.frameCount,
+            fixedStepCount: this.stepCount,
+            listeners: this.listeners.length,
+            domOverlays: document.querySelectorAll(
+              ".primary-overlay, .rotate-overlay",
+            ).length,
+            sceneObjects: this.scene.children.length,
+            world: this.world.snapshot(quality, this.sceneObjectBudget),
+            quality,
+            qualityProfile: {
+              ashCount: this.ash.count,
+              ashDrift: this.ash.drift,
+              shadowMapSize: this.sunLight.shadow.mapSize.x,
+              shadowExtent: this.sunLight.shadow.camera.right,
+              windowDensity: this.world.windowDensity,
+              pixelRatioCap: this.currentPixelRatioCap,
+            },
+            reducedMotion: this.reducedMotion,
+            ash: {
+              count: this.ash.count,
+              drift: this.ash.drift,
+              maximumCount: this.ash.maximumCount,
+            },
+            inputResponseSamples: [...this.inputResponseSamples],
+            renderer: {
+              calls: this.renderer.info.render.calls,
+              triangles: this.renderer.info.render.triangles,
+              geometries: this.renderer.info.memory.geometries,
+              textures: this.renderer.info.memory.textures,
+            },
+          };
+        }
+
+        installTestFacade() {
+          if (navigator.webdriver !== true) return;
+          const facade = Object.freeze({
+            reset: (seed) => structuredClone(this.resetTest(seed)),
+            step: (stepCount, controlFrame) =>
+              structuredClone(this.stepTest(stepCount, controlFrame)),
+            snapshot: () => structuredClone(this.snapshot()),
+            sampleTerrain: (globalX, globalZ) =>
+              structuredClone(this.sampleTerrain(globalX, globalZ)),
+            region: (regionX, regionZ) =>
+              structuredClone(this.world.regionSnapshot(regionX, regionZ)),
+            world: () =>
+              structuredClone(
+                this.world.snapshot(
+                  this.quality.snapshot(),
+                  this.sceneObjectBudget,
+                ),
+              ),
+            simulateQuality: (fps, seconds) =>
+              structuredClone(this.quality.sample(fps, seconds)),
+            dispatchLifecycle: (event) => {
+              if (!LIFECYCLE_EVENTS.includes(event)) {
+                throw new TypeError("unsupported lifecycle event");
+              }
+              if (event === "RESTART") this.restart();
+              else this.dispatchLifecycle(event);
+              return structuredClone(this.snapshot().lifecycle);
+            },
+            metrics: () => structuredClone(this.metrics()),
+          });
+          globalThis.__WFS_TEST__ = facade;
+        }
+
+        destroy() {
+          if (this.destroyed) return;
+          this.destroyed = true;
+          this.renderer.setAnimationLoop(null);
+          for (const remove of this.listeners.splice(0)) remove();
+          this.ash?.dispose();
+          this.world?.dispose();
+          this.gliderMesh?.geometry?.dispose();
+          this.gliderMesh?.material?.dispose();
+          this.renderer.dispose();
+          this.renderer.domElement.remove();
+          elements.sceneRoot.replaceChildren();
+          if (navigator.webdriver === true) delete globalThis.__WFS_TEST__;
+        }
+      }
+
+      let application = null;
+      let starting = false;
+
+      function presentFailure(error) {
+        const code =
+          error instanceof ControlledFailure && error.code in CONTROLLED_ERRORS
+            ? error.code
+            : "DEPENDENCY_IMPORT";
+        application?.destroy();
+        application = null;
+        elements.root.dataset.phase = "error";
+        elements.loading.hidden = true;
+        elements.sceneRoot.hidden = true;
+        elements.hud.hidden = true;
+        elements.legend.hidden = true;
+        elements.pauseButton.hidden = true;
+        elements.touchControls.hidden = true;
+        elements.pauseOverlay.hidden = true;
+        elements.crashOverlay.hidden = true;
+        elements.rotateOverlay.hidden = true;
+        elements.errorOverlay.hidden = false;
+        elements.errorCode.textContent = code;
+        elements.errorMessage.textContent = CONTROLLED_ERRORS[code];
+        elements.liveStatus.textContent =
+          "Flight startup stopped safely. Retry is available.";
+        elements.retryButton.focus();
+      }
+
+      async function start() {
+        if (starting) return;
+        starting = true;
+        application?.destroy();
+        application = null;
+        elements.root.dataset.phase = "loading";
+        elements.loading.hidden = false;
+        elements.errorOverlay.hidden = true;
+        elements.sceneRoot.hidden = true;
+        elements.liveStatus.textContent = "Verifying flight systems.";
+        try {
+          const modules = await loadDependencies();
+          application = new Application(modules);
+        } catch (error) {
+          presentFailure(error);
+        } finally {
+          starting = false;
+        }
+      }
+
+      elements.retryButton.addEventListener("click", () => start());
+      start();
+    </script>
+  </body>
+</html>
