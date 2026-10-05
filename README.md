@@ -5,10 +5,13 @@ generated post-apocalyptic landscape. The complete production application lives
 in a single [`index.html`](./index.html); Node.js and the rest of the repository
 exist only for development, testing, and release evidence.
 
-![A glider crossing the procedurally generated wasteland](./evidence/visual/us2-wasteland-long-flight.png)
+![Dustkite flying above the wasteland](./art/glider/validation/after-chromium-desktop-level.png)
 
 ## What it includes
 
+- A Blender-authored scrap ultralight with patched canvas wings, exposed framing,
+  and a seated pilot; [editable source and regeneration tools](./art/glider/README.md)
+  accompany geometry embedded directly in the HTML.
 - Forgiving but speed-dependent glider physics with lift, drag, gravity, banked
   turns, self-leveling, recoverable stalls, and terrain impacts.
 - A camera locked behind and above the glider, with the world horizon providing
@@ -510,9 +513,12 @@ conflicting duplicate policies.
 
 ## Release qualification
 
-Automated validation currently has checked-in evidence for 156 passing tests,
-four explicitly non-applicable project skips, and zero failures. See the
-[automated test matrix](./evidence/validation/automated-tests.md).
+The Dustkite change passed 160 automated tests with four non-applicable project
+skips and zero failures, plus 20 performance smoke checks using one worker. See
+the [asset validation report](./art/glider/validation/report.json). Headless frame
+timings missed the release targets; these checks do not establish physical-device
+performance qualification. The [earlier test matrix](./evidence/validation/automated-tests.md)
+records the pre-Dustkite baseline.
 
 The checked-in [final validation report](./evidence/validation/final-report.md)
 still fails closed because formal desktop/mobile performance captures and a

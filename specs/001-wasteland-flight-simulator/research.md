@@ -159,12 +159,14 @@ precise during long forward travel while HUD coordinates remain global.
 
 ## Procedural Geometry and Visual Direction
 
-**Decision**: Generate terrain, fracture lines, ruins, emissive windows, glider, and ash
-without textures or models. Merge owned position/normal/color/index buffers locally;
+**Decision**: Generate terrain, fracture lines, ruins, emissive windows, and ash
+procedurally. Author the Dustkite glider offline in Blender and embed its merged
+geometry in the document, without external textures or models. Merge owned position/normal/color/index buffers locally;
 reuse materials and pool scene groups. Use `#3d2817` background/fog, charcoal/rust vertex
 colors, warm ambient/directional light, and shadow-casting opaque geometry.
 
-**Rationale**: Procedural buffer geometry meets the visual request and external-asset ban.
+**Rationale**: Procedural world buffers and offline-authored embedded aircraft geometry
+meet the visual request and external-asset ban.
 Merged per-region meshes bound draw calls; tattered custom wing triangles and damaged
 ruin prisms create recognizable silhouettes without runtime images. One points buffer
 provides ash with bounded cost.

@@ -1,0 +1,25 @@
+{
+  "isolatedTemporaryCopies": true,
+  "results": [
+    {
+      "case": "embedded drift",
+      "status": "PASS",
+      "expectedRejection": "embedded geometry drift"
+    },
+    {
+      "case": "out of bounds",
+      "status": "PASS",
+      "expectedRejection": "minimum bound exceeded"
+    },
+    {
+      "case": "bad index",
+      "status": "PASS",
+      "expectedRejection": "invalid index"
+    },
+    {
+      "case": "degenerate triangle",
+      "status": "PASS",
+      "expectedRejection": "degenerate triangle"
+    }
+  ]
+}

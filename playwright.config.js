@@ -35,7 +35,7 @@ export default defineConfig({
     {
       name: "mobile-chromium",
       testMatch:
-        /(mobile-flight|responsive-controls|accessibility|dependency-loader)\.spec\.js/,
+        /(mobile-flight|responsive-controls|accessibility|dependency-loader|glider-asset)\.spec\.js/,
       use: {
         ...devices["Pixel 7"],
         viewport: { width: 915, height: 412 },
@@ -46,7 +46,7 @@ export default defineConfig({
     {
       name: "mobile-webkit",
       testMatch:
-        /(mobile-flight|responsive-controls|accessibility|dependency-loader)\.spec\.js/,
+        /(mobile-flight|responsive-controls|accessibility|dependency-loader|glider-asset)\.spec\.js/,
       use: {
         ...devices["iPhone 13"],
         viewport: { width: 844, height: 390 },

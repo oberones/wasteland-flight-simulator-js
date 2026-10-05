@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "profile": "smoke",
+  "project": "desktop-chromium",
+  "coldFeedbackMs": 113.24687500000005,
+  "coldControlMs": 1524.791167,
+  "requests": [
+    {
+      "url": "blob:http://127.0.0.1:4173/122a46f0-cd33-4fff-91b2-bc9d706f8f10",
+      "method": "GET",
+      "resourceType": "script",
+      "status": 200,
+      "transferredBytes": 18735,
+      "decodedBytes": 18735,
+      "durationMs": 0.8879159999999047,
+      "redirects": [],
+      "failure": null
+    },
+    {
+      "url": "blob:http://127.0.0.1:4173/7ae1ebba-d820-4e2b-81b5-fec9a115f33d",
+      "method": "GET",
+      "resourceType": "script",
+      "status": 200,
+      "transferredBytes": 2093114,
+      "decodedBytes": 2093114,
+      "durationMs": 34.63274999999999,
+      "redirects": [],
+      "failure": null
+    },
+    {
+      "url": "http://127.0.0.1:4173/",
+      "method": "GET",
+      "resourceType": "document",
+      "status": 200,
+      "transferredBytes": 519160,
+      "decodedBytes": 519160,
+      "durationMs": 7.275959000000057,
+      "redirects": [],
+      "failure": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.js",
+      "method": "GET",
+      "resourceType": "fetch",
+      "status": 200,
+      "transferredBytes": 4575,
+      "decodedBytes": 4575,
+      "durationMs": 279.50775,
+      "redirects": [],
+      "failure": null
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs",
+      "method": "GET",
+      "resourceType": "fetch",
+      "status": 200,
+      "transferredBytes": 2093053,
+      "decodedBytes": 2093053,
+      "durationMs": 283.00633300000004,
+      "redirects": [],
+      "failure": null
+    }
+  ]
+}

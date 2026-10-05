@@ -201,6 +201,8 @@ verify the paused rotate-device flow in portrait.
   altitude, orientation, and forward speed above generated terrain.
 - **FR-003**: The glider MUST visibly include a central scrap-metal body, at least two
   exposed pipe-like supports, and two tattered wings with asymmetrical torn edges.
+  The Blender-authored Dustkite design adds an open cockpit, static goggled pilot,
+  and patched skeletal tail; its geometry is embedded in the delivered document.
 - **FR-004**: A third-person chase view MUST remain behind and above the glider, keep both
   aircraft and forward flight path visible, and maintain one fixed glider-local chase
   transform without orbiting or interpolation lag during ordinary maneuvering.

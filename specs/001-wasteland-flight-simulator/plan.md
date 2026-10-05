@@ -14,8 +14,8 @@ controls, HUD, and lifecycle—is contained in root `index.html`. The document r
 exactly two reviewed library artifacts from pinned jsDelivr URLs: Three.js `0.185.1`
 `three.cjs` and the `simplex-noise` `4.0.3` ES module. It verifies each SHA-384 digest,
 wraps the verified self-contained Three.js CommonJS export object in a local blob-module
-adapter, imports both verified blob URLs, then builds all geometry and presentation
-procedurally without runtime assets.
+adapter, imports both verified blob URLs, then builds the procedural world and a
+Blender-authored glider from embedded geometry without external runtime assets.
 
 The implementation uses a fixed 60 Hz pure simulation step, an in-memory session seed,
 pooled terrain regions, merged ruin and glider geometry, bounded desktop and touch
@@ -53,7 +53,7 @@ rotation states
 environment; cold controllable load ≤5 s at 25 Mbps; 95% input-to-render response ≤100 ms;
 ≤10% steady-state memory growth from minute 2 through minute 10
 **Constraints**: Root `index.html` is the only runtime artifact; exactly two external
-runtime requests and no addons/assets; fixed 60 Hz simulation; deterministic restarts;
+runtime requests and no addons/external assets; fixed 60 Hz simulation; deterministic restarts;
 terrain collision must match rendered terrain; mobile performance evidence must come
 from physical devices rather than emulation
 **Scale/Scope**: One player and one glider; 5x5 active terrain-region window; 768 m
@@ -133,6 +133,7 @@ specs/001-wasteland-flight-simulator/
 
 ```text
 index.html                           # Only shipped runtime artifact
+art/glider/                          # Editable Blender source, scripts, previews, manifest, validation
 package.json                         # Development commands and exact dev constraints
 package-lock.json                    # Exact development dependency resolution
 eslint.config.js                     # Development-only static rules
@@ -187,9 +188,11 @@ parallel and verifies their SHA-384 digests with Web Crypto. It UTF-8 decodes th
 Three.js `three.cjs` bytes, prepends an owned `exports` object, appends a default ES-module
 export, and imports that adapted blob; the verified simplex-noise bytes import directly
 as a blob module. Application startup waits until both export objects pass shape checks.
-All model geometry,
-colors, shaders, UI icons, ash, and cracks are authored procedurally or with CSS/SVG-like
-HTML primitives inside the document.
+World geometry, colors, shaders, UI icons, ash, and cracks are authored procedurally
+or with CSS/SVG-like HTML primitives inside the document. The original Dustkite
+glider is authored offline in Blender and embedded as indexed position, split-normal,
+and linear-color arrays. Its editable sources and export tooling in `art/glider/`
+are development inputs, never runtime requests.
 
 The application module has no mutable globals except one private `Application` instance.
 Subsystems exchange immutable command snapshots and owned state objects. `CONFIG` and
@@ -242,10 +245,19 @@ world definition.
 
 ### Glider, Camera, Atmosphere, and Shadows
 
-The glider uses one manually merged indexed buffer built from box and cylinder primitives
-plus custom tattered-wing triangles. Vertex colors distinguish rust, soot, and patched
-metal without textures. The glider, terrain, and nearby opaque ruin bodies cast or receive
-shadows. A warm ambient light and one orange directional light create the sunset; the
+The Dustkite glider uses one merged indexed buffer exported from its editable Blender
+source: an open scrap ultralight with asymmetrically torn patchwork wings, exposed
+tube supports, cockpit, static goggled pilot, and skeletal tail. Linear vertex colors
+distinguish rust, soot, canvas, and patched metal without textures. Its single opaque,
+double-sided material has roughness 0.85 and metalness 0.15. Export limits are 2,500
+triangles, 750 KiB of formatted embedded geometry, and local bounds X ±8.5 m,
+Y −1 to 2.5 m, Z −5.8 to 5.5 m. The exporter evaluates transforms/modifiers, preserves
+split normals, converts Blender axes to +Y up/−Z forward, and deterministically
+quantizes/deduplicates data. `npm run glider:check` verifies geometry, provenance
+hashes, and embedding drift; fresh-process Blender re-export checks the saved source.
+Front/side/rear previews and Chromium/WebKit desktop/mobile screenshots accompany
+the asset; emulated mobile checks do not replace physical-device qualification.
+The glider, terrain, and nearby opaque ruin bodies cast or receive shadows. A warm ambient light and one orange directional light create the sunset; the
 directional shadow volume follows the glider and snaps to texel increments to limit shimmer.
 
 Scene background and linear fog use `#3d2817`. A pooled point field recycles falling ash

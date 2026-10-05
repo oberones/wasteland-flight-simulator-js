@@ -1,0 +1,142 @@
+
+> wasteland-flight-simulator@0.1.0 test:performance:smoke
+> node tests/helpers/metrics.js run smoke
+
+[WebServer] 
+[WebServer] > wasteland-flight-simulator@0.1.0 serve
+[WebServer] > http-server . -a 127.0.0.1 -p 4173 -c-1 -s
+[WebServer] 
+
+[WebServer] (node:67461) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+[WebServer] (node:67461) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+
+Running 20 tests using 6 workers
+
+[1/20] [desktop-chromium] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[2/20] [desktop-chromium] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[3/20] [desktop-chromium] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[4/20] [desktop-chromium] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[5/20] [desktop-chromium] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[6/20] [desktop-chromium] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[7/20] [desktop-chromium] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[8/20] [desktop-chromium] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+  1) [desktop-chromium] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence 
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> /Users/oberon/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/f5/rhvgpl9j7gn7znm94p8jdz080000gn/T/playwright_chromiumdev_profile-4bg7ub --remote-debugging-pipe --no-startup-window
+    <launched> pid=67472
+    [pid=67472][err] [1005/170202.494755:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.494779:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 1 time(s)
+    [pid=67472][err] [1005/170202.495281:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+    [pid=67472][err] [1005/170202.496061:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.496069:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 2 time(s)
+    [pid=67472][err] [1005/170202.496364:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+    [pid=67472][err] [1005/170202.496631:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.496636:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 3 time(s)
+    [pid=67472][err] [1005/170202.496850:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+    [pid=67472][err] [1005/170202.496897:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.496900:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 4 time(s)
+    [pid=67472][err] [1005/170202.497141:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+    [pid=67472][err] [1005/170202.497190:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.497193:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 5 time(s)
+    [pid=67472][err] [1005/170202.497418:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+    [pid=67472][err] [1005/170202.497461:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+    [pid=67472][err] [1005/170202.497463:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 6 time(s)
+    [pid=67472][err] [1005/170202.497467:FATAL:content/browser/gpu/gpu_data_manager_impl_private.cc:417] GPU process isn't usable. Goodbye.
+    [pid=67472] <process did exit: exitCode=null, signal=SIGTRAP>
+    [pid=67472] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/oberon/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/f5/rhvgpl9j7gn7znm94p8jdz080000gn/T/playwright_chromiumdev_profile-4bg7ub --remote-debugging-pipe --no-startup-window
+      - <launched> pid=67472
+      - [pid=67472][err] [1005/170202.494755:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.494779:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 1 time(s)
+      - [pid=67472][err] [1005/170202.495281:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+      - [pid=67472][err] [1005/170202.496061:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.496069:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 2 time(s)
+      - [pid=67472][err] [1005/170202.496364:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+      - [pid=67472][err] [1005/170202.496631:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.496636:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 3 time(s)
+      - [pid=67472][err] [1005/170202.496850:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+      - [pid=67472][err] [1005/170202.496897:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.496900:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 4 time(s)
+      - [pid=67472][err] [1005/170202.497141:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+      - [pid=67472][err] [1005/170202.497190:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.497193:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 5 time(s)
+      - [pid=67472][err] [1005/170202.497418:ERROR:content/browser/network_service_instance_impl.cc:618] Network service crashed or was terminated, restarting service.
+      - [pid=67472][err] [1005/170202.497461:ERROR:content/browser/gpu/gpu_process_host.cc:1029] GPU process launch failed: error_code=1003
+      - [pid=67472][err] [1005/170202.497463:WARNING:content/browser/gpu/gpu_process_host.cc:1479] The GPU process has crashed 6 time(s)
+      - [pid=67472][err] [1005/170202.497467:FATAL:content/browser/gpu/gpu_data_manager_impl_private.cc:417] GPU process isn't usable. Goodbye.
+      - [pid=67472] <process did exit: exitCode=null, signal=SIGTRAP>
+      - [pid=67472] starting temporary directories cleanup
+      - [pid=67472] <gracefully close start>
+      - [pid=67472] <kill>
+      - [pid=67472] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=67472] finished temporary directories cleanup
+      - [pid=67472] <gracefully close end>
+
+
+    Error Context: test-results/e2e-performance-normative--d56cd--workload-with-raw-evidence-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-performance-normative--d56cd--workload-with-raw-evidence-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/e2e-performance-normative--d56cd--workload-with-raw-evidence-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  2) [desktop-chromium] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing 
+
+    Error: browserContext.close: Failed to launch: Error: spawn /Users/oberon/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac EAGAIN
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-performance-performanc-67b9b-ication-evidence-is-missing-desktop-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-performance-performanc-67b9b-ication-evidence-is-missing-desktop-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-performance-performanc-67b9b-ication-evidence-is-missing-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/e2e-performance-performanc-67b9b-ication-evidence-is-missing-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[9/20] [desktop-chromium] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+[10/20] [desktop-chromium] › tests/e2e/performance.spec.js:525:3 › deterministic maximum-speed traversal smoke › degrades and restores cosmetics in order without changing protected state
+[11/20] [desktop-webkit] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[12/20] [desktop-webkit] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[13/20] [desktop-webkit] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[14/20] [desktop-webkit] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[15/20] [desktop-webkit] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[16/20] [desktop-webkit] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[17/20] [desktop-webkit] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[18/20] [desktop-webkit] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+[19/20] [desktop-webkit] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+  3) [desktop-webkit] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory 
+
+    Error: browserContext.close: Failed to launch: Error: spawn /Users/oberon/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac EAGAIN
+
+    attachment #6: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-performance-determinis-d8c82-th-bounded-world-and-memory-desktop-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-performance-determinis-d8c82-th-bounded-world-and-memory-desktop-webkit/error-context.md
+
+    attachment #8: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e-performance-determinis-d8c82-th-bounded-world-and-memory-desktop-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/e2e-performance-determinis-d8c82-th-bounded-world-and-memory-desktop-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
