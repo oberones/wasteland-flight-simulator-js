@@ -1,0 +1,1361 @@
+{
+  "schemaVersion": 1,
+  "samples": [
+    {
+      "label": "restart-1",
+      "metrics": {
+        "frameCount": 11,
+        "fixedStepCount": 316,
+        "listeners": 27,
+        "domOverlays": 4,
+        "sceneObjects": 6,
+        "world": {
+          "sessionSeed": 610839776,
+          "activeCenter": {
+            "regionX": 0,
+            "regionZ": 0
+          },
+          "activeRegionCount": 25,
+          "activeKeys": [
+            "-1:-1",
+            "-1:-2",
+            "-1:0",
+            "-1:1",
+            "-1:2",
+            "-2:-1",
+            "-2:-2",
+            "-2:0",
+            "-2:1",
+            "-2:2",
+            "0:-1",
+            "0:-2",
+            "0:0",
+            "0:1",
+            "0:2",
+            "1:-1",
+            "1:-2",
+            "1:0",
+            "1:1",
+            "1:2",
+            "2:-1",
+            "2:-2",
+            "2:0",
+            "2:1",
+            "2:2"
+          ],
+          "activeDescriptorHash": "1785a33e",
+          "activeRuins": [
+            {
+              "id": "-2:-2:0",
+              "clusterId": "-2:-2:cluster-0",
+              "globalX": -950.0091114314273,
+              "globalZ": -887.7716636247933,
+              "baseY": -11.612642288208008,
+              "width": 45,
+              "depth": 34,
+              "tiers": 5,
+              "tierHeights": [
+                26,
+                42,
+                37,
+                28,
+                44
+              ],
+              "damageMask": 37301,
+              "windowSeed": 362708197,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:-2:1",
+              "clusterId": "-2:-2:cluster-1",
+              "globalX": -998.4804668845609,
+              "globalZ": -1195.0837735338137,
+              "baseY": 36.96205520629883,
+              "width": 52,
+              "depth": 26,
+              "tiers": 5,
+              "tierHeights": [
+                20,
+                21,
+                46,
+                27,
+                30
+              ],
+              "damageMask": 32511,
+              "windowSeed": 3616558165,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-2:0",
+              "clusterId": "-1:-2:cluster-0",
+              "globalX": -341.4167091809213,
+              "globalZ": -943.8153975522146,
+              "baseY": 21.10249137878418,
+              "width": 49,
+              "depth": 37,
+              "tiers": 3,
+              "tierHeights": [
+                39,
+                44,
+                43
+              ],
+              "damageMask": 51178,
+              "windowSeed": 3634328026,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:-2:0",
+              "clusterId": "0:-2:cluster-0",
+              "globalX": 402.86004742607474,
+              "globalZ": -1033.259737500921,
+              "baseY": 7.113636016845703,
+              "width": 30,
+              "depth": 44,
+              "tiers": 4,
+              "tierHeights": [
+                26,
+                33,
+                29,
+                30
+              ],
+              "damageMask": 56557,
+              "windowSeed": 2226465311,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:-2:0",
+              "clusterId": "1:-2:cluster-0",
+              "globalX": 938.3255257168785,
+              "globalZ": -1400.425368173048,
+              "baseY": 23.777191162109375,
+              "width": 46,
+              "depth": 36,
+              "tiers": 4,
+              "tierHeights": [
+                20,
+                22,
+                23,
+                23
+              ],
+              "damageMask": 3622,
+              "windowSeed": 2305272841,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-2:0",
+              "clusterId": "2:-2:cluster-0",
+              "globalX": 2187.3278205106035,
+              "globalZ": -940.542664160952,
+              "baseY": 15.022554397583008,
+              "width": 46,
+              "depth": 44,
+              "tiers": 4,
+              "tierHeights": [
+                27,
+                40,
+                29,
+                45
+              ],
+              "damageMask": 57451,
+              "windowSeed": 840337692,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-2:1",
+              "clusterId": "2:-2:cluster-1",
+              "globalX": 1956.725729584694,
+              "globalZ": -1200.3555314401165,
+              "baseY": 27.132110595703125,
+              "width": 44,
+              "depth": 32,
+              "tiers": 4,
+              "tierHeights": [
+                39,
+                36,
+                26,
+                41
+              ],
+              "damageMask": 11170,
+              "windowSeed": 838577341,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:-1:0",
+              "clusterId": "-2:-1:cluster-0",
+              "globalX": -1354.3767817374319,
+              "globalZ": -399.83346147090197,
+              "baseY": 8.590275764465332,
+              "width": 34,
+              "depth": 49,
+              "tiers": 4,
+              "tierHeights": [
+                47,
+                36,
+                34,
+                44
+              ],
+              "damageMask": 28197,
+              "windowSeed": 4101072200,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-1:0",
+              "clusterId": "-1:-1:cluster-0",
+              "globalX": -335.05764146056026,
+              "globalZ": -307.23109705746174,
+              "baseY": 16.768272399902344,
+              "width": 45,
+              "depth": 46,
+              "tiers": 3,
+              "tierHeights": [
+                34,
+                27,
+                25
+              ],
+              "damageMask": 52033,
+              "windowSeed": 3452021303,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-1:1",
+              "clusterId": "-1:-1:cluster-1",
+              "globalX": -288.830004170537,
+              "globalZ": -173.8209745315835,
+              "baseY": 10.740740776062012,
+              "width": 34,
+              "depth": 28,
+              "tiers": 3,
+              "tierHeights": [
+                37,
+                39,
+                46
+              ],
+              "damageMask": 9997,
+              "windowSeed": 615742896,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:-1:0",
+              "clusterId": "0:-1:cluster-0",
+              "globalX": 640.2910271259025,
+              "globalZ": -568.8810906149447,
+              "baseY": 14.331313133239746,
+              "width": 48,
+              "depth": 37,
+              "tiers": 4,
+              "tierHeights": [
+                43,
+                38,
+                22,
+                28
+              ],
+              "damageMask": 12919,
+              "windowSeed": 481463586,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:-1:0",
+              "clusterId": "1:-1:cluster-0",
+              "globalX": 1254.3566473368555,
+              "globalZ": -102.26007009577006,
+              "baseY": 160.83668518066406,
+              "width": 49,
+              "depth": 27,
+              "tiers": 4,
+              "tierHeights": [
+                20,
+                25,
+                37,
+                24
+              ],
+              "damageMask": 28650,
+              "windowSeed": 3417823972,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-1:0",
+              "clusterId": "2:-1:cluster-0",
+              "globalX": 1679.9217793755233,
+              "globalZ": -161.37295137159526,
+              "baseY": 20.572498321533203,
+              "width": 56,
+              "depth": 31,
+              "tiers": 3,
+              "tierHeights": [
+                23,
+                38,
+                31
+              ],
+              "damageMask": 53815,
+              "windowSeed": 1982874841,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:0:0",
+              "clusterId": "-2:0:cluster-0",
+              "globalX": -1142.9258378287777,
+              "globalZ": 663.291161368601,
+              "baseY": 79.53229522705078,
+              "width": 27,
+              "depth": 44,
+              "tiers": 5,
+              "tierHeights": [
+                43,
+                27,
+                44,
+                23,
+                44
+              ],
+              "damageMask": 2447,
+              "windowSeed": 3015292485,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:0:0",
+              "clusterId": "-1:0:cluster-0",
+              "globalX": -220.28546769171953,
+              "globalZ": 241.3564958749339,
+              "baseY": 0.6638266444206238,
+              "width": 51,
+              "depth": 24,
+              "tiers": 5,
+              "tierHeights": [
+                30,
+                37,
+                43,
+                44,
+                38
+              ],
+              "damageMask": 64278,
+              "windowSeed": 2484312948,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:0:0",
+              "clusterId": "1:0:cluster-0",
+              "globalX": 1433.1963494047523,
+              "globalZ": 478.8319979868829,
+              "baseY": 6.257798671722412,
+              "width": 30,
+              "depth": 26,
+              "tiers": 2,
+              "tierHeights": [
+                30,
+                19
+              ],
+              "damageMask": 54701,
+              "windowSeed": 1013609235,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:0:0",
+              "clusterId": "2:0:cluster-0",
+              "globalX": 2203.4360294351354,
+              "globalZ": 373.24692568928003,
+              "baseY": 5.252457141876221,
+              "width": 30,
+              "depth": 41,
+              "tiers": 2,
+              "tierHeights": [
+                41,
+                33
+              ],
+              "damageMask": 62084,
+              "windowSeed": 2747588308,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:1:0",
+              "clusterId": "-2:1:cluster-0",
+              "globalX": -907.8981407191604,
+              "globalZ": 1362.3966129999608,
+              "baseY": 19.561214447021484,
+              "width": 26,
+              "depth": 31,
+              "tiers": 5,
+              "tierHeights": [
+                45,
+                22,
+                34,
+                36,
+                40
+              ],
+              "damageMask": 48107,
+              "windowSeed": 303705333,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:1:0",
+              "clusterId": "-1:1:cluster-0",
+              "globalX": -216.2932369625196,
+              "globalZ": 1309.8223647857085,
+              "baseY": -7.875913619995117,
+              "width": 48,
+              "depth": 49,
+              "tiers": 3,
+              "tierHeights": [
+                23,
+                47,
+                45
+              ],
+              "damageMask": 34238,
+              "windowSeed": 255607310,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:1:0",
+              "clusterId": "0:1:cluster-0",
+              "globalX": 386.0191056551412,
+              "globalZ": 1434.8883334519342,
+              "baseY": 7.934120178222656,
+              "width": 41,
+              "depth": 37,
+              "tiers": 3,
+              "tierHeights": [
+                31,
+                22,
+                35
+              ],
+              "damageMask": 43606,
+              "windowSeed": 1002597343,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:1:0",
+              "clusterId": "1:1:cluster-0",
+              "globalX": 1162.1796264695004,
+              "globalZ": 880.5186240160838,
+              "baseY": 30.85318946838379,
+              "width": 32,
+              "depth": 33,
+              "tiers": 2,
+              "tierHeights": [
+                46,
+                19
+              ],
+              "damageMask": 39528,
+              "windowSeed": 2552531144,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:1:1",
+              "clusterId": "1:1:cluster-1",
+              "globalX": 1228.7689029425383,
+              "globalZ": 1011.6336710136384,
+              "baseY": 37.791587829589844,
+              "width": 51,
+              "depth": 45,
+              "tiers": 4,
+              "tierHeights": [
+                27,
+                25,
+                36,
+                44
+              ],
+              "damageMask": 58396,
+              "windowSeed": 1177137789,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:1:0",
+              "clusterId": "2:1:cluster-0",
+              "globalX": 1663.8643005201593,
+              "globalZ": 1270.21558069624,
+              "baseY": 45.78047561645508,
+              "width": 42,
+              "depth": 28,
+              "tiers": 5,
+              "tierHeights": [
+                43,
+                35,
+                23,
+                36,
+                34
+              ],
+              "damageMask": 61355,
+              "windowSeed": 2157301018,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:2:0",
+              "clusterId": "-2:2:cluster-0",
+              "globalX": -1382.621112562716,
+              "globalZ": 2015.4832844780758,
+              "baseY": 7.288954257965088,
+              "width": 51,
+              "depth": 23,
+              "tiers": 5,
+              "tierHeights": [
+                24,
+                41,
+                31,
+                25,
+                32
+              ],
+              "damageMask": 54016,
+              "windowSeed": 2030744976,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:2:0",
+              "clusterId": "-1:2:cluster-0",
+              "globalX": -404.94145253207535,
+              "globalZ": 1856.4957164665684,
+              "baseY": 19.513050079345703,
+              "width": 28,
+              "depth": 29,
+              "tiers": 3,
+              "tierHeights": [
+                22,
+                43,
+                46
+              ],
+              "damageMask": 5339,
+              "windowSeed": 4285124088,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:2:0",
+              "clusterId": "0:2:cluster-0",
+              "globalX": 141.87082852050662,
+              "globalZ": 2038.5901376316324,
+              "baseY": 23.046829223632812,
+              "width": 35,
+              "depth": 29,
+              "tiers": 4,
+              "tierHeights": [
+                42,
+                30,
+                26,
+                23
+              ],
+              "damageMask": 36055,
+              "windowSeed": 1165182241,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:2:0",
+              "clusterId": "1:2:cluster-0",
+              "globalX": 1317.2558734416962,
+              "globalZ": 2002.499537489377,
+              "baseY": 47.201515197753906,
+              "width": 35,
+              "depth": 27,
+              "tiers": 3,
+              "tierHeights": [
+                46,
+                31,
+                19
+              ],
+              "damageMask": 10644,
+              "windowSeed": 2037457930,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:2:0",
+              "clusterId": "2:2:cluster-0",
+              "globalX": 2181.3486147718504,
+              "globalZ": 1789.2305855937302,
+              "baseY": 3.47930645942688,
+              "width": 44,
+              "depth": 24,
+              "tiers": 5,
+              "tierHeights": [
+                37,
+                28,
+                44,
+                36,
+                31
+              ],
+              "damageMask": 19760,
+              "windowSeed": 1476335588,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:2:1",
+              "clusterId": "2:2:cluster-1",
+              "globalX": 2132.9658719357103,
+              "globalZ": 2067.538252864033,
+              "baseY": 3.5836236476898193,
+              "width": 29,
+              "depth": 48,
+              "tiers": 5,
+              "tierHeights": [
+                19,
+                41,
+                31,
+                42,
+                20
+              ],
+              "damageMask": 18858,
+              "windowSeed": 1749248621,
+              "slopeClass": "flat"
+            }
+          ],
+          "ruinClusters": 29,
+          "spawnVisibleRuinClusters": 4,
+          "slopeClasses": [
+            "flat",
+            "hills",
+            "mountain"
+          ],
+          "poolSize": 25,
+          "poolIds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "recycleCount": 10,
+          "generationCount": 35,
+          "collisionHorizonReady": true,
+          "duplicateDescriptors": 0,
+          "seamFailures": 0,
+          "worldOrigin": {
+            "x": 0,
+            "z": 0
+          },
+          "originRevision": 0,
+          "buildingBufferBytes": 3817200,
+          "allocatedBytes": 6217900,
+          "sceneObjectBudget": 7,
+          "quality": {
+            "tier": 0,
+            "lowFpsSeconds": 0,
+            "recoverySeconds": 0,
+            "transitions": [],
+            "transitionActions": []
+          }
+        },
+        "quality": {
+          "tier": 0,
+          "lowFpsSeconds": 0,
+          "recoverySeconds": 0,
+          "transitions": [],
+          "transitionActions": []
+        },
+        "qualityProfile": {
+          "ashCount": 520,
+          "ashDrift": 7,
+          "shadowMapSize": 2048,
+          "shadowExtent": 700,
+          "windowDensity": 1,
+          "pixelRatioCap": 2
+        },
+        "reducedMotion": false,
+        "ash": {
+          "count": 520,
+          "drift": 7,
+          "maximumCount": 520
+        },
+        "inputResponseSamples": [],
+        "renderer": {
+          "calls": 49,
+          "triangles": 59894,
+          "geometries": 59,
+          "textures": 3
+        },
+        "memory": null
+      }
+    },
+    {
+      "label": "restart-20",
+      "metrics": {
+        "frameCount": 41,
+        "fixedStepCount": 6320,
+        "listeners": 27,
+        "domOverlays": 4,
+        "sceneObjects": 6,
+        "world": {
+          "sessionSeed": 610839776,
+          "activeCenter": {
+            "regionX": 0,
+            "regionZ": 0
+          },
+          "activeRegionCount": 25,
+          "activeKeys": [
+            "-1:-1",
+            "-1:-2",
+            "-1:0",
+            "-1:1",
+            "-1:2",
+            "-2:-1",
+            "-2:-2",
+            "-2:0",
+            "-2:1",
+            "-2:2",
+            "0:-1",
+            "0:-2",
+            "0:0",
+            "0:1",
+            "0:2",
+            "1:-1",
+            "1:-2",
+            "1:0",
+            "1:1",
+            "1:2",
+            "2:-1",
+            "2:-2",
+            "2:0",
+            "2:1",
+            "2:2"
+          ],
+          "activeDescriptorHash": "1785a33e",
+          "activeRuins": [
+            {
+              "id": "-2:-2:0",
+              "clusterId": "-2:-2:cluster-0",
+              "globalX": -950.0091114314273,
+              "globalZ": -887.7716636247933,
+              "baseY": -11.612642288208008,
+              "width": 45,
+              "depth": 34,
+              "tiers": 5,
+              "tierHeights": [
+                26,
+                42,
+                37,
+                28,
+                44
+              ],
+              "damageMask": 37301,
+              "windowSeed": 362708197,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:-2:1",
+              "clusterId": "-2:-2:cluster-1",
+              "globalX": -998.4804668845609,
+              "globalZ": -1195.0837735338137,
+              "baseY": 36.96205520629883,
+              "width": 52,
+              "depth": 26,
+              "tiers": 5,
+              "tierHeights": [
+                20,
+                21,
+                46,
+                27,
+                30
+              ],
+              "damageMask": 32511,
+              "windowSeed": 3616558165,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-2:0",
+              "clusterId": "-1:-2:cluster-0",
+              "globalX": -341.4167091809213,
+              "globalZ": -943.8153975522146,
+              "baseY": 21.10249137878418,
+              "width": 49,
+              "depth": 37,
+              "tiers": 3,
+              "tierHeights": [
+                39,
+                44,
+                43
+              ],
+              "damageMask": 51178,
+              "windowSeed": 3634328026,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:-2:0",
+              "clusterId": "0:-2:cluster-0",
+              "globalX": 402.86004742607474,
+              "globalZ": -1033.259737500921,
+              "baseY": 7.113636016845703,
+              "width": 30,
+              "depth": 44,
+              "tiers": 4,
+              "tierHeights": [
+                26,
+                33,
+                29,
+                30
+              ],
+              "damageMask": 56557,
+              "windowSeed": 2226465311,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:-2:0",
+              "clusterId": "1:-2:cluster-0",
+              "globalX": 938.3255257168785,
+              "globalZ": -1400.425368173048,
+              "baseY": 23.777191162109375,
+              "width": 46,
+              "depth": 36,
+              "tiers": 4,
+              "tierHeights": [
+                20,
+                22,
+                23,
+                23
+              ],
+              "damageMask": 3622,
+              "windowSeed": 2305272841,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-2:0",
+              "clusterId": "2:-2:cluster-0",
+              "globalX": 2187.3278205106035,
+              "globalZ": -940.542664160952,
+              "baseY": 15.022554397583008,
+              "width": 46,
+              "depth": 44,
+              "tiers": 4,
+              "tierHeights": [
+                27,
+                40,
+                29,
+                45
+              ],
+              "damageMask": 57451,
+              "windowSeed": 840337692,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-2:1",
+              "clusterId": "2:-2:cluster-1",
+              "globalX": 1956.725729584694,
+              "globalZ": -1200.3555314401165,
+              "baseY": 27.132110595703125,
+              "width": 44,
+              "depth": 32,
+              "tiers": 4,
+              "tierHeights": [
+                39,
+                36,
+                26,
+                41
+              ],
+              "damageMask": 11170,
+              "windowSeed": 838577341,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:-1:0",
+              "clusterId": "-2:-1:cluster-0",
+              "globalX": -1354.3767817374319,
+              "globalZ": -399.83346147090197,
+              "baseY": 8.590275764465332,
+              "width": 34,
+              "depth": 49,
+              "tiers": 4,
+              "tierHeights": [
+                47,
+                36,
+                34,
+                44
+              ],
+              "damageMask": 28197,
+              "windowSeed": 4101072200,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-1:0",
+              "clusterId": "-1:-1:cluster-0",
+              "globalX": -335.05764146056026,
+              "globalZ": -307.23109705746174,
+              "baseY": 16.768272399902344,
+              "width": 45,
+              "depth": 46,
+              "tiers": 3,
+              "tierHeights": [
+                34,
+                27,
+                25
+              ],
+              "damageMask": 52033,
+              "windowSeed": 3452021303,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:-1:1",
+              "clusterId": "-1:-1:cluster-1",
+              "globalX": -288.830004170537,
+              "globalZ": -173.8209745315835,
+              "baseY": 10.740740776062012,
+              "width": 34,
+              "depth": 28,
+              "tiers": 3,
+              "tierHeights": [
+                37,
+                39,
+                46
+              ],
+              "damageMask": 9997,
+              "windowSeed": 615742896,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:-1:0",
+              "clusterId": "0:-1:cluster-0",
+              "globalX": 640.2910271259025,
+              "globalZ": -568.8810906149447,
+              "baseY": 14.331313133239746,
+              "width": 48,
+              "depth": 37,
+              "tiers": 4,
+              "tierHeights": [
+                43,
+                38,
+                22,
+                28
+              ],
+              "damageMask": 12919,
+              "windowSeed": 481463586,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:-1:0",
+              "clusterId": "1:-1:cluster-0",
+              "globalX": 1254.3566473368555,
+              "globalZ": -102.26007009577006,
+              "baseY": 160.83668518066406,
+              "width": 49,
+              "depth": 27,
+              "tiers": 4,
+              "tierHeights": [
+                20,
+                25,
+                37,
+                24
+              ],
+              "damageMask": 28650,
+              "windowSeed": 3417823972,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:-1:0",
+              "clusterId": "2:-1:cluster-0",
+              "globalX": 1679.9217793755233,
+              "globalZ": -161.37295137159526,
+              "baseY": 20.572498321533203,
+              "width": 56,
+              "depth": 31,
+              "tiers": 3,
+              "tierHeights": [
+                23,
+                38,
+                31
+              ],
+              "damageMask": 53815,
+              "windowSeed": 1982874841,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:0:0",
+              "clusterId": "-2:0:cluster-0",
+              "globalX": -1142.9258378287777,
+              "globalZ": 663.291161368601,
+              "baseY": 79.53229522705078,
+              "width": 27,
+              "depth": 44,
+              "tiers": 5,
+              "tierHeights": [
+                43,
+                27,
+                44,
+                23,
+                44
+              ],
+              "damageMask": 2447,
+              "windowSeed": 3015292485,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:0:0",
+              "clusterId": "-1:0:cluster-0",
+              "globalX": -220.28546769171953,
+              "globalZ": 241.3564958749339,
+              "baseY": 0.6638266444206238,
+              "width": 51,
+              "depth": 24,
+              "tiers": 5,
+              "tierHeights": [
+                30,
+                37,
+                43,
+                44,
+                38
+              ],
+              "damageMask": 64278,
+              "windowSeed": 2484312948,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:0:0",
+              "clusterId": "1:0:cluster-0",
+              "globalX": 1433.1963494047523,
+              "globalZ": 478.8319979868829,
+              "baseY": 6.257798671722412,
+              "width": 30,
+              "depth": 26,
+              "tiers": 2,
+              "tierHeights": [
+                30,
+                19
+              ],
+              "damageMask": 54701,
+              "windowSeed": 1013609235,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:0:0",
+              "clusterId": "2:0:cluster-0",
+              "globalX": 2203.4360294351354,
+              "globalZ": 373.24692568928003,
+              "baseY": 5.252457141876221,
+              "width": 30,
+              "depth": 41,
+              "tiers": 2,
+              "tierHeights": [
+                41,
+                33
+              ],
+              "damageMask": 62084,
+              "windowSeed": 2747588308,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:1:0",
+              "clusterId": "-2:1:cluster-0",
+              "globalX": -907.8981407191604,
+              "globalZ": 1362.3966129999608,
+              "baseY": 19.561214447021484,
+              "width": 26,
+              "depth": 31,
+              "tiers": 5,
+              "tierHeights": [
+                45,
+                22,
+                34,
+                36,
+                40
+              ],
+              "damageMask": 48107,
+              "windowSeed": 303705333,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:1:0",
+              "clusterId": "-1:1:cluster-0",
+              "globalX": -216.2932369625196,
+              "globalZ": 1309.8223647857085,
+              "baseY": -7.875913619995117,
+              "width": 48,
+              "depth": 49,
+              "tiers": 3,
+              "tierHeights": [
+                23,
+                47,
+                45
+              ],
+              "damageMask": 34238,
+              "windowSeed": 255607310,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:1:0",
+              "clusterId": "0:1:cluster-0",
+              "globalX": 386.0191056551412,
+              "globalZ": 1434.8883334519342,
+              "baseY": 7.934120178222656,
+              "width": 41,
+              "depth": 37,
+              "tiers": 3,
+              "tierHeights": [
+                31,
+                22,
+                35
+              ],
+              "damageMask": 43606,
+              "windowSeed": 1002597343,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:1:0",
+              "clusterId": "1:1:cluster-0",
+              "globalX": 1162.1796264695004,
+              "globalZ": 880.5186240160838,
+              "baseY": 30.85318946838379,
+              "width": 32,
+              "depth": 33,
+              "tiers": 2,
+              "tierHeights": [
+                46,
+                19
+              ],
+              "damageMask": 39528,
+              "windowSeed": 2552531144,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:1:1",
+              "clusterId": "1:1:cluster-1",
+              "globalX": 1228.7689029425383,
+              "globalZ": 1011.6336710136384,
+              "baseY": 37.791587829589844,
+              "width": 51,
+              "depth": 45,
+              "tiers": 4,
+              "tierHeights": [
+                27,
+                25,
+                36,
+                44
+              ],
+              "damageMask": 58396,
+              "windowSeed": 1177137789,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:1:0",
+              "clusterId": "2:1:cluster-0",
+              "globalX": 1663.8643005201593,
+              "globalZ": 1270.21558069624,
+              "baseY": 45.78047561645508,
+              "width": 42,
+              "depth": 28,
+              "tiers": 5,
+              "tierHeights": [
+                43,
+                35,
+                23,
+                36,
+                34
+              ],
+              "damageMask": 61355,
+              "windowSeed": 2157301018,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-2:2:0",
+              "clusterId": "-2:2:cluster-0",
+              "globalX": -1382.621112562716,
+              "globalZ": 2015.4832844780758,
+              "baseY": 7.288954257965088,
+              "width": 51,
+              "depth": 23,
+              "tiers": 5,
+              "tierHeights": [
+                24,
+                41,
+                31,
+                25,
+                32
+              ],
+              "damageMask": 54016,
+              "windowSeed": 2030744976,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "-1:2:0",
+              "clusterId": "-1:2:cluster-0",
+              "globalX": -404.94145253207535,
+              "globalZ": 1856.4957164665684,
+              "baseY": 19.513050079345703,
+              "width": 28,
+              "depth": 29,
+              "tiers": 3,
+              "tierHeights": [
+                22,
+                43,
+                46
+              ],
+              "damageMask": 5339,
+              "windowSeed": 4285124088,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "0:2:0",
+              "clusterId": "0:2:cluster-0",
+              "globalX": 141.87082852050662,
+              "globalZ": 2038.5901376316324,
+              "baseY": 23.046829223632812,
+              "width": 35,
+              "depth": 29,
+              "tiers": 4,
+              "tierHeights": [
+                42,
+                30,
+                26,
+                23
+              ],
+              "damageMask": 36055,
+              "windowSeed": 1165182241,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "1:2:0",
+              "clusterId": "1:2:cluster-0",
+              "globalX": 1317.2558734416962,
+              "globalZ": 2002.499537489377,
+              "baseY": 47.201515197753906,
+              "width": 35,
+              "depth": 27,
+              "tiers": 3,
+              "tierHeights": [
+                46,
+                31,
+                19
+              ],
+              "damageMask": 10644,
+              "windowSeed": 2037457930,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:2:0",
+              "clusterId": "2:2:cluster-0",
+              "globalX": 2181.3486147718504,
+              "globalZ": 1789.2305855937302,
+              "baseY": 3.47930645942688,
+              "width": 44,
+              "depth": 24,
+              "tiers": 5,
+              "tierHeights": [
+                37,
+                28,
+                44,
+                36,
+                31
+              ],
+              "damageMask": 19760,
+              "windowSeed": 1476335588,
+              "slopeClass": "flat"
+            },
+            {
+              "id": "2:2:1",
+              "clusterId": "2:2:cluster-1",
+              "globalX": 2132.9658719357103,
+              "globalZ": 2067.538252864033,
+              "baseY": 3.5836236476898193,
+              "width": 29,
+              "depth": 48,
+              "tiers": 5,
+              "tierHeights": [
+                19,
+                41,
+                31,
+                42,
+                20
+              ],
+              "damageMask": 18858,
+              "windowSeed": 1749248621,
+              "slopeClass": "flat"
+            }
+          ],
+          "ruinClusters": 29,
+          "spawnVisibleRuinClusters": 4,
+          "slopeClasses": [
+            "flat",
+            "hills",
+            "mountain"
+          ],
+          "poolSize": 25,
+          "poolIds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "recycleCount": 200,
+          "generationCount": 225,
+          "collisionHorizonReady": true,
+          "duplicateDescriptors": 0,
+          "seamFailures": 0,
+          "worldOrigin": {
+            "x": 0,
+            "z": 0
+          },
+          "originRevision": 0,
+          "buildingBufferBytes": 3817200,
+          "allocatedBytes": 6217900,
+          "sceneObjectBudget": 7,
+          "quality": {
+            "tier": 0,
+            "lowFpsSeconds": 0,
+            "recoverySeconds": 0,
+            "transitions": [],
+            "transitionActions": []
+          }
+        },
+        "quality": {
+          "tier": 0,
+          "lowFpsSeconds": 0,
+          "recoverySeconds": 0,
+          "transitions": [],
+          "transitionActions": []
+        },
+        "qualityProfile": {
+          "ashCount": 520,
+          "ashDrift": 7,
+          "shadowMapSize": 2048,
+          "shadowExtent": 700,
+          "windowDensity": 1,
+          "pixelRatioCap": 2
+        },
+        "reducedMotion": false,
+        "ash": {
+          "count": 520,
+          "drift": 7,
+          "maximumCount": 520
+        },
+        "inputResponseSamples": [],
+        "renderer": {
+          "calls": 29,
+          "triangles": 44962,
+          "geometries": 59,
+          "textures": 3
+        },
+        "memory": null
+      }
+    }
+  ]
+}

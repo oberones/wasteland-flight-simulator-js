@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "project": "desktop-chromium",
+  "fixture": "region-seam",
+  "seed": 324508639,
+  "thresholds": {
+    "degrade": {
+      "fps": 40,
+      "seconds": 3
+    },
+    "neutralResetFps": 50,
+    "restore": {
+      "fps": 60,
+      "seconds": 10
+    }
+  },
+  "profiles": [
+    {
+      "ashCount": 260,
+      "ashDrift": 3,
+      "shadowMapSize": 2048,
+      "shadowExtent": 700,
+      "windowDensity": 1,
+      "pixelRatioCap": 2
+    },
+    {
+      "ashCount": 260,
+      "ashDrift": 3,
+      "shadowMapSize": 1024,
+      "shadowExtent": 430,
+      "windowDensity": 1,
+      "pixelRatioCap": 2
+    },
+    {
+      "ashCount": 260,
+      "ashDrift": 3,
+      "shadowMapSize": 1024,
+      "shadowExtent": 430,
+      "windowDensity": 0.5,
+      "pixelRatioCap": 2
+    },
+    {
+      "ashCount": 260,
+      "ashDrift": 3,
+      "shadowMapSize": 1024,
+      "shadowExtent": 430,
+      "windowDensity": 0.5,
+      "pixelRatioCap": 1
+    }
+  ],
+  "transitions": [
+    {
+      "sequence": 1,
+      "direction": "degrade",
+      "tier": 1,
+      "action": "reduce-ash"
+    },
+    {
+      "sequence": 2,
+      "direction": "degrade",
+      "tier": 2,
+      "action": "reduce-shadows"
+    },
+    {
+      "sequence": 3,
+      "direction": "degrade",
+      "tier": 3,
+      "action": "reduce-windows"
+    },
+    {
+      "sequence": 4,
+      "direction": "degrade",
+      "tier": 4,
+      "action": "reduce-pixel-ratio"
+    },
+    {
+      "sequence": 5,
+      "direction": "restore",
+      "tier": 3,
+      "action": "restore-pixel-ratio"
+    },
+    {
+      "sequence": 6,
+      "direction": "restore",
+      "tier": 2,
+      "action": "restore-windows"
+    },
+    {
+      "sequence": 7,
+      "direction": "restore",
+      "tier": 1,
+      "action": "restore-shadows"
+    },
+    {
+      "sequence": 8,
+      "direction": "restore",
+      "tier": 0,
+      "action": "restore-ash"
+    }
+  ],
+  "protectedBefore": {
+    "seed": 324508639,
+    "attemptNumber": 1,
+    "crashCount": 0,
+    "elapsedFlightSeconds": 0,
+    "lifecycle": {
+      "phase": "flying",
+      "pauseReasons": [],
+      "resumeRequired": false,
+      "errorCode": null,
+      "crashReason": null,
+      "dependencyPending": false,
+      "sessionConstructed": true,
+      "started": true,
+      "revision": 2
+    },
+    "simulationConfigHash": "897a64ca",
+    "hud": {
+      "speedKph": 198,
+      "altitudeMeters": 160,
+      "coordinateX": 0,
+      "coordinateY": 162,
+      "coordinateZ": 0,
+      "lifecycleLabel": "Flight active",
+      "primaryAction": "none",
+      "controlMode": "keyboard",
+      "orientationPrompt": false,
+      "updateCount": 1
+    },
+    "aircraft": {
+      "globalPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "previousGlobalPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "localPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "orientation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "airspeed": 55,
+      "verticalVelocity": 0,
+      "throttle": 0.3304621848739495,
+      "pitchRate": 0,
+      "rollRate": 0,
+      "pitchAngle": 0,
+      "rollAngle": 0,
+      "heading": 0,
+      "stallState": "normal",
+      "terrainSurfaceY": 0.0017063560662791133,
+      "clearance": 160
+    },
+    "controls": {
+      "frame": {
+        "pitch": 0,
+        "roll": 0,
+        "throttleDelta": 0
+      },
+      "pointerLockActive": false,
+      "desktopStick": {
+        "x": 0,
+        "y": 0
+      },
+      "touchStick": {
+        "x": 0,
+        "y": 0
+      },
+      "throttleUpTouchIds": [],
+      "throttleDownTouchIds": [],
+      "stickTouchId": null,
+      "activeKeys": [],
+      "revision": 1
+    }
+  },
+  "protectedAfter": {
+    "seed": 324508639,
+    "attemptNumber": 1,
+    "crashCount": 0,
+    "elapsedFlightSeconds": 0,
+    "lifecycle": {
+      "phase": "flying",
+      "pauseReasons": [],
+      "resumeRequired": false,
+      "errorCode": null,
+      "crashReason": null,
+      "dependencyPending": false,
+      "sessionConstructed": true,
+      "started": true,
+      "revision": 2
+    },
+    "simulationConfigHash": "897a64ca",
+    "hud": {
+      "speedKph": 198,
+      "altitudeMeters": 160,
+      "coordinateX": 0,
+      "coordinateY": 162,
+      "coordinateZ": 0,
+      "lifecycleLabel": "Flight active",
+      "primaryAction": "none",
+      "controlMode": "keyboard",
+      "orientationPrompt": false,
+      "updateCount": 1
+    },
+    "aircraft": {
+      "globalPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "previousGlobalPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "localPosition": {
+        "x": 0,
+        "y": 162.00170635606628,
+        "z": 0
+      },
+      "orientation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "airspeed": 55,
+      "verticalVelocity": 0,
+      "throttle": 0.3304621848739495,
+      "pitchRate": 0,
+      "rollRate": 0,
+      "pitchAngle": 0,
+      "rollAngle": 0,
+      "heading": 0,
+      "stallState": "normal",
+      "terrainSurfaceY": 0.0017063560662791133,
+      "clearance": 160
+    },
+    "controls": {
+      "frame": {
+        "pitch": 0,
+        "roll": 0,
+        "throttleDelta": 0
+      },
+      "pointerLockActive": false,
+      "desktopStick": {
+        "x": 0,
+        "y": 0
+      },
+      "touchStick": {
+        "x": 0,
+        "y": 0
+      },
+      "throttleUpTouchIds": [],
+      "throttleDownTouchIds": [],
+      "stickTouchId": null,
+      "activeKeys": [],
+      "revision": 1
+    }
+  },
+  "terrain": {
+    "before": {
+      "globalX": 111.25,
+      "globalZ": -222.75,
+      "height": -0.37423029906737304,
+      "ready": true,
+      "regionKey": "0:-1",
+      "topology": "upper"
+    },
+    "after": {
+      "globalX": 111.25,
+      "globalZ": -222.75,
+      "height": -0.37423029906737304,
+      "ready": true,
+      "regionKey": "0:-1",
+      "topology": "upper"
+    }
+  },
+  "regionHashes": {
+    "before": {
+      "height": "b8ce8a8e",
+      "descriptor": "05291005",
+      "ruin": "d90d962b"
+    },
+    "after": {
+      "height": "b8ce8a8e",
+      "descriptor": "05291005",
+      "ruin": "d90d962b"
+    }
+  }
+}

@@ -159,12 +159,14 @@ precise during long forward travel while HUD coordinates remain global.
 
 ## Procedural Geometry and Visual Direction
 
-**Decision**: Generate terrain, fracture lines, ruins, emissive windows, glider, and ash
-without textures or models. Merge owned position/normal/color/index buffers locally;
+**Decision**: Generate terrain, fracture lines, ruins, emissive windows, and ash
+procedurally. Author the Dustkite glider offline in Blender and embed its merged
+geometry in the document, without external textures or models. Merge owned position/normal/color/index buffers locally;
 reuse materials and pool scene groups. Use `#3d2817` background/fog, charcoal/rust vertex
 colors, warm ambient/directional light, and shadow-casting opaque geometry.
 
-**Rationale**: Procedural buffer geometry meets the visual request and external-asset ban.
+**Rationale**: Procedural world buffers and offline-authored embedded aircraft geometry
+meet the visual request and external-asset ban.
 Merged per-region meshes bound draw calls; tattered custom wing triangles and damaged
 ruin prisms create recognizable silhouettes without runtime images. One points buffer
 provides ash with bounded cost.
@@ -249,3 +251,12 @@ questions are offers for later scope rather than authorization to include them n
 
 **Alternatives considered**: Adding placeholders or dormant systems was rejected because
 unused complexity would violate the constitution and obscure completion of the requested slice.
+
+## Blender building graphics
+
+The four-model building replacement follows the glider's offline Blender-to-inline-buffer
+workflow. Separate body/window exports retain the two meshes per pooled region, with
+fixed-capacity reusable attributes and indices. Named panel boundaries replace the old
+36-index box assumption in adaptive window density. Existing seeded ruin descriptors
+are retained verbatim; model choice and rotation use an independent hash. See
+`art/buildings/README.md` for source, budgets, regeneration, and evidence limitations.

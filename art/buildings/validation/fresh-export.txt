@@ -1,0 +1,7 @@
+00:00.654  blend            | Read blend: "/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/art/buildings/buildings.blend"
+/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/art/buildings/export_geometry.py:29: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if material.use_nodes:
+PASS: fresh saved-source export is byte-identical
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

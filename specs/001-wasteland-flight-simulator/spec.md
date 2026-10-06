@@ -77,8 +77,8 @@ lighting and shadows, and ash around the aircraft without visible gaps or world 
    visible flight area, **Then** it joins existing terrain without gaps, abrupt seams,
    or a visible end to the landscape.
 3. **Given** the player approaches a ruined urban area, **When** the structures become
-   visible, **Then** they appear as irregular broken gray towers with missing sections
-   and clearly visible orange-lit windows.
+   visible, **Then** they appear as a mixed set of broken gray towers, industrial ruins, and low concrete
+   shells with missing sections and clearly visible orange-lit windows.
 4. **Given** the player changes direction and altitude, **When** the chase view moves
    through the environment, **Then** dark-brown fog, orange sunset illumination,
    shadows, and falling ash remain spatially coherent around the glider.
@@ -201,6 +201,8 @@ verify the paused rotate-device flow in portrait.
   altitude, orientation, and forward speed above generated terrain.
 - **FR-003**: The glider MUST visibly include a central scrap-metal body, at least two
   exposed pipe-like supports, and two tattered wings with asymmetrical torn edges.
+  The Blender-authored Dustkite design adds an open cockpit, static goggled pilot,
+  and patched skeletal tail; its geometry is embedded in the delivered document.
 - **FR-004**: A third-person chase view MUST remain behind and above the glider, keep both
   aircraft and forward flight path visible, and maintain one fixed glider-local chase
   transform without orbiting or interpolation lag during ordinary maneuvering.
@@ -229,8 +231,9 @@ verify the paused rotate-device flow in portrait.
   with dark charcoal and rust-brown visual variation.
 - **FR-014**: The world MUST maintain terrain coverage around the player for at least
   ten uninterrupted minutes at maximum speed without a visible boundary, void, or seam.
-- **FR-015**: The world MUST distribute ruined skyscrapers with irregular gray broken
-  silhouettes, missing sections, and orange-lit windows across non-mountain terrain;
+- **FR-015**: The world MUST distribute a Blender-authored mix of ruined skyscrapers, industrial
+  structures, and low concrete shells with irregular gray broken silhouettes, missing
+  sections, and orange-lit windows across non-mountain terrain;
   at least one cluster MUST be visible from the safe spawn and at least three distinct
   clusters MUST appear during a five-minute straight flight at default throttle.
 - **FR-016**: Ruins MUST remain outside the initial safe flight corridor and are visual

@@ -1,0 +1,798 @@
+{
+  "asset": "Dustkite",
+  "schemaVersion": 1,
+  "blenderVersion": "5.2.1 LTS",
+  "source": "Original geometry authored for this project; no third-party assets or franchise logos",
+  "usageRights": "Project-authored asset; no separate third-party license. Repository has no project license.",
+  "transforms": "Evaluated modifiers/world transforms; Blender (x,y,z) -> game (x,z,-y); split normals; linear vertex colors; 5-decimal quantization; indexed merge",
+  "sourceSha256": "0983b9e7c696372f1f3c725642273c2dcb1f0fdb04ce67346680209aa36eda65",
+  "geometrySha256": "cb252a1ba3170dad1eb67ec93ecc12133367b534d2bbe886d563c89f1efe06a4",
+  "scriptsSha256": {
+    "create_scene.py": "0a61786f33a784757eb79061b557b37c29438f691d1c1b3b025f5708d959b9f6",
+    "export_geometry.py": "0ac33ee81c6cd8e084624230a3d12aa910e16874721188a3ec8e2b41822131c9",
+    "render_previews.py": "ba110af9980cd55b72fd9b36e82b0e8533b7dfa59161bd9d73f6d743b8f3221a",
+    "embed-geometry.js": "2687ab57fd761ac4f99a7d0de992118f213d0672600d87188a9c17093c2e5798"
+  },
+  "vertices": 4027,
+  "triangles": 2095,
+  "bounds": {
+    "min": [
+      -8.37003,
+      -0.865,
+      -4.72
+    ],
+    "max": [
+      8.12236,
+      2.14385,
+      5.12
+    ]
+  },
+  "parts": [
+    {
+      "name": "cockpit floor",
+      "firstIndex": 0,
+      "indexCount": 36
+    },
+    {
+      "name": "control grip",
+      "firstIndex": 36,
+      "indexCount": 60
+    },
+    {
+      "name": "control stick",
+      "firstIndex": 96,
+      "indexCount": 60
+    },
+    {
+      "name": "fin identification stripe",
+      "firstIndex": 156,
+      "indexCount": 6
+    },
+    {
+      "name": "goggle leather strap",
+      "firstIndex": 162,
+      "indexCount": 36
+    },
+    {
+      "name": "goggle lens",
+      "firstIndex": 198,
+      "indexCount": 36
+    },
+    {
+      "name": "goggle lens.001",
+      "firstIndex": 234,
+      "indexCount": 36
+    },
+    {
+      "name": "instrument panel",
+      "firstIndex": 270,
+      "indexCount": 36
+    },
+    {
+      "name": "kingpost",
+      "firstIndex": 306,
+      "indexCount": 60
+    },
+    {
+      "name": "landing skid",
+      "firstIndex": 366,
+      "indexCount": 60
+    },
+    {
+      "name": "patched seat cushion",
+      "firstIndex": 426,
+      "indexCount": 36
+    },
+    {
+      "name": "pilot boot",
+      "firstIndex": 462,
+      "indexCount": 36
+    },
+    {
+      "name": "pilot boot.001",
+      "firstIndex": 498,
+      "indexCount": 36
+    },
+    {
+      "name": "pilot collar",
+      "firstIndex": 534,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot face scarf",
+      "firstIndex": 594,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot forearm",
+      "firstIndex": 654,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot forearm.001",
+      "firstIndex": 714,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot glove",
+      "firstIndex": 774,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot glove.001",
+      "firstIndex": 834,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot helmet",
+      "firstIndex": 894,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot jacket",
+      "firstIndex": 954,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot shin",
+      "firstIndex": 1014,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot shin.001",
+      "firstIndex": 1074,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot shoulder harness",
+      "firstIndex": 1134,
+      "indexCount": 36
+    },
+    {
+      "name": "pilot shoulder harness.001",
+      "firstIndex": 1170,
+      "indexCount": 36
+    },
+    {
+      "name": "pilot thigh",
+      "firstIndex": 1206,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot thigh.001",
+      "firstIndex": 1266,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot upper sleeve",
+      "firstIndex": 1326,
+      "indexCount": 60
+    },
+    {
+      "name": "pilot upper sleeve.001",
+      "firstIndex": 1386,
+      "indexCount": 60
+    },
+    {
+      "name": "port aft lift strut",
+      "firstIndex": 1446,
+      "indexCount": 60
+    },
+    {
+      "name": "port canvas leading panel 0",
+      "firstIndex": 1506,
+      "indexCount": 6
+    },
+    {
+      "name": "port canvas leading panel 1",
+      "firstIndex": 1512,
+      "indexCount": 6
+    },
+    {
+      "name": "port canvas leading panel 2",
+      "firstIndex": 1518,
+      "indexCount": 6
+    },
+    {
+      "name": "port canvas leading panel 3",
+      "firstIndex": 1524,
+      "indexCount": 6
+    },
+    {
+      "name": "port cockpit rail",
+      "firstIndex": 1530,
+      "indexCount": 60
+    },
+    {
+      "name": "port exposed rib 0",
+      "firstIndex": 1590,
+      "indexCount": 48
+    },
+    {
+      "name": "port exposed rib 1",
+      "firstIndex": 1638,
+      "indexCount": 48
+    },
+    {
+      "name": "port exposed rib 2",
+      "firstIndex": 1686,
+      "indexCount": 48
+    },
+    {
+      "name": "port exposed rib 3",
+      "firstIndex": 1734,
+      "indexCount": 48
+    },
+    {
+      "name": "port kingpost tension cable",
+      "firstIndex": 1782,
+      "indexCount": 36
+    },
+    {
+      "name": "port leading spar 0",
+      "firstIndex": 1818,
+      "indexCount": 60
+    },
+    {
+      "name": "port leading spar 1",
+      "firstIndex": 1878,
+      "indexCount": 60
+    },
+    {
+      "name": "port leading spar 2",
+      "firstIndex": 1938,
+      "indexCount": 60
+    },
+    {
+      "name": "port leading spar 3",
+      "firstIndex": 1998,
+      "indexCount": 60
+    },
+    {
+      "name": "port lower chassis",
+      "firstIndex": 2058,
+      "indexCount": 60
+    },
+    {
+      "name": "port main lift strut",
+      "firstIndex": 2118,
+      "indexCount": 60
+    },
+    {
+      "name": "port nose cowling",
+      "firstIndex": 2178,
+      "indexCount": 6
+    },
+    {
+      "name": "port nose rail",
+      "firstIndex": 2184,
+      "indexCount": 60
+    },
+    {
+      "name": "port panel rivet 0",
+      "firstIndex": 2244,
+      "indexCount": 36
+    },
+    {
+      "name": "port panel rivet 1",
+      "firstIndex": 2280,
+      "indexCount": 36
+    },
+    {
+      "name": "port panel rivet 2",
+      "firstIndex": 2316,
+      "indexCount": 36
+    },
+    {
+      "name": "port rear olive plate",
+      "firstIndex": 2352,
+      "indexCount": 6
+    },
+    {
+      "name": "port rear rib 0",
+      "firstIndex": 2358,
+      "indexCount": 48
+    },
+    {
+      "name": "port rear rib 1",
+      "firstIndex": 2406,
+      "indexCount": 48
+    },
+    {
+      "name": "port rear rib 2",
+      "firstIndex": 2454,
+      "indexCount": 48
+    },
+    {
+      "name": "port rear rib 3",
+      "firstIndex": 2502,
+      "indexCount": 48
+    },
+    {
+      "name": "port repair stitch 0-0",
+      "firstIndex": 2550,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 0-1",
+      "firstIndex": 2586,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 0-2",
+      "firstIndex": 2622,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 1-0",
+      "firstIndex": 2658,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 1-1",
+      "firstIndex": 2694,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 1-2",
+      "firstIndex": 2730,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 2-0",
+      "firstIndex": 2766,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 2-1",
+      "firstIndex": 2802,
+      "indexCount": 36
+    },
+    {
+      "name": "port repair stitch 2-2",
+      "firstIndex": 2838,
+      "indexCount": 36
+    },
+    {
+      "name": "port scavenged side plate",
+      "firstIndex": 2874,
+      "indexCount": 6
+    },
+    {
+      "name": "port stitched repair 0",
+      "firstIndex": 2880,
+      "indexCount": 6
+    },
+    {
+      "name": "port stitched repair 1",
+      "firstIndex": 2886,
+      "indexCount": 6
+    },
+    {
+      "name": "port stitched repair 2",
+      "firstIndex": 2892,
+      "indexCount": 6
+    },
+    {
+      "name": "port tail boom",
+      "firstIndex": 2898,
+      "indexCount": 60
+    },
+    {
+      "name": "port tail canvas",
+      "firstIndex": 2958,
+      "indexCount": 6
+    },
+    {
+      "name": "port tail diagonal",
+      "firstIndex": 2964,
+      "indexCount": 60
+    },
+    {
+      "name": "port torn trailing panel 0",
+      "firstIndex": 3024,
+      "indexCount": 15
+    },
+    {
+      "name": "port torn trailing panel 1",
+      "firstIndex": 3039,
+      "indexCount": 15
+    },
+    {
+      "name": "port torn trailing panel 2",
+      "firstIndex": 3054,
+      "indexCount": 15
+    },
+    {
+      "name": "port torn trailing panel 3",
+      "firstIndex": 3069,
+      "indexCount": 15
+    },
+    {
+      "name": "port trailing spar 0",
+      "firstIndex": 3084,
+      "indexCount": 48
+    },
+    {
+      "name": "port trailing spar 1",
+      "firstIndex": 3132,
+      "indexCount": 48
+    },
+    {
+      "name": "port trailing spar 2",
+      "firstIndex": 3180,
+      "indexCount": 48
+    },
+    {
+      "name": "port trailing spar 3",
+      "firstIndex": 3228,
+      "indexCount": 48
+    },
+    {
+      "name": "port upright 0",
+      "firstIndex": 3276,
+      "indexCount": 60
+    },
+    {
+      "name": "port upright 1",
+      "firstIndex": 3336,
+      "indexCount": 60
+    },
+    {
+      "name": "port upright 2",
+      "firstIndex": 3396,
+      "indexCount": 60
+    },
+    {
+      "name": "rear cargo tool box",
+      "firstIndex": 3456,
+      "indexCount": 36
+    },
+    {
+      "name": "salvaged instrument dial",
+      "firstIndex": 3492,
+      "indexCount": 84
+    },
+    {
+      "name": "salvaged instrument dial.001",
+      "firstIndex": 3576,
+      "indexCount": 84
+    },
+    {
+      "name": "salvaged instrument dial.002",
+      "firstIndex": 3660,
+      "indexCount": 84
+    },
+    {
+      "name": "scarf resting on shoulder",
+      "firstIndex": 3744,
+      "indexCount": 6
+    },
+    {
+      "name": "seat back",
+      "firstIndex": 3750,
+      "indexCount": 36
+    },
+    {
+      "name": "skid nose",
+      "firstIndex": 3786,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard aft lift strut",
+      "firstIndex": 3846,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard canvas leading panel 0",
+      "firstIndex": 3906,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard canvas leading panel 1",
+      "firstIndex": 3912,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard canvas leading panel 2",
+      "firstIndex": 3918,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard canvas leading panel 3",
+      "firstIndex": 3924,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard cockpit rail",
+      "firstIndex": 3930,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard exposed rib 0",
+      "firstIndex": 3990,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard exposed rib 1",
+      "firstIndex": 4038,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard exposed rib 2",
+      "firstIndex": 4086,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard exposed rib 3",
+      "firstIndex": 4134,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard kingpost tension cable",
+      "firstIndex": 4182,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard leading spar 0",
+      "firstIndex": 4218,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard leading spar 1",
+      "firstIndex": 4278,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard leading spar 2",
+      "firstIndex": 4338,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard leading spar 3",
+      "firstIndex": 4398,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard lower chassis",
+      "firstIndex": 4458,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard main lift strut",
+      "firstIndex": 4518,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard nose cowling",
+      "firstIndex": 4578,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard nose rail",
+      "firstIndex": 4584,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard panel rivet 0",
+      "firstIndex": 4644,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard panel rivet 1",
+      "firstIndex": 4680,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard panel rivet 2",
+      "firstIndex": 4716,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard rear olive plate",
+      "firstIndex": 4752,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard rear rib 0",
+      "firstIndex": 4758,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard rear rib 1",
+      "firstIndex": 4806,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard rear rib 2",
+      "firstIndex": 4854,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard rear rib 3",
+      "firstIndex": 4902,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard repair stitch 0-0",
+      "firstIndex": 4950,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 0-1",
+      "firstIndex": 4986,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 0-2",
+      "firstIndex": 5022,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 1-0",
+      "firstIndex": 5058,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 1-1",
+      "firstIndex": 5094,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 1-2",
+      "firstIndex": 5130,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 2-0",
+      "firstIndex": 5166,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 2-1",
+      "firstIndex": 5202,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard repair stitch 2-2",
+      "firstIndex": 5238,
+      "indexCount": 36
+    },
+    {
+      "name": "starboard scavenged side plate",
+      "firstIndex": 5274,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard stitched repair 0",
+      "firstIndex": 5280,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard stitched repair 1",
+      "firstIndex": 5286,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard stitched repair 2",
+      "firstIndex": 5292,
+      "indexCount": 6
+    },
+    {
+      "name": "starboard tail boom",
+      "firstIndex": 5298,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard tail diagonal",
+      "firstIndex": 5358,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard tail repair",
+      "firstIndex": 5418,
+      "indexCount": 9
+    },
+    {
+      "name": "starboard torn trailing panel 0",
+      "firstIndex": 5427,
+      "indexCount": 15
+    },
+    {
+      "name": "starboard torn trailing panel 1",
+      "firstIndex": 5442,
+      "indexCount": 15
+    },
+    {
+      "name": "starboard torn trailing panel 2",
+      "firstIndex": 5457,
+      "indexCount": 15
+    },
+    {
+      "name": "starboard torn trailing panel 3",
+      "firstIndex": 5472,
+      "indexCount": 15
+    },
+    {
+      "name": "starboard trailing spar 0",
+      "firstIndex": 5487,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard trailing spar 1",
+      "firstIndex": 5535,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard trailing spar 2",
+      "firstIndex": 5583,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard trailing spar 3",
+      "firstIndex": 5631,
+      "indexCount": 48
+    },
+    {
+      "name": "starboard upright 0",
+      "firstIndex": 5679,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard upright 1",
+      "firstIndex": 5739,
+      "indexCount": 60
+    },
+    {
+      "name": "starboard upright 2",
+      "firstIndex": 5799,
+      "indexCount": 60
+    },
+    {
+      "name": "tail cross brace 0",
+      "firstIndex": 5859,
+      "indexCount": 48
+    },
+    {
+      "name": "tail cross brace 1",
+      "firstIndex": 5907,
+      "indexCount": 48
+    },
+    {
+      "name": "tail cross brace 2",
+      "firstIndex": 5955,
+      "indexCount": 48
+    },
+    {
+      "name": "tail fin post",
+      "firstIndex": 6003,
+      "indexCount": 60
+    },
+    {
+      "name": "tail leading spar",
+      "firstIndex": 6063,
+      "indexCount": 60
+    },
+    {
+      "name": "tail repaired spar",
+      "firstIndex": 6123,
+      "indexCount": 60
+    },
+    {
+      "name": "tool box strap",
+      "firstIndex": 6183,
+      "indexCount": 36
+    },
+    {
+      "name": "uneven tail fin",
+      "firstIndex": 6219,
+      "indexCount": 6
+    },
+    {
+      "name": "upper longitudinal brace",
+      "firstIndex": 6225,
+      "indexCount": 60
+    }
+  ],
+  "validation": "See validation/report.json; physical-device qualification remains separate"
+}

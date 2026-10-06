@@ -5,16 +5,21 @@ generated post-apocalyptic landscape. The complete production application lives
 in a single [`index.html`](./index.html); Node.js and the rest of the repository
 exist only for development, testing, and release evidence.
 
-![A glider crossing the procedurally generated wasteland](./evidence/visual/us2-wasteland-long-flight.png)
+![Dustkite flying above the wasteland](./art/buildings/validation/after-chromium-desktop-level.png)
 
 ## What it includes
 
+- A Blender-authored scrap ultralight with patched canvas wings, exposed framing,
+  and a seated pilot; [editable source and regeneration tools](./art/glider/README.md)
+  accompany geometry embedded directly in the HTML.
 - Forgiving but speed-dependent glider physics with lift, drag, gravity, banked
   turns, self-leveling, recoverable stalls, and terrain impacts.
 - A camera locked behind and above the glider, with the world horizon providing
   the attitude cue.
-- Deterministic, streamed terrain with mountains, cracks, ruined towers, warm
-  lighting, shadows, fog, and ash.
+- Deterministic, streamed terrain with mountains, cracks, warm lighting, shadows,
+  fog, and ash. Four Blender-authored building designs mix ruined towers, an
+  industrial works, and a low concrete shell; [editable models and tools](./art/buildings/README.md)
+  accompany their embedded geometry.
 - Keyboard, optional pointer-lock, and multi-touch controls.
 - Desktop and mobile layouts, safe-area handling, deliberate pause/resume,
   portrait-orientation protection, visible focus, and reduced-motion support.
@@ -141,26 +146,28 @@ simulation, world streaming, rendering, camera, HUD, and adaptive quality.
 
 ### Useful commands
 
-| Command                                 | Purpose                                                                                  |
-| --------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `npm run serve`                         | Serve the repository at `127.0.0.1:4173` without caching                                 |
-| `npm run format`                        | Format the application, configuration, tests, and evidence                               |
-| `npm run format:check`                  | Check formatting without modifying files                                                 |
-| `npm run lint`                          | Run ESLint with zero warnings allowed                                                    |
-| `npm run typecheck`                     | Run strict TypeScript `checkJs` validation                                               |
-| `npm run verify:runtime-deps`           | Verify exact runtime URLs, bytes, hashes, exports, licenses, CSP, and request budget     |
-| `npm run verify:forbidden-runtime-apis` | Reject prohibited runtime APIs and behaviors                                             |
-| `npm run audit:dependencies`            | Audit the development dependency resolution                                              |
-| `npm run test:unit`                     | Run deterministic flight, terrain, lifecycle, and input tests                            |
-| `npm run test:integration`              | Run dependency, streaming, crash/restart, and responsive-control tests                   |
-| `npm run test:e2e`                      | Run desktop and mobile flight journeys                                                   |
-| `npm run test:accessibility`            | Run automated accessibility and lifecycle assertions                                     |
-| `npm run test:network`                  | Exercise CDN success and fail-closed dependency cases                                    |
-| `npm run test:performance:smoke`        | Run the short performance contract matrix                                                |
-| `npm run test:performance:full`         | Run the full automated performance workloads                                             |
-| `npm test`                              | Run the complete Playwright matrix                                                       |
-| `npm run validate:automated`            | Run formatting, lint, types, security checks, dependency checks, and all automated tests |
-| `npm run validate`                      | Run automated validation and require the formal physical-device qualification report     |
+| Command                                 | Purpose                                                                              |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run serve`                         | Serve the repository at `127.0.0.1:4173` without caching                             |
+| `npm run format`                        | Format the application, configuration, tests, and evidence                           |
+| `npm run format:check`                  | Check formatting without modifying files                                             |
+| `npm run lint`                          | Run ESLint with zero warnings allowed                                                |
+| `npm run buildings:embed`               | Validate and embed the saved Blender building export                                 |
+| `npm run buildings:check`               | Verify building geometry, provenance, budgets, and embedding consistency             |
+| `npm run typecheck`                     | Run strict TypeScript `checkJs` validation                                           |
+| `npm run verify:runtime-deps`           | Verify exact runtime URLs, bytes, hashes, exports, licenses, CSP, and request budget |
+| `npm run verify:forbidden-runtime-apis` | Reject prohibited runtime APIs and behaviors                                         |
+| `npm run audit:dependencies`            | Audit the development dependency resolution                                          |
+| `npm run test:unit`                     | Run deterministic flight, terrain, lifecycle, and input tests                        |
+| `npm run test:integration`              | Run dependency, streaming, crash/restart, and responsive-control tests               |
+| `npm run test:e2e`                      | Run desktop and mobile flight journeys                                               |
+| `npm run test:accessibility`            | Run automated accessibility and lifecycle assertions                                 |
+| `npm run test:network`                  | Exercise CDN success and fail-closed dependency cases                                |
+| `npm run test:performance:smoke`        | Run the short performance contract matrix                                            |
+| `npm run test:performance:full`         | Run the full automated performance workloads                                         |
+| `npm test`                              | Run the complete Playwright matrix                                                   |
+| `npm run validate:automated`            | Run asset checks, formatting, lint, types, security checks, and all automated tests  |
+| `npm run validate`                      | Run automated validation and require the formal physical-device qualification report |
 
 Recommended inner loop:
 
@@ -193,13 +200,16 @@ manual evidence described under [Release qualification](#release-qualification).
 Tests cover deterministic fixtures, terrain seams, region recycling, origin
 rebasing, stalls, crashes and restarts, dependency failures, request allowlisting,
 keyboard/pointer/touch input, responsive states, accessibility, and performance
-smoke budgets. Browser emulation is functional evidence; it does not replace the
+smoke budgets. Building tests also cover descriptor compatibility, complete window
+panels, transformed normals, empty regions, and stable pooled resources. Browser emulation is functional evidence; it does not replace the
 required physical-device performance runs.
 
 ### Repository layout
 
 ```text
 index.html                           # Sole production artifact
+art/glider/                          # Editable Blender glider and export evidence
+art/buildings/                       # Four editable Blender buildings and export evidence
 package.json / package-lock.json     # Development tooling and exact resolution
 eslint.config.js / jsconfig.json     # Static analysis
 playwright.config.js                 # Browser projects and test server
@@ -510,9 +520,12 @@ conflicting duplicate policies.
 
 ## Release qualification
 
-Automated validation currently has checked-in evidence for 156 passing tests,
-four explicitly non-applicable project skips, and zero failures. See the
-[automated test matrix](./evidence/validation/automated-tests.md).
+The Dustkite change passed 160 automated tests with four non-applicable project
+skips and zero failures, plus 20 performance smoke checks using one worker. See
+the [asset validation report](./art/glider/validation/report.json). Headless frame
+timings missed the release targets; these checks do not establish physical-device
+performance qualification. The [earlier test matrix](./evidence/validation/automated-tests.md)
+records the pre-Dustkite baseline.
 
 The checked-in [final validation report](./evidence/validation/final-report.md)
 still fails closed because formal desktop/mobile performance captures and a

@@ -1,0 +1,34 @@
+[WebServer] 
+[WebServer] > wasteland-flight-simulator@0.1.0 serve
+[WebServer] > http-server . -a 127.0.0.1 -p 4173 -c-1 -s
+[WebServer] 
+
+[WebServer] (node:4482) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+
+[WebServer] (node:4482) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+Running 20 tests using 1 worker
+
+[1/20] [desktop-chromium] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[2/20] [desktop-chromium] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[3/20] [desktop-chromium] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[4/20] [desktop-chromium] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[5/20] [desktop-chromium] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[6/20] [desktop-chromium] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[7/20] [desktop-chromium] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[8/20] [desktop-chromium] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+[9/20] [desktop-chromium] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+[10/20] [desktop-chromium] › tests/e2e/performance.spec.js:525:3 › deterministic maximum-speed traversal smoke › degrades and restores cosmetics in order without changing protected state
+[11/20] [desktop-webkit] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[12/20] [desktop-webkit] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[13/20] [desktop-webkit] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[14/20] [desktop-webkit] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[15/20] [desktop-webkit] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[16/20] [desktop-webkit] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[17/20] [desktop-webkit] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[18/20] [desktop-webkit] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+[19/20] [desktop-webkit] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+[20/20] [desktop-webkit] › tests/e2e/performance.spec.js:525:3 › deterministic maximum-speed traversal smoke › degrades and restores cosmetics in order without changing protected state
+  20 passed (37.6s)

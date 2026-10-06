@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "asset": {
+    "editableParts": 153,
+    "vertices": 4027,
+    "triangles": 2095,
+    "triangleBudget": 2500,
+    "embeddedBytes": 396249,
+    "embeddedBudgetBytes": 768000,
+    "bounds": {
+      "min": [
+        -8.37003,
+        -0.865,
+        -4.72
+      ],
+      "max": [
+        8.12236,
+        2.14385,
+        5.12
+      ]
+    },
+    "runtimeMeshes": 1,
+    "runtimeMaterials": 1,
+    "name": "Dustkite"
+  },
+  "recordedAtUtc": "2026-10-05T21:46:23.924282+00:00",
+  "implementationStatus": "COMPLETE",
+  "releaseQualificationStatus": "OPEN",
+  "indexSha256": "2f9635623d36e0fd24a57f74472927544ae05a30d9e6c38e03ea7d64bc36585a",
+  "sourceSha256": "0983b9e7c696372f1f3c725642273c2dcb1f0fdb04ce67346680209aa36eda65",
+  "geometrySha256": "cb252a1ba3170dad1eb67ec93ecc12133367b534d2bbe886d563c89f1efe06a4",
+  "baseCommit": "8e2127b386e71dd0a1ce7faa96e444778ae2f932",
+  "checks": [
+    {
+      "name": "Blender fresh-process saved-source re-export",
+      "status": "PASS",
+      "command": "Blender --background --threads 4 --python art/glider/export_geometry.py -- --check",
+      "result": "Byte-identical geometry.json on repeated exports from the delivered .blend; Blender 5.2.1"
+    },
+    {
+      "name": "Geometry, source hashes, budgets and embedded drift",
+      "status": "PASS",
+      "command": "npm run glider:check"
+    },
+    {
+      "name": "Isolated malformed export rejection",
+      "status": "PASS",
+      "evidence": "export-guards.json"
+    },
+    {
+      "name": "Full automated suite",
+      "status": "PASS",
+      "command": "npm run validate:automated",
+      "passed": 160,
+      "skipped": 4,
+      "failed": 0,
+      "evidence": "automated.txt",
+      "includes": [
+        "format",
+        "lint",
+        "typecheck",
+        "forbidden runtime API check",
+        "live CDN integrity",
+        "Chromium/WebKit desktop and emulated mobile",
+        "flight and camera",
+        "crash/restart",
+        "network allowlist",
+        "glider resource identity"
+      ]
+    },
+    {
+      "name": "Serialized performance smoke harness",
+      "status": "PASS",
+      "command": "npx playwright test tests/e2e/performance.spec.js --project=desktop-chromium --project=desktop-webkit --workers=1",
+      "passed": 20,
+      "failed": 0,
+      "durationSeconds": 37.6,
+      "evidence": "performance-smoke.txt",
+      "rawEvidenceDirectory": "performance/",
+      "qualification": false
+    },
+    {
+      "name": "Browser request and renderer comparison",
+      "status": "PASS",
+      "views": 8,
+      "externalRuntimeRequests": 2,
+      "evidence": [
+        "before-browser.json",
+        "after-browser.json"
+      ]
+    },
+    {
+      "name": "Blender and browser visual inspection",
+      "status": "PASS",
+      "reviewer": "Codex image inspection",
+      "views": [
+        "front",
+        "side",
+        "rear-three-quarter",
+        "desktop level/banked",
+        "mobile landscape level/banked"
+      ],
+      "findings": [
+        "Patched wings and torn edges are distinct",
+        "Pilot and open frame are visible; fine details are small in mobile chase view",
+        "Forward flight path and touch controls remain unobstructed",
+        "Existing warm game lighting darkens the studio palette"
+      ],
+      "humanAcceptance": "Not recorded"
+    },
+    {
+      "name": "Physical-device reference performance qualification",
+      "status": "OPEN",
+      "reason": "No qualified M1/Pixel 7/iPhone 13 device evidence was collected for this asset change"
+    }
+  ],
+  "renderComparisons": [
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "pose": "level",
+      "before": {
+        "calls": 68,
+        "triangles": 61046,
+        "geometries": 59,
+        "textures": 3
+      },
+      "after": {
+        "calls": 68,
+        "triangles": 65086,
+        "geometries": 59,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "pose": "banked",
+      "before": {
+        "calls": 69,
+        "triangles": 58998,
+        "geometries": 61,
+        "textures": 3
+      },
+      "after": {
+        "calls": 69,
+        "triangles": 63038,
+        "geometries": 61,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "pose": "level",
+      "before": {
+        "calls": 72,
+        "triangles": 61310,
+        "geometries": 61,
+        "textures": 3
+      },
+      "after": {
+        "calls": 72,
+        "triangles": 65350,
+        "geometries": 62,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "pose": "banked",
+      "before": {
+        "calls": 70,
+        "triangles": 61046,
+        "geometries": 61,
+        "textures": 3
+      },
+      "after": {
+        "calls": 70,
+        "triangles": 65086,
+        "geometries": 62,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "pose": "level",
+      "before": {
+        "calls": 68,
+        "triangles": 61046,
+        "geometries": 57,
+        "textures": 3
+      },
+      "after": {
+        "calls": 68,
+        "triangles": 65086,
+        "geometries": 61,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "pose": "banked",
+      "before": {
+        "calls": 69,
+        "triangles": 58998,
+        "geometries": 59,
+        "textures": 3
+      },
+      "after": {
+        "calls": 69,
+        "triangles": 63038,
+        "geometries": 61,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "pose": "level",
+      "before": {
+        "calls": 72,
+        "triangles": 61310,
+        "geometries": 63,
+        "textures": 3
+      },
+      "after": {
+        "calls": 72,
+        "triangles": 65350,
+        "geometries": 63,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    },
+    {
+      "engine": "webkit",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "pose": "banked",
+      "before": {
+        "calls": 70,
+        "triangles": 61046,
+        "geometries": 63,
+        "textures": 3
+      },
+      "after": {
+        "calls": 70,
+        "triangles": 65086,
+        "geometries": 63,
+        "textures": 3
+      },
+      "drawCallsUnchanged": true,
+      "texturesUnchanged": true,
+      "flightAndCameraIdentical": true
+    }
+  ],
+  "headlessFrameTiming": {
+    "status": "NOT_QUALIFIED",
+    "captures": [
+      {
+        "project": "desktop-chromium",
+        "summary": {
+          "count": 120,
+          "medianFps": 59.88023952095874,
+          "p99FrameMs": 50.19999999999982,
+          "within33msRatio": 0.8833333333333333
+        },
+        "frameCadenceBudgetPassed": false,
+        "nonpositiveSampleCount": 1
+      },
+      {
+        "project": "desktop-webkit",
+        "summary": {
+          "count": 120,
+          "medianFps": 58.8235294117647,
+          "p99FrameMs": 38,
+          "within33msRatio": 0.9666666666666667
+        },
+        "frameCadenceBudgetPassed": false,
+        "nonpositiveSampleCount": 0
+      }
+    ],
+    "notes": [
+      "Both captures miss the release frame-cadence target.",
+      "Raw sampling includes nonpositive initial intervals; preserve as diagnostic data, not qualification evidence.",
+      "Passing the smoke harness does not certify performance budgets or native device acceptance.",
+      "Some aggregate budget fields represent unavailable measurements; retain raw reports without promoting them to release results."
+    ]
+  },
+  "resolvedValidationIssues": [
+    "Original retry test hardcoded 26 listeners; untouched HEAD captures show 27. Test now compares recovery with a fresh load.",
+    "New glider test initially compared renderer-wide geometry counts affected by lazy terrain uploads. It now checks actual glider geometry/material identities, counts, bounds and scene ownership.",
+    "Six-worker smoke run hit host process limits (GPU launch and FFmpeg EAGAIN) and was interrupted; the server briefly occupied port 4173. The same smoke suite subsequently passed with one worker."
+  ],
+  "priorAttemptEvidence": [
+    "automated-initial.txt",
+    "performance-smoke-initial.txt",
+    "performance-smoke-port-conflict.txt"
+  ],
+  "artifactSha256": {
+    "README.md": "8ab6e0ed2cc596fb6119025a88be3d789bdaf91ebd90985579c85f5bda012e29",
+    "capture-browser.js": "97baa1872738e80fcd3cab8b149741f4f2e93e1a0b4ee2bb45cf803eba9986cb",
+    "create_scene.py": "0a61786f33a784757eb79061b557b37c29438f691d1c1b3b025f5708d959b9f6",
+    "dustkite.blend": "0983b9e7c696372f1f3c725642273c2dcb1f0fdb04ce67346680209aa36eda65",
+    "embed-geometry.js": "2687ab57fd761ac4f99a7d0de992118f213d0672600d87188a9c17093c2e5798",
+    "export_geometry.py": "0ac33ee81c6cd8e084624230a3d12aa910e16874721188a3ec8e2b41822131c9",
+    "geometry.json": "cb252a1ba3170dad1eb67ec93ecc12133367b534d2bbe886d563c89f1efe06a4",
+    "manifest.json": "776e47d6ed3a3c73f4c61e7193b8cdda4a76ecae16ca446bb0030aea4b7fac23",
+    "previews/front.png": "977e6656a4e363351e4b5bb4c73262240a73f9d62c5d65e20db1000ebf474d56",
+    "previews/rear-three-quarter.png": "0652146ca2047efebb8c2c16e844456db5562312f46e0678c4eb56d552a3738f",
+    "previews/side.png": "ba76967b2980b714bb6af7ddecffde2277d8ec7b17d97a40c63978265024c22b",
+    "render_previews.py": "ba110af9980cd55b72fd9b36e82b0e8533b7dfa59161bd9d73f6d743b8f3221a",
+    "validation/after-browser.json": "64f09c612d9c2f57c699e4385ca96aa76192b1f18554a3b6691121a28f818f80",
+    "validation/after-chromium-desktop-banked.png": "b9a9ff37094db4da700e8829e6edc74e621978e28b554c0ab24b21483a204830",
+    "validation/after-chromium-desktop-level.png": "9d02a9158432eb0d4edc35c443a8499232482be2309c4a214f6779afebc1da16",
+    "validation/after-chromium-mobile-banked.png": "80688c782c8cf96c00092dbd18d32ea4dd81917de6bea5f4e809230172c16a07",
+    "validation/after-chromium-mobile-level.png": "fcea8eb670ddab31b21a07ca8b8a81f2eb23c010fe91685928c62d60eb1727c8",
+    "validation/after-webkit-desktop-banked.png": "204aba76cf4f669088df7bf2e3900b8651e0e49edd875567dc83a10af0d89926",
+    "validation/after-webkit-desktop-level.png": "eae0257f18f1499a6fd541c857532aac4ef7f7afd2902be141cbf787f27433de",
+    "validation/after-webkit-mobile-banked.png": "55248946593adbb72706c821e95a28d55885eb7d5f7d64768a808a15cb5fa9e6",
+    "validation/after-webkit-mobile-level.png": "c0ab0a923d34d508aed42fc5f7edd01a98978461375a06575f9f5cb3c809b3a4",
+    "validation/automated-initial.txt": "e4babeb70b3410d9f4850f873b77908a55ab4fa6a430b614fac5d55ba0d3f17d",
+    "validation/automated.txt": "6a64d21121f6d07540fa77b794b3ea6eaeec8c1002d51f8c2f4ee2704d4b5f65",
+    "validation/before-browser.json": "8fd3108a3dff49fc978ec55123367875cd7729a4aaae0e29c63b8d2464913df2",
+    "validation/before-chromium-desktop-banked.png": "4fe18b354e34ff6a113875f8c2aa42ffe8e6a2148687cd6d67dd85788a8892da",
+    "validation/before-chromium-desktop-level.png": "018d509c8803e90f74af94884977d36d2ca9c6bcdf940aec9b029696d3b1d3ed",
+    "validation/before-chromium-mobile-banked.png": "6fa62551845b6371f77a6f56127e71b19e9487302aeb6b07d2e03d8834188463",
+    "validation/before-chromium-mobile-level.png": "d0e29855246bf083a31d42de767dd79f6a7e236971fecb8928abea769e54987c",
+    "validation/before-webkit-desktop-banked.png": "4431c9719ebe057e680ec8889dba10dc971f6ea9236547af106f096fa3ee8f7e",
+    "validation/before-webkit-desktop-level.png": "e059974291cd16c89ca19537a7315f57bf5aedd2585b0e4c1b911cb6b7d77a97",
+    "validation/before-webkit-mobile-banked.png": "a196c4d3343a5e2b9e4e7515c1a86dfbeb3fe0e4cddfa29acba32fed5ebcd739",
+    "validation/before-webkit-mobile-level.png": "a065404c73b0d4f6187ccb85202efba48380204e1dcbbbb8ad08903317901efd",
+    "validation/export-guards.json": "c7da3df112070b1bae40cfd8f843cc533cf4775209141ff46fd25d5b379b1246",
+    "validation/performance/desktop-chromium-adaptive-quality-matrix.json": "f5092c0b0e35ca80d1031e952d660cba45046c14c0f74f3d635f6bdc45eb9bbc",
+    "validation/performance/desktop-chromium-cold-load-network.json": "b919cf85a1b47033b5854bd61d95f57fa80942a1118e0bdd51afc8eb68a2be98",
+    "validation/performance/desktop-chromium-flight-five-minute-frames.json": "ef27720728feb461f3635d6a174fb68cd92e40a6c4419a138e80e4ab44fd9eea",
+    "validation/performance/desktop-chromium-flight-five-minute-memory.json": "0b983af6eb6c36be7de5bec56aa82fedab2f4a9f98ed77f3993e010dd90b2692",
+    "validation/performance/desktop-chromium-flight-five-minute-summary.json": "aaba43d7e63712ba2513231088c4e0a4ccf8fd0f12f69004aca8499a9b1d990d",
+    "validation/performance/desktop-chromium-maximum-speed-ten-minute-frames.json": "7a74f615a8d4f938f6fae9bf23f2fb26b608b643cdc21e451d49019da4e0e30d",
+    "validation/performance/desktop-chromium-maximum-speed-ten-minute-memory.json": "bb05670dbeefb34d1d9e204afeeb48726ac07b274042c1632a1e025ef186e262",
+    "validation/performance/desktop-chromium-maximum-speed-ten-minute.json": "b2fbac4646f18f860f5219f14a8d2541b7dbe6a309599724e6aaefa2d32ed03b",
+    "validation/performance/desktop-chromium-restart-twenty-memory.json": "f8a8b1237f7d13eeb57fda97716ca355ec4aea5720e38afd32dad11416cf7dff",
+    "validation/performance/desktop-chromium-restart-twenty-summary.json": "e47794d5a4b9f8180b6c02a14d4a9a26c443007e41fc68fcbc4cd301c1203d65",
+    "validation/performance/desktop-webkit-adaptive-quality-matrix.json": "f4d9a331e9393402307583afebcbf83ddb75497a5c880c637fb256646be77719",
+    "validation/performance/desktop-webkit-cold-load-network.json": "6e7e6693a67dda79a1c8901ed8d1eef44bd34398906cc9caed22cd699c3b2b8b",
+    "validation/performance/desktop-webkit-flight-five-minute-frames.json": "d89a232a85bda249a565a34eadf738bdebd3c1a671b6851ff7123e5335349011",
+    "validation/performance/desktop-webkit-flight-five-minute-memory.json": "589750e5fa0951c011e5373a46a48833299583cb9d644724dbc61f4cae48a928",
+    "validation/performance/desktop-webkit-flight-five-minute-summary.json": "2cba1afe82ecf85642370ef7768e8b28f6953ff059d8bc24adf12739c6eeaaaf",
+    "validation/performance/desktop-webkit-maximum-speed-ten-minute-frames.json": "c7ca86c481af7516499622bd7223ae8db2992b94b88911ad4ba62af74164dd0c",
+    "validation/performance/desktop-webkit-maximum-speed-ten-minute-memory.json": "765bf4d8b55cdee1d7d327abc14e18f0b2b91b88ed85fc1c451fd6587bb89b8e",
+    "validation/performance/desktop-webkit-maximum-speed-ten-minute.json": "0f1f66a914f1af759124010e6ff67da8595b5535ce8db5f2d724073b32c3cc30",
+    "validation/performance/desktop-webkit-restart-twenty-memory.json": "45df49a96f9d1da2ef3bae90ebdd911a02362aa4f87b05ca932b19fbe7e00e5e",
+    "validation/performance/desktop-webkit-restart-twenty-summary.json": "0a5cde3908a22fe190729f77b9814c9812bcae6c1a07628b873dedd6bc63ad60",
+    "validation/performance-smoke-initial.txt": "d3a41503fbbcd96939b68d5531583eb475d242694e5bb4bbc433748807286e8e",
+    "validation/performance-smoke-port-conflict.txt": "aa4a245b94a6ad9405887b15bf45cca1b6d003b4b82ab96a3bf01066c8702d05",
+    "validation/performance-smoke.txt": "c648fdf28bcb470a2d764ddcc15c5d586c3e96d0317bb78f2c29ffa664182658"
+  },
+  "exporterColorFollowup": {
+    "status": "PASS",
+    "blenderVersion": "5.2.1 LTS",
+    "regressionCommand": "Blender --background --factory-startup --threads 4 --python-exit-code 1 --python tests/blender/export-colors.py",
+    "regressionResult": "Five test groups, 18 scenarios across both exporters: CORNER/POINT colors without material slots, colors overriding palette and unsupported materials, palette fallback, rejection of missing or unsupported palettes when colors are absent.",
+    "freshProcessExport": "PASS: regenerated manifest and byte-identical geometry; a separate Blender --check also passed.",
+    "runtimeImpact": "Saved Blender sources, geometry.json files, and index.html are unchanged. Earlier browser and performance evidence was not rerun for this exporter-only correction."
+  }
+}

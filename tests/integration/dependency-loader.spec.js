@@ -399,8 +399,20 @@ test.describe("verified runtime dependency loader", () => {
     expect(recoveredAudit.revoked).toBe(recoveredAudit.created);
     expect(attempts).toBe(2);
     await expect(page.locator("canvas")).toHaveCount(1);
-    expect(
-      await page.evaluate(() => globalThis.__WFS_TEST__.metrics().listeners),
-    ).toBe(26);
+    const recoveredListeners = await page.evaluate(
+      () => globalThis.__WFS_TEST__.metrics().listeners,
+    );
+    // Compare against a clean application, not an outdated fixed listener count.
+    await page.reload();
+    await expect(page.getByTestId("application-state")).toHaveAttribute(
+      "data-phase",
+      /ready|flying/,
+      { timeout: 15_000 },
+    );
+    const cleanListeners = await page.evaluate(
+      () => globalThis.__WFS_TEST__.metrics().listeners,
+    );
+    expect(cleanListeners).toBeGreaterThan(0);
+    expect(recoveredListeners).toBe(cleanListeners);
   });
 });

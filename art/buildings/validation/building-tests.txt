@@ -1,0 +1,30 @@
+[WebServer] 
+[WebServer] > wasteland-flight-simulator@0.1.0 serve
+[WebServer] > http-server . -a 127.0.0.1 -p 4173 -c-1 -s
+[WebServer] 
+
+[WebServer] (node:36087) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+[WebServer] (node:36087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+
+Running 16 tests using 1 worker
+
+[1/16] [desktop-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[2/16] [desktop-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[3/16] [desktop-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[4/16] [desktop-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[5/16] [desktop-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[6/16] [desktop-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[7/16] [desktop-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[8/16] [desktop-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[9/16] [mobile-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[10/16] [mobile-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[11/16] [mobile-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[12/16] [mobile-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[13/16] [mobile-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[14/16] [mobile-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[15/16] [mobile-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[16/16] [mobile-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+  16 passed (47.7s)

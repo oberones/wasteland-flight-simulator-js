@@ -192,6 +192,13 @@ session seed and integer coordinates. Recycling cannot alter their regenerated v
 | `clusterId`          | stable string           | Supports encounter-density evidence          |
 
 Ruins have no collision entity and never enter aircraft collision queries.
+The descriptor remains unchanged by the Blender building replacement. Rendering
+hashes `damageMask` and `windowSeed` to select an equally weighted model and rotation;
+`0:0:0` stays an office tower. Tower height uses the sum of `tierHeights`; industrial
+and shell heights use independent deterministic ranges (30–55 m and 12–26 m).
+Authored broken geometry replaces the former tier-box construction. Render-only
+instance metadata and batch bounds/counts/IDs are available through the existing
+webdriver-only region snapshot, never persisted into these descriptors.
 
 ## Camera and Atmosphere
 
