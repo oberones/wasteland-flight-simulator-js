@@ -9,9 +9,9 @@
   },
   "scripts": {
     "serve": "http-server . -a 127.0.0.1 -p 4173 -c-1 -s",
-    "format": "prettier --write index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence art/glider/*.js art/glider/README.md",
-    "format:check": "prettier --check index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence art/glider/*.js art/glider/README.md",
-    "lint": "eslint eslint.config.js playwright.config.js tests art/glider/*.js --max-warnings 0",
+    "format": "prettier --write index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence art/glider/*.js art/buildings/*.js art/glider/README.md art/buildings/README.md",
+    "format:check": "prettier --check index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence art/glider/*.js art/buildings/*.js art/glider/README.md art/buildings/README.md",
+    "lint": "eslint eslint.config.js playwright.config.js tests art/glider/*.js art/buildings/*.js --max-warnings 0",
     "typecheck": "tsc --project jsconfig.json",
     "verify:runtime-deps": "node tests/helpers/runtime-dependencies.js",
     "verify:forbidden-runtime-apis": "node tests/helpers/runtime-dependencies.js static",
@@ -29,10 +29,12 @@
     "qualify:android": "node tests/helpers/metrics.js qualify android-pixel7",
     "qualify:ios": "node tests/helpers/metrics.js qualify ios-iphone13",
     "qualify:report": "node tests/helpers/metrics.js report",
-    "validate:automated": "npm run glider:check && npm run format:check && npm run lint && npm run typecheck && npm run verify:forbidden-runtime-apis && npm run verify:runtime-deps && npm test",
+    "validate:automated": "npm run glider:check && npm run buildings:check && npm run format:check && npm run lint && npm run typecheck && npm run verify:forbidden-runtime-apis && npm run verify:runtime-deps && npm test",
     "validate": "npm run validate:automated && npm run qualify:report",
     "glider:embed": "node art/glider/embed-geometry.js",
-    "glider:check": "node art/glider/embed-geometry.js --check"
+    "glider:check": "node art/glider/embed-geometry.js --check",
+    "buildings:embed": "node art/buildings/embed-geometry.js",
+    "buildings:check": "node art/buildings/embed-geometry.js --check"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",

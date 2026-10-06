@@ -15,7 +15,7 @@ exactly two reviewed library artifacts from pinned jsDelivr URLs: Three.js `0.18
 `three.cjs` and the `simplex-noise` `4.0.3` ES module. It verifies each SHA-384 digest,
 wraps the verified self-contained Three.js CommonJS export object in a local blob-module
 adapter, imports both verified blob URLs, then builds the procedural world and a
-Blender-authored glider from embedded geometry without external runtime assets.
+Blender-authored glider and mixed building set from embedded geometry without external runtime assets.
 
 The implementation uses a fixed 60 Hz pure simulation step, an in-memory session seed,
 pooled terrain regions, merged ruin and glider geometry, bounded desktop and touch
@@ -133,7 +133,8 @@ specs/001-wasteland-flight-simulator/
 
 ```text
 index.html                           # Only shipped runtime artifact
-art/glider/                          # Editable Blender source, scripts, previews, manifest, validation
+art/glider/                          # Editable glider source and reproducible export evidence
+art/buildings/                       # Four editable building models, exports, previews, validation
 package.json                         # Development commands and exact dev constraints
 package-lock.json                    # Exact development dependency resolution
 eslint.config.js                     # Development-only static rules
@@ -188,7 +189,7 @@ parallel and verifies their SHA-384 digests with Web Crypto. It UTF-8 decodes th
 Three.js `three.cjs` bytes, prepends an owned `exports` object, appends a default ES-module
 export, and imports that adapted blob; the verified simplex-noise bytes import directly
 as a blob module. Application startup waits until both export objects pass shape checks.
-World geometry, colors, shaders, UI icons, ash, and cracks are authored procedurally
+Terrain geometry, colors, shaders, UI icons, ash, and cracks are authored procedurally
 or with CSS/SVG-like HTML primitives inside the document. The original Dustkite
 glider is authored offline in Blender and embedded as indexed position, split-normal,
 and linear-color arrays. Its editable sources and export tooling in `art/glider/`
@@ -232,11 +233,24 @@ stored triangle heights rendered by the region. Regions are generated synchronou
 before they enter the collision horizon, then pooled and recycled without retaining
 unbounded scene objects.
 
-Eligible low-slope regions receive deterministic ruin descriptors. A local geometry
-merger combines transformed box, cylinder, and custom damaged-prism buffers into one
-opaque ruin mesh and one emissive-window mesh per region. Missing tiers, clipped roof
-corners, irregular heights, and absent window bands create broken silhouettes. The safe
-spawn corridor rejects ruin descriptors. Ruins remain non-colliding by specification.
+Eligible low-slope regions receive deterministic ruin descriptors. Their positions,
+counts, dimensions, random stream, and hashes remain unchanged. A separate hash of
+existing damage/window values selects four equally weighted Blender-authored models:
+office tower, residential tower, industrial works, and concrete shell. The spawn
+landmark remains an office tower. Towers use the existing total tier height;
+industrial structures use 30–55 m and shells 12–26 m. Quarter-turn rotation and
+axis-aware scaling fit the original footprints; recessed foundations cover ground
+variation. The safe spawn corridor and non-colliding scenery contract remain intact.
+
+The editable source and export pipeline live in `art/buildings/`. Evaluated models
+export normalized indexed positions, inverse-transpose split normals, linear colors,
+and named window-panel ranges into the document. Each model is limited to 1,000
+triangles including windows and the full formatted embedding to 1 MiB. Each pooled
+region retains one fixed-capacity body geometry and one window geometry, with shared
+materials, active draw ranges, and refreshed bounds even when empty. Window density
+uses whole deterministic panels interleaved across buildings; it never changes opaque
+silhouettes. `npm run buildings:check` validates geometry, provenance, budgets, and
+embedding drift; a fresh Blender process verifies the saved source export.
 
 Global coordinates use JavaScript numbers while render-space objects are rebased in
 8,192 m increments. The HUD adds the accumulated origin offset, terrain keys remain

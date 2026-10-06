@@ -1,0 +1,663 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-10-05T23:32:23.384919+00:00",
+  "implementationStatus": "COMPLETE",
+  "releaseQualificationStatus": "OPEN",
+  "baselineCommit": "e2dd19fe78ee7f26b90e1eacd567250d70b71a74",
+  "indexSha256": "74697821ca4e91a78f6704932bd168b7f4d1c71eae0b735f074b9aa16c1d571d",
+  "sourceSha256": "d3ea9979e89452de31dba5e95d662ffb316458d8fff5962626a058cfbf56e6d1",
+  "geometrySha256": "05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f",
+  "asset": {
+    "models": {
+      "office": {
+        "triangles": 964,
+        "bodyVertices": 1308,
+        "windowVertices": 600,
+        "windowPanels": 25,
+        "bounds": {
+          "min": [
+            -0.5,
+            -0.1,
+            -0.5
+          ],
+          "max": [
+            0.5,
+            1.0,
+            0.5
+          ]
+        }
+      },
+      "residential": {
+        "triangles": 964,
+        "bodyVertices": 1356,
+        "windowVertices": 552,
+        "windowPanels": 23,
+        "bounds": {
+          "min": [
+            -0.5,
+            -0.11905,
+            -0.5
+          ],
+          "max": [
+            0.5,
+            1.0,
+            0.5
+          ]
+        }
+      },
+      "industrial": {
+        "triangles": 600,
+        "bodyVertices": 1026,
+        "windowVertices": 168,
+        "windowPanels": 7,
+        "bounds": {
+          "min": [
+            -0.5,
+            -0.2381,
+            -0.5
+          ],
+          "max": [
+            0.5,
+            1.0,
+            0.5
+          ]
+        }
+      },
+      "shell": {
+        "triangles": 356,
+        "bodyVertices": 572,
+        "windowVertices": 120,
+        "windowPanels": 5,
+        "bounds": {
+          "min": [
+            -0.5,
+            -0.45455,
+            -0.5
+          ],
+          "max": [
+            0.5,
+            1.0,
+            0.5
+          ]
+        }
+      }
+    },
+    "triangleBudgetPerModel": 1000,
+    "embeddedBytes": 535391,
+    "embeddedBudgetBytes": 1048576,
+    "runtimeMeshesPerRegion": 2,
+    "sharedBuildingMaterials": 2,
+    "editableParts": 230
+  },
+  "environment": {
+    "os": "macOS 26.6.2 (25G83)",
+    "node": "20.20.2",
+    "blender": "5.2.1 LTS",
+    "browsers": [
+      {
+        "engine": "chromium",
+        "version": "151.0.7922.34",
+        "layout": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      {
+        "engine": "chromium",
+        "version": "151.0.7922.34",
+        "layout": "mobile",
+        "viewport": {
+          "width": 844,
+          "height": 390
+        }
+      },
+      {
+        "engine": "webkit",
+        "version": "26.5",
+        "layout": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      },
+      {
+        "engine": "webkit",
+        "version": "26.5",
+        "layout": "mobile",
+        "viewport": {
+          "width": 844,
+          "height": 390
+        }
+      }
+    ],
+    "referenceHardwareQualification": false
+  },
+  "checks": [
+    {
+      "name": "Fresh-process saved Blender source export",
+      "status": "PASS",
+      "evidence": "fresh-export.txt",
+      "result": "Byte-identical geometry export; saved source and export geometry have not changed since this check"
+    },
+    {
+      "name": "Geometry, source/tool provenance, budgets and exact embedding",
+      "status": "PASS",
+      "command": "npm run buildings:check",
+      "evidence": "automated.txt"
+    },
+    {
+      "name": "Existing glider export compatibility",
+      "status": "PASS",
+      "command": "npm run glider:check",
+      "evidence": "automated.txt"
+    },
+    {
+      "name": "Malformed geometry and provenance rejection",
+      "status": "PASS",
+      "cases": 8,
+      "evidence": "export-guards.json"
+    },
+    {
+      "name": "Full automated validation",
+      "status": "PASS",
+      "command": "npm run validate:automated -- -- --workers=1",
+      "passed": 176,
+      "skipped": 4,
+      "skipReason": "Existing desktop-only/mobile-only responsive tests skip in the opposite layout",
+      "failed": 0,
+      "evidence": "automated.txt"
+    },
+    {
+      "name": "Focused building checks",
+      "status": "PASS",
+      "passed": 16,
+      "failed": 0,
+      "evidence": "building-tests.txt"
+    },
+    {
+      "name": "Serialized performance smoke assertions",
+      "status": "PASS",
+      "command": "npx playwright test tests/e2e/performance.spec.js --project=desktop-chromium --project=desktop-webkit --workers=1 --reporter=line,json",
+      "passed": 20,
+      "failed": 0,
+      "qualification": false,
+      "evidence": "performance-smoke.txt",
+      "rawEvidence": "performance/"
+    },
+    {
+      "name": "Matched before/after requests and world/flight compatibility",
+      "status": "PASS",
+      "views": 8,
+      "inspectionViews": 16,
+      "externalRuntimeRequests": 2,
+      "unexpectedRequests": 0,
+      "consoleErrors": 0,
+      "evidence": [
+        "before-browser.json",
+        "after-browser.json"
+      ]
+    },
+    {
+      "name": "Visual inspection of Blender and browser images",
+      "status": "PASS",
+      "reviewer": "Codex image inspection",
+      "findings": [
+        "Four distinct silhouettes with open floor plates, broken wall thickness, rust framing and a hollow chimney",
+        "Warm windows remain legible under game lighting on desktop and emulated mobile",
+        "Ground skirts bridge slope variation; no floating lower foundation edges observed in reviewed views",
+        "Inspection camera follows model orientation and clears intervening terrain; normal flight captures retain the exact release camera",
+        "Game lighting darkens the neutral studio palette; fine structural details are smaller on mobile"
+      ],
+      "humanAcceptance": "OPEN"
+    },
+    {
+      "name": "Physical reference-device performance qualification",
+      "status": "OPEN",
+      "reason": "No qualified physical-device runs. Short accelerated smoke frame samples miss the cadence target and are not substituted for qualification."
+    }
+  ],
+  "documentSize": {
+    "beforeBytes": 519160,
+    "afterBytes": 1064331,
+    "deltaBytes": 545171
+  },
+  "loadComparison": [
+    {
+      "engine": "chromium",
+      "layout": "desktop",
+      "beforeControllableMs": 454.7186250000001,
+      "afterControllableMs": 312.82829100000004,
+      "networkShaped": false
+    },
+    {
+      "engine": "chromium",
+      "layout": "mobile",
+      "beforeControllableMs": 278.8934170000002,
+      "afterControllableMs": 326.45137499999964,
+      "networkShaped": false
+    },
+    {
+      "engine": "webkit",
+      "layout": "desktop",
+      "beforeControllableMs": 402.4325410000001,
+      "afterControllableMs": 385.94904099999985,
+      "networkShaped": false
+    },
+    {
+      "engine": "webkit",
+      "layout": "mobile",
+      "beforeControllableMs": 310.189042,
+      "afterControllableMs": 336.7635419999988,
+      "networkShaped": false
+    }
+  ],
+  "renderComparisons": [
+    {
+      "engine": "chromium",
+      "layout": "desktop",
+      "pose": "level",
+      "rendererBefore": {
+        "calls": 68,
+        "triangles": 65086,
+        "geometries": 59,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 68,
+        "triangles": 77434,
+        "geometries": 57,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": {
+        "usedJSHeapSize": 11900000,
+        "totalJSHeapSize": 20500000
+      },
+      "heapAfter": {
+        "usedJSHeapSize": 19300000,
+        "totalJSHeapSize": 26000000
+      },
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "chromium",
+      "layout": "desktop",
+      "pose": "banked",
+      "rendererBefore": {
+        "calls": 69,
+        "triangles": 63038,
+        "geometries": 61,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 69,
+        "triangles": 75386,
+        "geometries": 59,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": {
+        "usedJSHeapSize": 11900000,
+        "totalJSHeapSize": 20500000
+      },
+      "heapAfter": {
+        "usedJSHeapSize": 19300000,
+        "totalJSHeapSize": 26000000
+      },
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "chromium",
+      "layout": "mobile",
+      "pose": "level",
+      "rendererBefore": {
+        "calls": 72,
+        "triangles": 65350,
+        "geometries": 61,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 72,
+        "triangles": 78398,
+        "geometries": 61,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 13048,
+      "heapBefore": {
+        "usedJSHeapSize": 11900000,
+        "totalJSHeapSize": 20500000
+      },
+      "heapAfter": {
+        "usedJSHeapSize": 16100000,
+        "totalJSHeapSize": 26000000
+      },
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "chromium",
+      "layout": "mobile",
+      "pose": "banked",
+      "rendererBefore": {
+        "calls": 70,
+        "triangles": 65086,
+        "geometries": 61,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 70,
+        "triangles": 77434,
+        "geometries": 61,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": {
+        "usedJSHeapSize": 11900000,
+        "totalJSHeapSize": 20500000
+      },
+      "heapAfter": {
+        "usedJSHeapSize": 16100000,
+        "totalJSHeapSize": 26000000
+      },
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "webkit",
+      "layout": "desktop",
+      "pose": "level",
+      "rendererBefore": {
+        "calls": 68,
+        "triangles": 65086,
+        "geometries": 58,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 68,
+        "triangles": 77434,
+        "geometries": 58,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": null,
+      "heapAfter": null,
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "webkit",
+      "layout": "desktop",
+      "pose": "banked",
+      "rendererBefore": {
+        "calls": 69,
+        "triangles": 63038,
+        "geometries": 60,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 69,
+        "triangles": 75386,
+        "geometries": 60,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": null,
+      "heapAfter": null,
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "webkit",
+      "layout": "mobile",
+      "pose": "level",
+      "rendererBefore": {
+        "calls": 72,
+        "triangles": 65350,
+        "geometries": 61,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 72,
+        "triangles": 78398,
+        "geometries": 62,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 13048,
+      "heapBefore": null,
+      "heapAfter": null,
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    },
+    {
+      "engine": "webkit",
+      "layout": "mobile",
+      "pose": "banked",
+      "rendererBefore": {
+        "calls": 70,
+        "triangles": 65086,
+        "geometries": 61,
+        "textures": 3
+      },
+      "rendererAfter": {
+        "calls": 70,
+        "triangles": 77434,
+        "geometries": 62,
+        "textures": 3
+      },
+      "drawCallDelta": 0,
+      "triangleDelta": 12348,
+      "heapBefore": null,
+      "heapAfter": null,
+      "buildingTypedArrayBytes": 3817200,
+      "worldEstimatedAllocatedBytes": 6217900,
+      "descriptorHashUnchanged": true,
+      "aircraftAndChaseCameraUnchanged": true
+    }
+  ],
+  "performanceObservations": [
+    {
+      "engine": "desktop-chromium",
+      "workload": "flight-five-minute-summary",
+      "frameSummary": {
+        "count": 120,
+        "medianFps": 59.88023952095874,
+        "p99FrameMs": 59.09999999999991,
+        "within33msRatio": 0.8833333333333333
+      },
+      "reportedBudgets": {
+        "budgets": {
+          "frameCadence": false,
+          "coldFeedback": false,
+          "coldControl": false,
+          "inputResponse": true,
+          "memoryStability": true,
+          "restart": false,
+          "network": false,
+          "worldContinuity": true
+        },
+        "result": "fail",
+        "inputP95Ms": 1.1000000005587935,
+        "memoryRatio": 1
+      }
+    },
+    {
+      "engine": "desktop-chromium",
+      "workload": "maximum-speed-ten-minute",
+      "frameSummary": {
+        "count": 120,
+        "medianFps": 59.88023952095874,
+        "p99FrameMs": 93,
+        "within33msRatio": 0.9416666666666667
+      },
+      "reportedBudgets": {
+        "budgets": {
+          "frameCadence": false,
+          "coldFeedback": false,
+          "coldControl": false,
+          "inputResponse": false,
+          "memoryStability": true,
+          "restart": false,
+          "network": false,
+          "worldContinuity": true
+        },
+        "result": "fail",
+        "inputP95Ms": null,
+        "memoryRatio": 1
+      },
+      "estimatedPoolBytes": {
+        "minuteTwo": 6217900,
+        "minuteTen": 6217900
+      }
+    },
+    {
+      "engine": "desktop-webkit",
+      "workload": "flight-five-minute-summary",
+      "frameSummary": {
+        "count": 120,
+        "medianFps": 58.8235294117647,
+        "p99FrameMs": 48,
+        "within33msRatio": 0.9666666666666667
+      },
+      "reportedBudgets": {
+        "budgets": {
+          "frameCadence": false,
+          "coldFeedback": false,
+          "coldControl": false,
+          "inputResponse": true,
+          "memoryStability": false,
+          "restart": false,
+          "network": false,
+          "worldContinuity": true
+        },
+        "result": "fail",
+        "inputP95Ms": 13,
+        "memoryRatio": null
+      }
+    },
+    {
+      "engine": "desktop-webkit",
+      "workload": "maximum-speed-ten-minute",
+      "frameSummary": {
+        "count": 120,
+        "medianFps": 58.8235294117647,
+        "p99FrameMs": 91,
+        "within33msRatio": 0.9333333333333333
+      },
+      "reportedBudgets": {
+        "budgets": {
+          "frameCadence": false,
+          "coldFeedback": false,
+          "coldControl": false,
+          "inputResponse": false,
+          "memoryStability": true,
+          "restart": false,
+          "network": false,
+          "worldContinuity": true
+        },
+        "result": "fail",
+        "inputP95Ms": null,
+        "memoryRatio": 1
+      },
+      "estimatedPoolBytes": {
+        "minuteTwo": 6217900,
+        "minuteTen": 6217900
+      }
+    }
+  ],
+  "limitations": [
+    "Smoke assertions passing does not mean the release performance budgets passed: observed short-sample frame cadence misses the target in both desktop engines.",
+    "The smoke budget helper also marks absent metrics as false; workload-specific missing cold/restart/network measurements are not independent observed failures.",
+    "Heap values are coarse Chromium snapshots without forced collection; WebKit exposes no heap value here. allocatedBytes retains a legacy terrain estimate plus exact building typed-array capacity, not total process memory.",
+    "Browser close-ups inject only a webdriver inspection camera. Their instrumented document hashes are recorded separately; normal flight captures use the release document.",
+    "Initial focused run had three mobile Chromium CDN timeouts before application startup. Live dependency verification and the complete rerun passed; the initial log is retained.",
+    "Human visual acceptance and physical-device Chrome/Safari reference performance remain OPEN."
+  ],
+  "artifactSha256": {
+    "buildings.blend": "d3ea9979e89452de31dba5e95d662ffb316458d8fff5962626a058cfbf56e6d1",
+    "capture-browser.js": "d08a80c95b3f275f07335648b51ca0d27ca0b69f13c1e0679b916bc3b49dad48",
+    "check-guards.js": "0687516a6adfac000992236a5c8aff489e23e3481227c6c9085cebf38e0d0e60",
+    "geometry.json": "05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f",
+    "manifest.json": "755e6cca41038768418149f465deeac5051cb0d499361751c1d733e465d384ae",
+    "previews/gallery.png": "3ac6f5cf72872471b00caba26e099564dfbdee63cb77a29ea95baadc3dd27189",
+    "previews/industrial-front.png": "f3f2c8278f0b5bf1cd1c3e94d1b437218a8ec7108a42523d6de264f856c72f90",
+    "previews/industrial-rear.png": "5a7e49f272360b7bd70ede215820a77428d006a6803efdfb75bde814dae3cce6",
+    "previews/office-front.png": "44661a999b64f8af34ebe51dea3d99e4ef666ef080346315931fc822d8847c9d",
+    "previews/office-rear.png": "7773d486cd13bd075a85c4a76748b89bd0299ff46328c5543a37ac5d50b16c14",
+    "previews/residential-front.png": "8fd7a4eaa401642f6736e575b6661cec68e064ba340f23561f9224ddd386b06b",
+    "previews/residential-rear.png": "bd074f31d8caf18097b5152047ffcf53c9fc0c7840b8f26aed003ed4740260b9",
+    "previews/shell-front.png": "64b5a0fcfb938c5ea7bf86ed3512c5baccbbfa1e31e5196707492f94e9e1425c",
+    "previews/shell-rear.png": "bf15305cbd48e49b97dcf861a939168d918d6c0eb13858cf5c8e52c8703676f7",
+    "validation/after-chromium-desktop-banked.png": "4cb3739d66c015dfbbacd92471182495106f27290bb8dd578efb54a4c6289468",
+    "validation/after-chromium-desktop-industrial.png": "f0a02ea21eb12158aea315f0a61f5b435172e82da806699dafd27bea1cfab040",
+    "validation/after-chromium-desktop-level.png": "63b072898e173182404c91cffd5c47ed14df1380a509c3ff19b81e4f36544ae1",
+    "validation/after-chromium-desktop-office.png": "19e9b24be4d5088aedd31967b46ff3320626e19eae0bf8787aa66e5463b0ef04",
+    "validation/after-chromium-desktop-residential.png": "8ed42de4a76cc7dc5b229a7aec3e4d2befce329568de4f807cfee0d1ebc0e851",
+    "validation/after-chromium-desktop-shell.png": "8c1075b7c79573c6edcba45c8294cc72fdf3024569d8c93ae464d824f76fc67e",
+    "validation/after-chromium-mobile-banked.png": "c97d7a8080308ccb4408f2f6c30dc7f7351d4c820efc8504a03d807265e161e6",
+    "validation/after-chromium-mobile-industrial.png": "eef21d343cc6dacfb397d772a3aaddd7ec7d06720a6bf08c8d91838c0d5c32cc",
+    "validation/after-chromium-mobile-level.png": "ba87b615f69fc1c8d3432cb38900efd077d84a7fc8a8749d632894865e07973e",
+    "validation/after-chromium-mobile-office.png": "5668f0d74c042591d1332417bf0e534a0bc10f261e8ac8e0a11f70e4258270da",
+    "validation/after-chromium-mobile-residential.png": "1e708df6714bdc56c2c1f2db75200da409c6c9578fe534bc69d15921229a03b2",
+    "validation/after-chromium-mobile-shell.png": "0e592c6d550b9e4d66648f37739610c0cf15fcaee5dbae06f1982d7018c3e7aa",
+    "validation/after-webkit-desktop-banked.png": "5323e08d3f4de761dd1e78c5e05d1fb776a77e53f4c3cb7b3fa7a27964e2645d",
+    "validation/after-webkit-desktop-industrial.png": "5ab1331045e755851de08db43dbda34aa508751cc58dd6edfb0c8b630a865efa",
+    "validation/after-webkit-desktop-level.png": "482050c2f50ae6942402f2f03f20fdc167b6d86452e2b7027c9392a4a18792a1",
+    "validation/after-webkit-desktop-office.png": "3570f00b8adb4b3b259c2c73d98010e8162570c93efd604a9238bf79657c8f2d",
+    "validation/after-webkit-desktop-residential.png": "b75830e7d293b07e8a1a0dd22d978bd1e068998369f68f9e205688a71d18fb39",
+    "validation/after-webkit-desktop-shell.png": "4d239daaba95cc3929da9f6523bc1bdd8dd148b192d10ae047cc61ccb5258fd7",
+    "validation/after-webkit-mobile-banked.png": "403cca13be61c0e7de390dbb84650885624001292b9bdab44ba504916341a448",
+    "validation/after-webkit-mobile-industrial.png": "237d26ea4b1673bd53cf0915fcd58946382269fb7eec398a3a0d4f624b409091",
+    "validation/after-webkit-mobile-level.png": "5571a62acb06220f462c6dcab67dde3c1d70b7f1cf8b8f807bddf892a9cc69e5",
+    "validation/after-webkit-mobile-office.png": "2045420f7a92d15b4fecbe2a5ce5dca83385becd57053b51d2f597951e9ac116",
+    "validation/after-webkit-mobile-residential.png": "b8175061e2545d31937bb5006c91f802b23bb6ad98bdc94dd430b42d1611bbb9",
+    "validation/after-webkit-mobile-shell.png": "5dac4b243e11704aeec1688de1074ecc8fda32b36fe1ee2968db76f05dd214ac",
+    "validation/before-chromium-desktop-banked.png": "b9a9ff37094db4da700e8829e6edc74e621978e28b554c0ab24b21483a204830",
+    "validation/before-chromium-desktop-industrial.png": "1f834917a6d687d67c66cf5ae75296926ec1a6ef583a310832aedb4b6de9315c",
+    "validation/before-chromium-desktop-level.png": "9d02a9158432eb0d4edc35c443a8499232482be2309c4a214f6779afebc1da16",
+    "validation/before-chromium-desktop-office.png": "5d893b82c6bb3eed0bfb241c5ec11882d8fa31a47133544dc81f79d6c4ef8f5e",
+    "validation/before-chromium-desktop-residential.png": "661e4da1cac450afb127482bfd47beb04485c37f04c366cdd7f029ada1588897",
+    "validation/before-chromium-desktop-shell.png": "3578d109c0e29791de60205cc5563e7c003cf13694c737211480ff0580c96209",
+    "validation/before-chromium-mobile-banked.png": "80688c782c8cf96c00092dbd18d32ea4dd81917de6bea5f4e809230172c16a07",
+    "validation/before-chromium-mobile-industrial.png": "0477431d7745238288027ce1b8751d6a3b34ab27970dc593a5d4f23738cc799d",
+    "validation/before-chromium-mobile-level.png": "fcea8eb670ddab31b21a07ca8b8a81f2eb23c010fe91685928c62d60eb1727c8",
+    "validation/before-chromium-mobile-office.png": "113290cb244ace66a47eb5b22d9b59bb01cc59c3ef3f2229b541843431ee9626",
+    "validation/before-chromium-mobile-residential.png": "567e5afcf636114db4a8324026e7e52abeab677db97e3c3c68855de4bdb0715c",
+    "validation/before-chromium-mobile-shell.png": "926386442577a9f01ee9b73c0cc43cdbef45982a7c176cec7543dfc221615d4e",
+    "validation/before-webkit-desktop-banked.png": "204aba76cf4f669088df7bf2e3900b8651e0e49edd875567dc83a10af0d89926",
+    "validation/before-webkit-desktop-industrial.png": "be086aea4b405a08a8128627e0614c41b31e6c69ee9e6e82a74bc2098ca9f39e",
+    "validation/before-webkit-desktop-level.png": "eae0257f18f1499a6fd541c857532aac4ef7f7afd2902be141cbf787f27433de",
+    "validation/before-webkit-desktop-office.png": "0f39b50588dacd708393e06db8eda37b64aba5b1d7b1c8c46991ac77480a837c",
+    "validation/before-webkit-desktop-residential.png": "94415b22936328cea1722a9d26d0da95506f757959d1c4ca315a117638328374",
+    "validation/before-webkit-desktop-shell.png": "2cdc835edf2774ae3b37b7541fdbe4d98065826853f34a1cd0667028bebefb07",
+    "validation/before-webkit-mobile-banked.png": "55248946593adbb72706c821e95a28d55885eb7d5f7d64768a808a15cb5fa9e6",
+    "validation/before-webkit-mobile-industrial.png": "afbff41a2d20b6b08d27d2cd8325d7d041959c11550c84ca214fb05ad19be68f",
+    "validation/before-webkit-mobile-level.png": "c0ab0a923d34d508aed42fc5f7edd01a98978461375a06575f9f5cb3c809b3a4",
+    "validation/before-webkit-mobile-office.png": "0e5892477ddaf534e50cb8a8c6ddb3ec23ed73cfd5250826c9fd255250f1065d",
+    "validation/before-webkit-mobile-residential.png": "1d48d0776c9419f6443b2416ae64e04f11ba35f55a9d7d90ccc7ef16ec189657",
+    "validation/before-webkit-mobile-shell.png": "3a0fe57a020a113e04549cd3e0ec7a8690081c9a4c217c99770737d8f43936dc"
+  }
+}

@@ -251,3 +251,12 @@ questions are offers for later scope rather than authorization to include them n
 
 **Alternatives considered**: Adding placeholders or dormant systems was rejected because
 unused complexity would violate the constitution and obscure completion of the requested slice.
+
+## Blender building graphics
+
+The four-model building replacement follows the glider's offline Blender-to-inline-buffer
+workflow. Separate body/window exports retain the two meshes per pooled region, with
+fixed-capacity reusable attributes and indices. Named panel boundaries replace the old
+36-index box assumption in adaptive window density. Existing seeded ruin descriptors
+are retained verbatim; model choice and rotation use an independent hash. See
+`art/buildings/README.md` for source, budgets, regeneration, and evidence limitations.

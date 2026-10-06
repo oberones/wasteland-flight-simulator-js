@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "profile": "smoke",
+  "project": "desktop-webkit",
+  "seed": 439041101,
+  "commandStream": {
+    "levelSeconds": 60,
+    "alternatingBankSeconds": 120,
+    "stallRecoveryCycles": 3,
+    "stallRecoverySeconds": 90,
+    "finalRouteSeconds": 30
+  },
+  "terminal": {
+    "seed": 439041101,
+    "attemptNumber": 1,
+    "crashCount": 0,
+    "elapsedFlightSeconds": 300.0000000000558,
+    "lifecycle": {
+      "phase": "flying",
+      "pauseReasons": [],
+      "resumeRequired": false,
+      "errorCode": null,
+      "crashReason": null,
+      "dependencyPending": false,
+      "sessionConstructed": true,
+      "started": true,
+      "revision": 2
+    },
+    "simulationConfigHash": "897a64ca",
+    "quality": {
+      "tier": 0,
+      "lowFpsSeconds": 0,
+      "recoverySeconds": 0,
+      "transitions": [],
+      "transitionActions": []
+    },
+    "hud": {
+      "speedKph": 342,
+      "altitudeMeters": 2475,
+      "coordinateX": -94,
+      "coordinateY": 2494,
+      "coordinateZ": -9387,
+      "lifecycleLabel": "Flight active",
+      "primaryAction": "none",
+      "controlMode": "keyboard",
+      "orientationPrompt": false,
+      "updateCount": 26
+    },
+    "aircraft": {
+      "globalPosition": {
+        "x": -94.08289270341731,
+        "y": 2493.5591497581954,
+        "z": -9387.428847673873
+      },
+      "previousGlobalPosition": {
+        "x": -94.26187069417719,
+        "y": 2492.5591497581954,
+        "z": -9385.855662585192
+      },
+      "localPosition": {
+        "x": -94.08289270341731,
+        "y": 2493.5591497581954,
+        "z": -1195.428847673873
+      },
+      "orientation": {
+        "x": -1.4052955039951536e-06,
+        "y": -0.056610147814814236,
+        "z": -7.968176709354777e-08,
+        "w": 0.9983963597501766
+      },
+      "airspeed": 95,
+      "verticalVelocity": 60,
+      "throttle": 1,
+      "pitchRate": 1.1906790314490085e-06,
+      "rollRate": -1.745659214096563e-37,
+      "pitchAngle": -2.815105424354442e-06,
+      "rollAngle": 2.4647045570458617e-37,
+      "heading": 0.11328085601937152,
+      "stallState": "normal",
+      "terrainSurfaceY": 16.23728994526326,
+      "clearance": 2475.321859812932
+    },
+    "controls": {
+      "frame": {
+        "pitch": 0,
+        "roll": 0,
+        "throttleDelta": 0
+      },
+      "pointerLockActive": false,
+      "desktopStick": {
+        "x": 0,
+        "y": 0
+      },
+      "touchStick": {
+        "x": 0,
+        "y": 0
+      },
+      "throttleUpTouchIds": [],
+      "throttleDownTouchIds": [],
+      "stickTouchId": null,
+      "activeKeys": [],
+      "revision": 1
+    },
+    "camera": {
+      "position": {
+        "x": -97.02189652742,
+        "y": 2503.559222950897,
+        "z": -1169.59552050405
+      },
+      "up": {
+        "x": 3.182159448186381e-07,
+        "y": 0.9999999999960376,
+        "z": -2.7970622378974797e-06
+      },
+      "distanceToAircraft": 27.856776554368324
+    },
+    "visual": {
+      "gliderVisible": true,
+      "gliderParts": [
+        "scrap-metal body",
+        "left exposed pipe support",
+        "right exposed pipe support",
+        "asymmetrically tattered left wing",
+        "asymmetrically tattered right wing",
+        "open cockpit and static goggled pilot",
+        "skeletal tail and patched stabilizers"
+      ],
+      "gliderGeometry": {
+        "geometryId": 103,
+        "materialId": 10,
+        "vertices": 4027,
+        "triangles": 2095,
+        "bounds": {
+          "min": [
+            -8.370030403137207,
+            -0.8650000095367432,
+            -4.71999979019165
+          ],
+          "max": [
+            8.122360229492188,
+            2.143850088119507,
+            5.119999885559082
+          ]
+        },
+        "meshes": 1,
+        "materials": 1
+      }
+    }
+  },
+  "frameSummary": {
+    "count": 120,
+    "medianFps": 58.8235294117647,
+    "p99FrameMs": 48,
+    "within33msRatio": 0.9666666666666667
+  },
+  "inputSamples": [
+    4,
+    9,
+    1,
+    13,
+    11
+  ],
+  "qualityTransitions": [],
+  "budgets": {
+    "budgets": {
+      "frameCadence": false,
+      "coldFeedback": false,
+      "coldControl": false,
+      "inputResponse": true,
+      "memoryStability": false,
+      "restart": false,
+      "network": false,
+      "worldContinuity": true
+    },
+    "result": "fail",
+    "inputP95Ms": 13,
+    "memoryRatio": null
+  }
+}

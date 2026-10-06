@@ -39,7 +39,12 @@ export default [
     ],
   },
   {
-    files: ["tests/**/*.js", "playwright.config.js", "art/glider/*.js"],
+    files: [
+      "tests/**/*.js",
+      "playwright.config.js",
+      "art/glider/*.js",
+      "art/buildings/*.js",
+    ],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: "module",

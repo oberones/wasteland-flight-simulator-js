@@ -1,0 +1,107 @@
+{
+  "residential": {
+    "regionX": -2,
+    "regionZ": -2,
+    "id": "-2:-2:0",
+    "height": 147,
+    "quarterTurn": 3,
+    "descriptor": {
+      "id": "-2:-2:0",
+      "clusterId": "-2:-2:cluster-0",
+      "globalX": -1431.8021268546581,
+      "globalZ": -1127.6756676267833,
+      "baseY": 5.025541305541992,
+      "width": 40,
+      "depth": 46,
+      "tiers": 4,
+      "tierHeights": [
+        35,
+        31,
+        47,
+        34
+      ],
+      "damageMask": 45282,
+      "windowSeed": 1562719946,
+      "slopeClass": "flat"
+    }
+  },
+  "office": {
+    "regionX": -1,
+    "regionZ": -2,
+    "id": "-1:-2:0",
+    "height": 151,
+    "quarterTurn": 3,
+    "descriptor": {
+      "id": "-1:-2:0",
+      "clusterId": "-1:-2:cluster-0",
+      "globalX": -671.1569361425936,
+      "globalZ": -1235.4349957974628,
+      "baseY": 70.68521118164062,
+      "width": 37,
+      "depth": 33,
+      "tiers": 5,
+      "tierHeights": [
+        25,
+        27,
+        36,
+        24,
+        39
+      ],
+      "damageMask": 6102,
+      "windowSeed": 538240783,
+      "slopeClass": "flat"
+    }
+  },
+  "shell": {
+    "regionX": -1,
+    "regionZ": -2,
+    "id": "-1:-2:1",
+    "height": 20.339329600878834,
+    "quarterTurn": 1,
+    "descriptor": {
+      "id": "-1:-2:1",
+      "clusterId": "-1:-2:cluster-1",
+      "globalX": -494.17957130167633,
+      "globalZ": -1438.4394692340866,
+      "baseY": 19.257436752319336,
+      "width": 48,
+      "depth": 35,
+      "tiers": 5,
+      "tierHeights": [
+        33,
+        29,
+        23,
+        37,
+        41
+      ],
+      "damageMask": 54407,
+      "windowSeed": 271713603,
+      "slopeClass": "flat"
+    }
+  },
+  "industrial": {
+    "regionX": 1,
+    "regionZ": -2,
+    "id": "1:-2:0",
+    "height": 36.95676860212273,
+    "quarterTurn": 2,
+    "descriptor": {
+      "id": "1:-2:0",
+      "clusterId": "1:-2:cluster-0",
+      "globalX": 1289.4583028052002,
+      "globalZ": -1354.5112666441128,
+      "baseY": -7.888493537902832,
+      "width": 52,
+      "depth": 48,
+      "tiers": 3,
+      "tierHeights": [
+        31,
+        25,
+        26
+      ],
+      "damageMask": 32601,
+      "windowSeed": 3306667933,
+      "slopeClass": "flat"
+    }
+  }
+}

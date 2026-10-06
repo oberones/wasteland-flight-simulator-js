@@ -1,0 +1,238 @@
+
+> wasteland-flight-simulator@0.1.0 validate:automated
+> npm run glider:check && npm run buildings:check && npm run format:check && npm run lint && npm run typecheck && npm run verify:forbidden-runtime-apis && npm run verify:runtime-deps && npm test -- --workers=1
+
+
+> wasteland-flight-simulator@0.1.0 glider:check
+> node art/glider/embed-geometry.js --check
+
+{"status":"PASS","vertices":4027,"triangles":2095,"bounds":{"min":[-8.37003,-0.865,-4.72],"max":[8.12236,2.14385,5.12]},"embeddedBytes":396249,"geometrySha256":"cb252a1ba3170dad1eb67ec93ecc12133367b534d2bbe886d563c89f1efe06a4"}
+
+> wasteland-flight-simulator@0.1.0 buildings:check
+> node art/buildings/embed-geometry.js --check
+
+{"status":"PASS","embeddedBytes":535391,"models":{"office":{"triangles":964,"bodyVertices":1308,"windowVertices":600,"windowPanels":25,"bounds":{"min":[-0.5,-0.1,-0.5],"max":[0.5,1,0.5]}},"residential":{"triangles":964,"bodyVertices":1356,"windowVertices":552,"windowPanels":23,"bounds":{"min":[-0.5,-0.11905,-0.5],"max":[0.5,1,0.5]}},"industrial":{"triangles":600,"bodyVertices":1026,"windowVertices":168,"windowPanels":7,"bounds":{"min":[-0.5,-0.2381,-0.5],"max":[0.5,1,0.5]}},"shell":{"triangles":356,"bodyVertices":572,"windowVertices":120,"windowPanels":5,"bounds":{"min":[-0.5,-0.45455,-0.5],"max":[0.5,1,0.5]}}},"geometrySha256":"05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f"}
+
+> wasteland-flight-simulator@0.1.0 format:check
+> prettier --check index.html package.json eslint.config.js jsconfig.json playwright.config.js tests evidence art/glider/*.js art/buildings/*.js art/glider/README.md art/buildings/README.md
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> wasteland-flight-simulator@0.1.0 lint
+> eslint eslint.config.js playwright.config.js tests art/glider/*.js art/buildings/*.js --max-warnings 0
+
+
+> wasteland-flight-simulator@0.1.0 typecheck
+> tsc --project jsconfig.json
+
+
+> wasteland-flight-simulator@0.1.0 verify:forbidden-runtime-apis
+> node tests/helpers/runtime-dependencies.js static
+
+forbidden runtime API review: 0 findings
+
+> wasteland-flight-simulator@0.1.0 verify:runtime-deps
+> node tests/helpers/runtime-dependencies.js
+
+Three.js: 2093053 bytes 718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178
+simplex-noise: 18735 bytes 5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2
+
+> wasteland-flight-simulator@0.1.0 test
+> playwright test --workers=1
+
+[WebServer] 
+[WebServer] > wasteland-flight-simulator@0.1.0 serve
+[WebServer] > http-server . -a 127.0.0.1 -p 4173 -c-1 -s
+[WebServer] 
+
+[WebServer] (node:37280) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+[WebServer] (node:37280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+
+Running 180 tests using 1 worker
+
+[1/180] [desktop-chromium] › tests/e2e/accessibility.spec.js:38:1 › exposes controlled landmarks, names, headings, and live status
+[2/180] [desktop-chromium] › tests/e2e/accessibility.spec.js:73:1 › keyboard-only pause, resume, crash, and restart keep focus visible
+[3/180] [desktop-chromium] › tests/e2e/accessibility.spec.js:103:1 › text and shape cues survive reduced motion without changing simulation
+[4/180] [desktop-chromium] › tests/e2e/accessibility.spec.js:138:1 › foreground and panel tokens preserve non-color readable hooks
+[5/180] [desktop-chromium] › tests/e2e/desktop-flight.spec.js:49:1 › chase camera stays locked behind the glider while steering
+[6/180] [desktop-chromium] › tests/e2e/desktop-flight.spec.js:71:1 › two-minute deterministic keyboard and pointer flight keeps the glider and chase view stable
+[7/180] [desktop-chromium] › tests/e2e/desktop-flight.spec.js:158:1 › stall-recovery fixture remains controllable after an induced stall
+[8/180] [desktop-chromium] › tests/e2e/desktop-flight.spec.js:178:1 › HUD remains authoritative through rebase, crash, and keyboard restart
+[9/180] [desktop-chromium] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[10/180] [desktop-chromium] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[11/180] [desktop-chromium] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[12/180] [desktop-chromium] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[13/180] [desktop-chromium] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[14/180] [desktop-chromium] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[15/180] [desktop-chromium] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[16/180] [desktop-chromium] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+[17/180] [desktop-chromium] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+[18/180] [desktop-chromium] › tests/e2e/performance.spec.js:525:3 › deterministic maximum-speed traversal smoke › degrades and restores cosmetics in order without changing protected state
+[19/180] [desktop-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[20/180] [desktop-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[21/180] [desktop-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[22/180] [desktop-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[23/180] [desktop-chromium] › tests/integration/crash-restart.spec.js:5:3 › terrain crash and same-world restart › sweeps into one clamped crash and freezes physics and input
+[24/180] [desktop-chromium] › tests/integration/crash-restart.spec.js:41:3 › terrain crash and same-world restart › restarts within two seconds with fresh aircraft and the same world
+[25/180] [desktop-chromium] › tests/integration/crash-restart.spec.js:73:3 › terrain crash and same-world restart › holds listener, DOM, scene, world, and pool counts across 20 cycles
+[26/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:41:3 › verified runtime dependency loader › uses the exact two-request manifest and exposes no partial application
+[27/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:124:3 › verified runtime dependency loader › query, fragment, and stored values cannot select trusted behavior or UI
+[28/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › HTTP error fails closed with controlled Retry
+[29/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › truncated body fails closed with controlled Retry
+[30/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › oversized body fails closed with controlled Retry
+[31/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › one-bit mutation fails closed with controlled Retry
+[32/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:229:3 › verified runtime dependency loader › redirect-selected final URL is rejected before bytes can execute
+[33/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:256:3 › verified runtime dependency loader › a stalled dependency times out without automatic retry
+[34/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › parse failure discards the verified partial module
+[35/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › missing export discards the verified partial module
+[36/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:306:3 › verified runtime dependency loader › explicit keyboard or touch Retry performs a clean new attempt
+[37/180] [desktop-chromium] › tests/integration/dependency-loader.spec.js:341:3 › verified runtime dependency loader › Retry revokes verified blobs and discards partial imports before success
+[38/180] [desktop-chromium] › tests/integration/glider-asset.spec.js:5:1 › embedded Blender aircraft retains its bounds and resources across flight and restart
+[39/180] [desktop-chromium] › tests/integration/responsive-controls.spec.js:105:1 › fits every contracted viewport with unique bounded controls
+[40/180] [desktop-chromium] › tests/integration/responsive-controls.spec.js:151:1 › desktop zoom equivalents retain essential readable controls
+[41/180] [desktop-chromium] › tests/integration/responsive-controls.spec.js:172:1 › renderer follows aspect and capped device-pixel resize
+[42/180] [desktop-chromium] › tests/integration/responsive-controls.spec.js:192:1 › touch pointers remain independent and cancel to neutral
+[43/180] [desktop-chromium] › tests/integration/world-streaming.spec.js:10:3 › bounded deterministic world streaming › keeps an exactly 5x5 ready map while recycling a bounded pool
+[44/180] [desktop-chromium] › tests/integration/world-streaming.spec.js:47:3 › bounded deterministic world streaming › regenerates descriptors independently of request direction and restart
+[45/180] [desktop-chromium] › tests/integration/world-streaming.spec.js:68:3 › bounded deterministic world streaming › rebases render space without changing global continuity
+[46/180] [desktop-chromium] › tests/unit/flight-model.spec.js:37:3 › deterministic forgiving glider model › spawns in stable finite level flight
+[47/180] [desktop-chromium] › tests/unit/flight-model.spec.js:54:3 › deterministic forgiving glider model › bounds throttle, speed, pitch, roll, and normalized orientation
+[48/180] [desktop-chromium] › tests/unit/flight-model.spec.js:79:3 › deterministic forgiving glider model › keeps the rendered nose aligned with travel through left and right banks
+[49/180] [desktop-chromium] › tests/unit/flight-model.spec.js:98:3 › deterministic forgiving glider model › applies gravity, lift, drag, stall hysteresis, and nose-down recovery
+[50/180] [desktop-chromium] › tests/unit/flight-model.spec.js:129:3 › deterministic forgiving glider model › is independent of render cadence for one command stream
+[51/180] [desktop-chromium] › tests/unit/input.spec.js:9:3 › normalized keyboard, pointer, and touch input › combines axes and cancels opposing keyboard commands
+[52/180] [desktop-chromium] › tests/unit/input.spec.js:40:3 › normalized keyboard, pointer, and touch input › bounds and centers explicit pointer-stick control
+[53/180] [desktop-chromium] › tests/unit/input.spec.js:60:3 › normalized keyboard, pointer, and touch input › accepts simultaneous touch joystick and throttle pointers and cancels ownership
+[54/180] [desktop-chromium] › tests/unit/input.spec.js:101:3 › normalized keyboard, pointer, and touch input › pause clears every adapter before another frame
+[55/180] [desktop-chromium] › tests/unit/lifecycle.spec.js:13:3 › reason-based lifecycle authority › focus and orientation blockers require deliberate resume
+[56/180] [desktop-chromium] › tests/unit/lifecycle.spec.js:36:3 › reason-based lifecycle authority › manual pause resumes only after a deliberate Resume event
+[57/180] [desktop-chromium] › tests/unit/lifecycle.spec.js:56:3 › reason-based lifecycle authority › crash and error take priority and transitions are idempotent
+[58/180] [desktop-chromium] › tests/unit/lifecycle.spec.js:78:3 › reason-based lifecycle authority › pause and crash always expose a neutral control frame
+[59/180] [desktop-chromium] › tests/unit/lifecycle.spec.js:97:3 › reason-based lifecycle authority › dependency error has priority and Retry is idempotent
+[60/180] [desktop-chromium] › tests/unit/terrain.spec.js:37:3 › deterministic rendered terrain › global height samples and region descriptor hashes replay exactly
+[61/180] [desktop-chromium] › tests/unit/terrain.spec.js:81:3 › deterministic rendered terrain › shared edges are byte-equal and sampling uses rendered triangles
+[62/180] [desktop-chromium] › tests/unit/terrain.spec.js:103:3 › deterministic rendered terrain › cracks are cosmetic while slope and ruin rules remain deterministic
+[63/180] [desktop-webkit] › tests/e2e/accessibility.spec.js:38:1 › exposes controlled landmarks, names, headings, and live status
+[64/180] [desktop-webkit] › tests/e2e/accessibility.spec.js:73:1 › keyboard-only pause, resume, crash, and restart keep focus visible
+[65/180] [desktop-webkit] › tests/e2e/accessibility.spec.js:103:1 › text and shape cues survive reduced motion without changing simulation
+[66/180] [desktop-webkit] › tests/e2e/accessibility.spec.js:138:1 › foreground and panel tokens preserve non-color readable hooks
+[67/180] [desktop-webkit] › tests/e2e/desktop-flight.spec.js:49:1 › chase camera stays locked behind the glider while steering
+[68/180] [desktop-webkit] › tests/e2e/desktop-flight.spec.js:71:1 › two-minute deterministic keyboard and pointer flight keeps the glider and chase view stable
+[69/180] [desktop-webkit] › tests/e2e/desktop-flight.spec.js:158:1 › stall-recovery fixture remains controllable after an induced stall
+[70/180] [desktop-webkit] › tests/e2e/desktop-flight.spec.js:178:1 › HUD remains authoritative through rebase, crash, and keyboard restart
+[71/180] [desktop-webkit] › tests/e2e/performance.spec.js:80:3 › performance evidence contract › selects only explicit smoke or full workload profiles
+[72/180] [desktop-webkit] › tests/e2e/performance.spec.js:92:3 › performance evidence contract › rejects incomplete or non-reference preflight records
+[73/180] [desktop-webkit] › tests/e2e/performance.spec.js:107:3 › performance evidence contract › merges environment runs atomically in lexical order and rejects duplicates
+[74/180] [desktop-webkit] › tests/e2e/performance.spec.js:130:3 › performance evidence contract › writes and validates the contracted performance evidence set
+[75/180] [desktop-webkit] › tests/e2e/performance.spec.js:198:3 › performance evidence contract › generates a fail-closed report when qualification evidence is missing
+[76/180] [desktop-webkit] › tests/e2e/performance.spec.js:218:3 › normative performance workload smoke › records cold-load feedback, control, network, and initial capture
+[77/180] [desktop-webkit] › tests/e2e/performance.spec.js:264:3 › normative performance workload smoke › runs the deterministic flight-five-minute workload with raw evidence
+[78/180] [desktop-webkit] › tests/e2e/performance.spec.js:371:3 › normative performance workload smoke › runs restart-twenty with bounded recovery and stable ownership
+[79/180] [desktop-webkit] › tests/e2e/performance.spec.js:428:3 › deterministic maximum-speed traversal smoke › traverses ten simulated minutes with bounded world and memory
+[80/180] [desktop-webkit] › tests/e2e/performance.spec.js:525:3 › deterministic maximum-speed traversal smoke › degrades and restores cosmetics in order without changing protected state
+[81/180] [desktop-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[82/180] [desktop-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[83/180] [desktop-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[84/180] [desktop-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[85/180] [desktop-webkit] › tests/integration/crash-restart.spec.js:5:3 › terrain crash and same-world restart › sweeps into one clamped crash and freezes physics and input
+[86/180] [desktop-webkit] › tests/integration/crash-restart.spec.js:41:3 › terrain crash and same-world restart › restarts within two seconds with fresh aircraft and the same world
+[87/180] [desktop-webkit] › tests/integration/crash-restart.spec.js:73:3 › terrain crash and same-world restart › holds listener, DOM, scene, world, and pool counts across 20 cycles
+[88/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:41:3 › verified runtime dependency loader › uses the exact two-request manifest and exposes no partial application
+[89/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:124:3 › verified runtime dependency loader › query, fragment, and stored values cannot select trusted behavior or UI
+[90/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › HTTP error fails closed with controlled Retry
+[91/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › truncated body fails closed with controlled Retry
+[92/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › oversized body fails closed with controlled Retry
+[93/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › one-bit mutation fails closed with controlled Retry
+[94/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:229:3 › verified runtime dependency loader › redirect-selected final URL is rejected before bytes can execute
+[95/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:256:3 › verified runtime dependency loader › a stalled dependency times out without automatic retry
+[96/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › parse failure discards the verified partial module
+[97/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › missing export discards the verified partial module
+[98/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:306:3 › verified runtime dependency loader › explicit keyboard or touch Retry performs a clean new attempt
+[99/180] [desktop-webkit] › tests/integration/dependency-loader.spec.js:341:3 › verified runtime dependency loader › Retry revokes verified blobs and discards partial imports before success
+[100/180] [desktop-webkit] › tests/integration/glider-asset.spec.js:5:1 › embedded Blender aircraft retains its bounds and resources across flight and restart
+[101/180] [desktop-webkit] › tests/integration/responsive-controls.spec.js:105:1 › fits every contracted viewport with unique bounded controls
+[102/180] [desktop-webkit] › tests/integration/responsive-controls.spec.js:151:1 › desktop zoom equivalents retain essential readable controls
+[103/180] [desktop-webkit] › tests/integration/responsive-controls.spec.js:172:1 › renderer follows aspect and capped device-pixel resize
+[104/180] [desktop-webkit] › tests/integration/responsive-controls.spec.js:192:1 › touch pointers remain independent and cancel to neutral
+[105/180] [desktop-webkit] › tests/integration/world-streaming.spec.js:10:3 › bounded deterministic world streaming › keeps an exactly 5x5 ready map while recycling a bounded pool
+[106/180] [desktop-webkit] › tests/integration/world-streaming.spec.js:47:3 › bounded deterministic world streaming › regenerates descriptors independently of request direction and restart
+[107/180] [desktop-webkit] › tests/integration/world-streaming.spec.js:68:3 › bounded deterministic world streaming › rebases render space without changing global continuity
+[108/180] [desktop-webkit] › tests/unit/flight-model.spec.js:37:3 › deterministic forgiving glider model › spawns in stable finite level flight
+[109/180] [desktop-webkit] › tests/unit/flight-model.spec.js:54:3 › deterministic forgiving glider model › bounds throttle, speed, pitch, roll, and normalized orientation
+[110/180] [desktop-webkit] › tests/unit/flight-model.spec.js:79:3 › deterministic forgiving glider model › keeps the rendered nose aligned with travel through left and right banks
+[111/180] [desktop-webkit] › tests/unit/flight-model.spec.js:98:3 › deterministic forgiving glider model › applies gravity, lift, drag, stall hysteresis, and nose-down recovery
+[112/180] [desktop-webkit] › tests/unit/flight-model.spec.js:129:3 › deterministic forgiving glider model › is independent of render cadence for one command stream
+[113/180] [desktop-webkit] › tests/unit/input.spec.js:9:3 › normalized keyboard, pointer, and touch input › combines axes and cancels opposing keyboard commands
+[114/180] [desktop-webkit] › tests/unit/input.spec.js:40:3 › normalized keyboard, pointer, and touch input › bounds and centers explicit pointer-stick control
+[115/180] [desktop-webkit] › tests/unit/input.spec.js:60:3 › normalized keyboard, pointer, and touch input › accepts simultaneous touch joystick and throttle pointers and cancels ownership
+[116/180] [desktop-webkit] › tests/unit/input.spec.js:101:3 › normalized keyboard, pointer, and touch input › pause clears every adapter before another frame
+[117/180] [desktop-webkit] › tests/unit/lifecycle.spec.js:13:3 › reason-based lifecycle authority › focus and orientation blockers require deliberate resume
+[118/180] [desktop-webkit] › tests/unit/lifecycle.spec.js:36:3 › reason-based lifecycle authority › manual pause resumes only after a deliberate Resume event
+[119/180] [desktop-webkit] › tests/unit/lifecycle.spec.js:56:3 › reason-based lifecycle authority › crash and error take priority and transitions are idempotent
+[120/180] [desktop-webkit] › tests/unit/lifecycle.spec.js:78:3 › reason-based lifecycle authority › pause and crash always expose a neutral control frame
+[121/180] [desktop-webkit] › tests/unit/lifecycle.spec.js:97:3 › reason-based lifecycle authority › dependency error has priority and Retry is idempotent
+[122/180] [desktop-webkit] › tests/unit/terrain.spec.js:37:3 › deterministic rendered terrain › global height samples and region descriptor hashes replay exactly
+[123/180] [desktop-webkit] › tests/unit/terrain.spec.js:81:3 › deterministic rendered terrain › shared edges are byte-equal and sampling uses rendered triangles
+[124/180] [desktop-webkit] › tests/unit/terrain.spec.js:103:3 › deterministic rendered terrain › cracks are cosmetic while slope and ruin rules remain deterministic
+[125/180] [mobile-chromium] › tests/e2e/accessibility.spec.js:38:1 › exposes controlled landmarks, names, headings, and live status
+[126/180] [mobile-chromium] › tests/e2e/accessibility.spec.js:73:1 › keyboard-only pause, resume, crash, and restart keep focus visible
+[127/180] [mobile-chromium] › tests/e2e/accessibility.spec.js:103:1 › text and shape cues survive reduced motion without changing simulation
+[128/180] [mobile-chromium] › tests/e2e/accessibility.spec.js:138:1 › foreground and panel tokens preserve non-color readable hooks
+[129/180] [mobile-chromium] › tests/e2e/mobile-flight.spec.js:5:1 › landscape touch controls fly with joystick and throttle concurrently
+[130/180] [mobile-chromium] › tests/e2e/mobile-flight.spec.js:144:1 › touch lifecycle clears ownership and requires deliberate resume
+[131/180] [mobile-chromium] › tests/e2e/mobile-flight.spec.js:214:1 › reduced-motion touch flight preserves controls and simulation
+[132/180] [mobile-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[133/180] [mobile-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[134/180] [mobile-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[135/180] [mobile-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[136/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:41:3 › verified runtime dependency loader › uses the exact two-request manifest and exposes no partial application
+[137/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:124:3 › verified runtime dependency loader › query, fragment, and stored values cannot select trusted behavior or UI
+[138/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › HTTP error fails closed with controlled Retry
+[139/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › truncated body fails closed with controlled Retry
+[140/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › oversized body fails closed with controlled Retry
+[141/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › one-bit mutation fails closed with controlled Retry
+[142/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:229:3 › verified runtime dependency loader › redirect-selected final URL is rejected before bytes can execute
+[143/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:256:3 › verified runtime dependency loader › a stalled dependency times out without automatic retry
+[144/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › parse failure discards the verified partial module
+[145/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › missing export discards the verified partial module
+[146/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:306:3 › verified runtime dependency loader › explicit keyboard or touch Retry performs a clean new attempt
+[147/180] [mobile-chromium] › tests/integration/dependency-loader.spec.js:341:3 › verified runtime dependency loader › Retry revokes verified blobs and discards partial imports before success
+[148/180] [mobile-chromium] › tests/integration/glider-asset.spec.js:5:1 › embedded Blender aircraft retains its bounds and resources across flight and restart
+[149/180] [mobile-chromium] › tests/integration/responsive-controls.spec.js:105:1 › fits every contracted viewport with unique bounded controls
+[150/180] [mobile-chromium] › tests/integration/responsive-controls.spec.js:151:1 › desktop zoom equivalents retain essential readable controls
+[151/180] [mobile-chromium] › tests/integration/responsive-controls.spec.js:172:1 › renderer follows aspect and capped device-pixel resize
+[152/180] [mobile-chromium] › tests/integration/responsive-controls.spec.js:192:1 › touch pointers remain independent and cancel to neutral
+[153/180] [mobile-webkit] › tests/e2e/accessibility.spec.js:38:1 › exposes controlled landmarks, names, headings, and live status
+[154/180] [mobile-webkit] › tests/e2e/accessibility.spec.js:73:1 › keyboard-only pause, resume, crash, and restart keep focus visible
+[155/180] [mobile-webkit] › tests/e2e/accessibility.spec.js:103:1 › text and shape cues survive reduced motion without changing simulation
+[156/180] [mobile-webkit] › tests/e2e/accessibility.spec.js:138:1 › foreground and panel tokens preserve non-color readable hooks
+[157/180] [mobile-webkit] › tests/e2e/mobile-flight.spec.js:5:1 › landscape touch controls fly with joystick and throttle concurrently
+[158/180] [mobile-webkit] › tests/e2e/mobile-flight.spec.js:144:1 › touch lifecycle clears ownership and requires deliberate resume
+[159/180] [mobile-webkit] › tests/e2e/mobile-flight.spec.js:214:1 › reduced-motion touch flight preserves controls and simulation
+[160/180] [mobile-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[161/180] [mobile-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[162/180] [mobile-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[163/180] [mobile-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[164/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:41:3 › verified runtime dependency loader › uses the exact two-request manifest and exposes no partial application
+[165/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:124:3 › verified runtime dependency loader › query, fragment, and stored values cannot select trusted behavior or UI
+[166/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › HTTP error fails closed with controlled Retry
+[167/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › truncated body fails closed with controlled Retry
+[168/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › oversized body fails closed with controlled Retry
+[169/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:178:5 › verified runtime dependency loader › one-bit mutation fails closed with controlled Retry
+[170/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:229:3 › verified runtime dependency loader › redirect-selected final URL is rejected before bytes can execute
+[171/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:256:3 › verified runtime dependency loader › a stalled dependency times out without automatic retry
+[172/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › parse failure discards the verified partial module
+[173/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:282:5 › verified runtime dependency loader › missing export discards the verified partial module
+[174/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:306:3 › verified runtime dependency loader › explicit keyboard or touch Retry performs a clean new attempt
+[175/180] [mobile-webkit] › tests/integration/dependency-loader.spec.js:341:3 › verified runtime dependency loader › Retry revokes verified blobs and discards partial imports before success
+[176/180] [mobile-webkit] › tests/integration/glider-asset.spec.js:5:1 › embedded Blender aircraft retains its bounds and resources across flight and restart
+[177/180] [mobile-webkit] › tests/integration/responsive-controls.spec.js:105:1 › fits every contracted viewport with unique bounded controls
+[178/180] [mobile-webkit] › tests/integration/responsive-controls.spec.js:151:1 › desktop zoom equivalents retain essential readable controls
+[179/180] [mobile-webkit] › tests/integration/responsive-controls.spec.js:172:1 › renderer follows aspect and capped device-pixel resize
+[180/180] [mobile-webkit] › tests/integration/responsive-controls.spec.js:192:1 › touch pointers remain independent and cancel to neutral
+  4 skipped
+  176 passed (5.6m)

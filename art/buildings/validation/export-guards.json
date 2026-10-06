@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "results": [
+    {
+      "name": "invalid index",
+      "status": "PASS",
+      "expectedRejection": "invalid index"
+    },
+    {
+      "name": "non-finite position",
+      "status": "PASS",
+      "expectedRejection": "non-finite position"
+    },
+    {
+      "name": "non-unit normal",
+      "status": "PASS",
+      "expectedRejection": "non-unit normal"
+    },
+    {
+      "name": "degenerate triangle",
+      "status": "PASS",
+      "expectedRejection": "degenerate triangle"
+    },
+    {
+      "name": "window panel boundary",
+      "status": "PASS",
+      "expectedRejection": "noncontiguous part range"
+    },
+    {
+      "name": "triangle budget",
+      "status": "PASS",
+      "expectedRejection": "triangle budget exceeded"
+    },
+    {
+      "name": "embedding drift",
+      "status": "PASS"
+    },
+    {
+      "name": "source drift",
+      "status": "PASS"
+    }
+  ]
+}

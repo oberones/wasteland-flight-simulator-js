@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "asset": "Wasteland building set",
+  "blenderVersion": "5.2.1 LTS",
+  "source": "Four original project-authored buildings; no third-party models, textures, or logos",
+  "usageRights": "Project-authored; no separate third-party license. Repository has no project-level license.",
+  "transforms": "Evaluated transforms/modifiers; remove gallery origin; Blender to normalized game (x,z,-y); inverse-transpose split normals; linear colors; 5-decimal quantization",
+  "sourceSha256": "d3ea9979e89452de31dba5e95d662ffb316458d8fff5962626a058cfbf56e6d1",
+  "geometrySha256": "05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f",
+  "scriptsSha256": {
+    "create_scene.py": "81accb277946c5bfe76f68170b3c949c7a7747a61167d7bb6ee996068f98fe45",
+    "export_geometry.py": "352708b4796941eece661462994998e2b360812c33e3327ce1983683bef7a045",
+    "render_previews.py": "de45efb3eff56d495b026dd38c087c4d429facf264aa8ce591a444cb53487b46",
+    "embed-geometry.js": "8c2c689ff5360dcc3ccccad6e4bc12ac47968b117346d6539aa80799caeb3371"
+  },
+  "triangleBudgetPerModel": 1000,
+  "embeddedBudgetBytes": 1048576,
+  "models": {
+    "office": {
+      "triangles": 964,
+      "bodyVertices": 1308,
+      "windowVertices": 600,
+      "windowPanels": 25,
+      "bounds": {
+        "min": [
+          -0.5,
+          -0.1,
+          -0.5
+        ],
+        "max": [
+          0.5,
+          1.0,
+          0.5
+        ]
+      }
+    },
+    "residential": {
+      "triangles": 964,
+      "bodyVertices": 1356,
+      "windowVertices": 552,
+      "windowPanels": 23,
+      "bounds": {
+        "min": [
+          -0.5,
+          -0.11905,
+          -0.5
+        ],
+        "max": [
+          0.5,
+          1.0,
+          0.5
+        ]
+      }
+    },
+    "industrial": {
+      "triangles": 600,
+      "bodyVertices": 1026,
+      "windowVertices": 168,
+      "windowPanels": 7,
+      "bounds": {
+        "min": [
+          -0.5,
+          -0.2381,
+          -0.5
+        ],
+        "max": [
+          0.5,
+          1.0,
+          0.5
+        ]
+      }
+    },
+    "shell": {
+      "triangles": 356,
+      "bodyVertices": 572,
+      "windowVertices": 120,
+      "windowPanels": 5,
+      "bounds": {
+        "min": [
+          -0.5,
+          -0.45455,
+          -0.5
+        ],
+        "max": [
+          0.5,
+          1.0,
+          0.5
+        ]
+      }
+    }
+  }
+}

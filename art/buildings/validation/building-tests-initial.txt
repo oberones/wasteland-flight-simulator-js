@@ -1,0 +1,181 @@
+[WebServer] 
+[WebServer] > wasteland-flight-simulator@0.1.0 serve
+[WebServer] > http-server . -a 127.0.0.1 -p 4173 -c-1 -s
+[WebServer] 
+
+[WebServer] (node:34954) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+[WebServer] (node:34954) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+
+Running 16 tests using 1 worker
+
+[1/16] [desktop-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[2/16] [desktop-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[3/16] [desktop-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[4/16] [desktop-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[5/16] [desktop-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[6/16] [desktop-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[7/16] [desktop-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[8/16] [desktop-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+[9/16] [mobile-chromium] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[10/16] [mobile-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+  1) [mobile-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByTestId('application-state')
+    Expected pattern: /ready|flying/
+    Received string:  "error"
+    Timeout: 15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 15000ms
+      - waiting for getByTestId('application-state')
+        20 × locator resolved to <main id="application" data-phase="loading" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "loading"
+        14 × locator resolved to <main id="application" data-phase="error" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "error"
+
+
+       at helpers/flight-fixture.js:21
+
+      19 |   async load() {
+      20 |     await this.page.goto("/");
+    > 21 |     await expect(this.page.getByTestId("application-state")).toHaveAttribute(
+         |                                                              ^
+      22 |       "data-phase",
+      23 |       /ready|flying/,
+      24 |       { timeout: 15_000 },
+        at FlightFixture.load (/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/helpers/flight-fixture.js:21:62)
+        at /Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/integration/building-asset.spec.js:99:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/integration-building-asset-38a91-ding-silhouettes-or-buffers-mobile-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/integration-building-asset-38a91-ding-silhouettes-or-buffers-mobile-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/integration-building-asset-38a91-ding-silhouettes-or-buffers-mobile-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/integration-building-asset-38a91-ding-silhouettes-or-buffers-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/integration-building-asset-38a91-ding-silhouettes-or-buffers-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[11/16] [mobile-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+  2) [mobile-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByTestId('application-state')
+    Expected pattern: /ready|flying/
+    Received string:  "error"
+    Timeout: 15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 15000ms
+      - waiting for getByTestId('application-state')
+        20 × locator resolved to <main id="application" data-phase="loading" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "loading"
+        14 × locator resolved to <main id="application" data-phase="error" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "error"
+
+
+       at helpers/flight-fixture.js:21
+
+      19 |   async load() {
+      20 |     await this.page.goto("/");
+    > 21 |     await expect(this.page.getByTestId("application-state")).toHaveAttribute(
+         |                                                              ^
+      22 |       "data-phase",
+      23 |       /ready|flying/,
+      24 |       { timeout: 15_000 },
+        at FlightFixture.load (/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/helpers/flight-fixture.js:21:62)
+        at /Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/integration/building-asset.spec.js:132:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/integration-building-asset-eb8b9-es-and-valid-culling-bounds-mobile-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/integration-building-asset-eb8b9-es-and-valid-culling-bounds-mobile-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/integration-building-asset-eb8b9-es-and-valid-culling-bounds-mobile-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/integration-building-asset-eb8b9-es-and-valid-culling-bounds-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/integration-building-asset-eb8b9-es-and-valid-culling-bounds-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[12/16] [mobile-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+  3) [mobile-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByTestId('application-state')
+    Expected pattern: /ready|flying/
+    Received string:  "error"
+    Timeout: 15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 15000ms
+      - waiting for getByTestId('application-state')
+        20 × locator resolved to <main id="application" data-phase="loading" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "loading"
+        14 × locator resolved to <main id="application" data-phase="error" aria-labelledby="game-title" data-testid="application-state">…</main>
+           - unexpected value "error"
+
+
+       at helpers/flight-fixture.js:21
+
+      19 |   async load() {
+      20 |     await this.page.goto("/");
+    > 21 |     await expect(this.page.getByTestId("application-state")).toHaveAttribute(
+         |                                                              ^
+      22 |       "data-phase",
+      23 |       /ready|flying/,
+      24 |       { timeout: 15_000 },
+        at FlightFixture.load (/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/helpers/flight-fixture.js:21:62)
+        at /Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/tests/integration/building-asset.spec.js:180:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/integration-building-asset-59441-building-resource-ownership-mobile-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/integration-building-asset-59441-building-resource-ownership-mobile-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/integration-building-asset-59441-building-resource-ownership-mobile-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/integration-building-asset-59441-building-resource-ownership-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/integration-building-asset-59441-building-resource-ownership-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[13/16] [mobile-webkit] › tests/integration/building-asset.spec.js:36:1 › all four Blender models fit legacy placements and regenerate exactly
+[14/16] [mobile-webkit] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers
+[15/16] [mobile-webkit] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds
+[16/16] [mobile-webkit] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership
+  3 failed
+    [mobile-chromium] › tests/integration/building-asset.spec.js:96:1 › quality changes whole panels without rebuilding silhouettes or buffers 
+    [mobile-chromium] › tests/integration/building-asset.spec.js:129:1 › recycled and empty regions retain bounded resources and valid culling bounds 
+    [mobile-chromium] › tests/integration/building-asset.spec.js:177:1 › origin rebasing retains authored content and building resource ownership 
+  13 passed (1.5m)
