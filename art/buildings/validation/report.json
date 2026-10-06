@@ -601,7 +601,7 @@
     "capture-browser.js": "d08a80c95b3f275f07335648b51ca0d27ca0b69f13c1e0679b916bc3b49dad48",
     "check-guards.js": "0687516a6adfac000992236a5c8aff489e23e3481227c6c9085cebf38e0d0e60",
     "geometry.json": "05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f",
-    "manifest.json": "755e6cca41038768418149f465deeac5051cb0d499361751c1d733e465d384ae",
+    "manifest.json": "78a21d06ed2dd53382fb556350bb9d6b6dbb7b15150abfb63f84b0087add27ec",
     "previews/gallery.png": "3ac6f5cf72872471b00caba26e099564dfbdee63cb77a29ea95baadc3dd27189",
     "previews/industrial-front.png": "f3f2c8278f0b5bf1cd1c3e94d1b437218a8ec7108a42523d6de264f856c72f90",
     "previews/industrial-rear.png": "5a7e49f272360b7bd70ede215820a77428d006a6803efdfb75bde814dae3cce6",
@@ -659,5 +659,13 @@
     "validation/before-webkit-mobile-office.png": "0e5892477ddaf534e50cb8a8c6ddb3ec23ed73cfd5250826c9fd255250f1065d",
     "validation/before-webkit-mobile-residential.png": "1d48d0776c9419f6443b2416ae64e04f11ba35f55a9d7d90ccc7ef16ec189657",
     "validation/before-webkit-mobile-shell.png": "3a0fe57a020a113e04549cd3e0ec7a8690081c9a4c217c99770737d8f43936dc"
+  },
+  "exporterColorFollowup": {
+    "status": "PASS",
+    "blenderVersion": "5.2.1 LTS",
+    "regressionCommand": "Blender --background --factory-startup --threads 4 --python-exit-code 1 --python tests/blender/export-colors.py",
+    "regressionResult": "Five test groups, 18 scenarios across both exporters: CORNER/POINT colors without material slots, colors overriding palette and unsupported materials, palette fallback, rejection of missing or unsupported palettes when colors are absent.",
+    "freshProcessExport": "PASS: regenerated manifest and byte-identical geometry; a separate Blender --check also passed.",
+    "runtimeImpact": "Saved Blender sources, geometry.json files, and index.html are unchanged. Earlier browser and performance evidence was not rerun for this exporter-only correction."
   }
 }

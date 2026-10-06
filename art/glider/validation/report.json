@@ -344,14 +344,14 @@
     "performance-smoke-port-conflict.txt"
   ],
   "artifactSha256": {
-    "README.md": "c11df659c60d01da2e4ba8e43d737dfd13bed09d21ddd68145a33d2e98697921",
+    "README.md": "8ab6e0ed2cc596fb6119025a88be3d789bdaf91ebd90985579c85f5bda012e29",
     "capture-browser.js": "97baa1872738e80fcd3cab8b149741f4f2e93e1a0b4ee2bb45cf803eba9986cb",
     "create_scene.py": "0a61786f33a784757eb79061b557b37c29438f691d1c1b3b025f5708d959b9f6",
     "dustkite.blend": "0983b9e7c696372f1f3c725642273c2dcb1f0fdb04ce67346680209aa36eda65",
     "embed-geometry.js": "2687ab57fd761ac4f99a7d0de992118f213d0672600d87188a9c17093c2e5798",
-    "export_geometry.py": "a926542b7a991e3f45d30a419e25900479827505889513f6a6d7809c418dba44",
+    "export_geometry.py": "0ac33ee81c6cd8e084624230a3d12aa910e16874721188a3ec8e2b41822131c9",
     "geometry.json": "cb252a1ba3170dad1eb67ec93ecc12133367b534d2bbe886d563c89f1efe06a4",
-    "manifest.json": "d26aa762cebc1770372a0faa51162df7de35899e900c6aaeba6960e1c0e3d77f",
+    "manifest.json": "776e47d6ed3a3c73f4c61e7193b8cdda4a76ecae16ca446bb0030aea4b7fac23",
     "previews/front.png": "977e6656a4e363351e4b5bb4c73262240a73f9d62c5d65e20db1000ebf474d56",
     "previews/rear-three-quarter.png": "0652146ca2047efebb8c2c16e844456db5562312f46e0678c4eb56d552a3738f",
     "previews/side.png": "ba76967b2980b714bb6af7ddecffde2277d8ec7b17d97a40c63978265024c22b",
@@ -400,5 +400,13 @@
     "validation/performance-smoke-initial.txt": "d3a41503fbbcd96939b68d5531583eb475d242694e5bb4bbc433748807286e8e",
     "validation/performance-smoke-port-conflict.txt": "aa4a245b94a6ad9405887b15bf45cca1b6d003b4b82ab96a3bf01066c8702d05",
     "validation/performance-smoke.txt": "c648fdf28bcb470a2d764ddcc15c5d586c3e96d0317bb78f2c29ffa664182658"
+  },
+  "exporterColorFollowup": {
+    "status": "PASS",
+    "blenderVersion": "5.2.1 LTS",
+    "regressionCommand": "Blender --background --factory-startup --threads 4 --python-exit-code 1 --python tests/blender/export-colors.py",
+    "regressionResult": "Five test groups, 18 scenarios across both exporters: CORNER/POINT colors without material slots, colors overriding palette and unsupported materials, palette fallback, rejection of missing or unsupported palettes when colors are absent.",
+    "freshProcessExport": "PASS: regenerated manifest and byte-identical geometry; a separate Blender --check also passed.",
+    "runtimeImpact": "Saved Blender sources, geometry.json files, and index.html are unchanged. Earlier browser and performance evidence was not rerun for this exporter-only correction."
   }
 }

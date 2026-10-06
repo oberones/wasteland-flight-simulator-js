@@ -65,11 +65,12 @@ def export_collection(collection, dimensions, origin):
             linear_transform = conversion @ transform.to_3x3()
             normal_transform = linear_transform.inverted().transposed()
             first = len(data["indices"])
+            # Active corner/point colors need no material; palettes are a fallback.
+            attr = mesh.color_attributes.active_color
+            if attr and attr.domain not in ["CORNER", "POINT"]:
+                raise ValueError(f"Unsupported color domain: {attr.domain}")
             for triangle in mesh.loop_triangles:
-                color = color_of(mesh.materials[triangle.material_index])
-                attr = mesh.color_attributes.active_color
-                if attr and attr.domain not in ["CORNER", "POINT"]:
-                    raise ValueError(f"Unsupported color domain: {attr.domain}")
+                color = None if attr else color_of(mesh.materials[triangle.material_index])
                 loops = list(triangle.loops)
                 if linear_transform.determinant() < 0:
                     loops.reverse()

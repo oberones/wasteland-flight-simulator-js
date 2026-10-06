@@ -54,6 +54,13 @@ nondegenerate triangles, bounds, budgets, source/script/export hashes, and exact
 embedding consistency. Both commands fail on drift instead of silently accepting
 a stale export. `npm run validate:automated` includes `glider:check`.
 
+Check both exporters' corner/point vertex colors without materials, color
+precedence, and palette fallback in an isolated Blender scene:
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --threads 4 --python-exit-code 1 --python tests/blender/export-colors.py
+```
+
 ## Browser evidence
 
 With `npm run serve` running separately:

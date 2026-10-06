@@ -9,7 +9,7 @@
   "geometrySha256": "05b342cb4bcc865236bdd5d0b4db4e620f65a3cffacf6e1cfda05c561fe3bd6f",
   "scriptsSha256": {
     "create_scene.py": "81accb277946c5bfe76f68170b3c949c7a7747a61167d7bb6ee996068f98fe45",
-    "export_geometry.py": "352708b4796941eece661462994998e2b360812c33e3327ce1983683bef7a045",
+    "export_geometry.py": "441da769116250464803423735beb2a587852116358004193f55eb584539f361",
     "render_previews.py": "de45efb3eff56d495b026dd38c087c4d429facf264aa8ce591a444cb53487b46",
     "embed-geometry.js": "8c2c689ff5360dcc3ccccad6e4bc12ac47968b117346d6539aa80799caeb3371"
   },

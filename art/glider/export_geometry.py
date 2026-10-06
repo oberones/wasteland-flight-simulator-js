@@ -52,11 +52,10 @@ def export():
             transform = evaluated.matrix_world
             normal_transform = transform.to_3x3().inverted().transposed()
             first = len(indices)
+            # Active corner/point colors need no material; palettes are a fallback.
+            attr = mesh.color_attributes.active_color
             for triangle in mesh.loop_triangles:
-                material = mesh.materials[triangle.material_index]
-                color = material_color(material)
-                # Corner colors, when authored, override material palette colors.
-                attr = mesh.color_attributes.active_color
+                color = None if attr else material_color(mesh.materials[triangle.material_index])
                 loops = list(triangle.loops)
                 if transform.to_3x3().determinant() < 0:
                     loops.reverse()

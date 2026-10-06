@@ -52,6 +52,13 @@ nondegenerate triangles, named panel ranges, the 1,000-triangle per-model limit,
 and the 1 MiB formatted embedding limit. It fails on embedding drift and is included
 in `validate:automated`.
 
+Check both exporters' corner/point vertex colors without materials, color
+precedence, and palette fallback in an isolated Blender scene:
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --threads 4 --python-exit-code 1 --python tests/blender/export-colors.py
+```
+
 ## Placement and ownership
 
 Existing ruin descriptors and their random stream are unchanged. A separate hash
