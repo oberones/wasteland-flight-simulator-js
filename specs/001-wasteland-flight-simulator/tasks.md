@@ -25,7 +25,7 @@ or release evidence.
 **Purpose**: Establish exact development tooling without adding runtime dependencies or
 additional shipped files.
 
-- [x] T001 Create `package.json` with the Node.js 20.20.2 baseline; exact development-only `@playwright/test` 1.62.1, ESLint 10.9.0, TypeScript 7.0.2, Prettier 3.9.6, and `http-server` 14.1.1 dependencies; and the command names defined in `specs/001-wasteland-flight-simulator/quickstart.md`
+- [x] T001 Create `package.json` with the Node.js 24.22.1 baseline; exact development-only `@playwright/test` 1.64.1, ESLint 10.13.0, TypeScript 7.0.2, Prettier 3.9.10, and `http-server` 14.1.1 dependencies; and the command names defined in `specs/001-wasteland-flight-simulator/quickstart.md`
 - [x] T002 Generate and review the exact development dependency resolution in `package-lock.json`, confirming all packages remain development-only and match the versions and licenses recorded in `specs/001-wasteland-flight-simulator/research.md`
 - [x] T003 [P] Configure browser-code linting, security-sensitive API restrictions, and zero-warning enforcement in `eslint.config.js`
 - [x] T004 [P] Configure ECMAScript 2023 browser libraries, strict `checkJs`, and no emitted output for `index.html` in `jsconfig.json`
@@ -46,14 +46,14 @@ lifecycle authority, renderer, and deterministic test seam required by every sto
 
 ### Foundational Tests
 
-- [x] T007 [P] Implement exact URL, byte-count, SHA-384, export-shape, license, CSP, and two-request manifest assertions in `tests/helpers/runtime-dependencies.js`
+- [x] T007 [P] Implement exact URL, byte-count, SHA-384, export-shape, license, CSP, and three-request manifest assertions in `tests/helpers/runtime-dependencies.js`
 - [x] T008 [P] Write dependency-loader integration tests for success, redirect, timeout, HTTP error, truncation, oversize, mutation, parse failure, missing export, controlled diagnostics, explicit Retry, and duplicate cleanup in `tests/integration/dependency-loader.spec.js`
 - [x] T009 [P] Write lifecycle reducer tests for state priority, pause reasons, neutral input, deliberate resume, crash precedence, retry, and idempotent transitions in `tests/unit/lifecycle.spec.js`
 
 ### Foundational Implementation
 
 - [x] T010 Create the semantic loading, ready, pause, crash, error, HUD, legend, and control markup; restrictive meta CSP; data favicon; responsive style foundation; and embedded dependency notices in `index.html`
-- [x] T011 Implement the exact two-URL parallel loader with capability checks, omitted credentials, timeout/size/redirect guards, SHA-384 verification, verified blob imports, export shape checks, blob revocation, and fail-closed cleanup in `index.html`
+- [x] T011 Implement the exact three-URL parallel loader with capability checks, omitted credentials, timeout/size/redirect guards, SHA-384 verification, verified blob imports, export shape checks, blob revocation, and fail-closed cleanup in `index.html`
 - [x] T012 Implement frozen configuration, `ApplicationState`, reason-based lifecycle transitions, owned listener teardown, controlled public error codes, and the webdriver-only frozen facade boundary in `index.html`
 - [x] T013 Implement WebGL 2 renderer construction, shadow support, color management, resize/DPR handling, `setAnimationLoop`, fixed-step accumulation, render gating, and controlled context failure in `index.html`
 - [x] T014 Implement cloned snapshots, validated fixture reset/step calls, lifecycle dispatch, terrain hooks, and metric access in `tests/helpers/flight-fixture.js`, plus allocation-conscious base frame, input-response, memory, renderer, pool, and object-count sampling in `tests/helpers/metrics.js`
@@ -335,7 +335,7 @@ Task T053: Dependency error/retry journey in tests/integration/dependency-loader
 
 - `[P]` indicates separate files with no unfinished dependency, never simultaneous edits
   to the single runtime `index.html`.
-- Development tests and evidence do not relax the one-file runtime or two-request limit.
+- Development tests and evidence do not relax the one-file runtime or three-request limit.
 - Combat, shooting, checkpoints, interactive landmarks, missions, landing, fuel, audio,
   persistence, multiplayer, gamepad input, and ruin collision remain out of scope.
 - Commit after each task or coherent task group; stop at any checkpoint for independent review.

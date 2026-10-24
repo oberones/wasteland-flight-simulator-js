@@ -1,3 +1,4 @@
+import { RUNTIME_DEPENDENCIES } from "./runtime-dependencies.js";
 import { randomUUID } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import {
@@ -42,12 +43,11 @@ export const REFERENCE_MATRIX = Object.freeze({
   }),
 });
 
-export const DEPENDENCY_HASHES = Object.freeze({
-  "Three.js":
-    "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
-  "simplex-noise":
-    "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
-});
+export const DEPENDENCY_HASHES = Object.freeze(
+  Object.fromEntries(
+    RUNTIME_DEPENDENCIES.map(({ name, sha384Hex }) => [name, sha384Hex]),
+  ),
+);
 
 const QUALIFICATION_COMBINATIONS = Object.freeze([
   Object.freeze({ referenceId: "desktop-m1", browser: "Chrome" }),

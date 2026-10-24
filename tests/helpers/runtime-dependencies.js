@@ -1,13 +1,14 @@
 export const RUNTIME_DEPENDENCIES = Object.freeze([
   Object.freeze({
     name: "Three.js",
-    version: "0.185.1",
+    version: "0.186.1",
     license: "MIT",
-    url: "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs",
-    expectedBytes: 2_093_053,
+    url: "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+    expectedBytes: 662_772,
     sha384Hex:
-      "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
-    format: "cjs-default-adapter",
+      "9bc268157e7657a346bf6bac8a99e52c92a725f2fb204f1d6e788f0c309219242fdc79b89fa3e37d5eacc95c1fba845c",
+    format: "esm",
+    coreReferences: 2,
     requiredExports: Object.freeze([
       "Scene",
       "PerspectiveCamera",
@@ -30,7 +31,24 @@ export const RUNTIME_DEPENDENCIES = Object.freeze([
     sha384Hex:
       "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
     format: "esm",
+    coreReferences: 0,
     requiredExports: Object.freeze(["createNoise2D"]),
+  }),
+  Object.freeze({
+    name: "Three.js core",
+    version: "0.186.1",
+    license: "MIT",
+    url: "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js",
+    expectedBytes: 1_458_113,
+    sha384Hex:
+      "99d29e0b03c471b0efcdac70866f8c56e2e8328bbe13b8d0aabb38b66bbf9fc1c160f188d6466dd0c909c65311e3314c",
+    format: "esm",
+    coreReferences: 0,
+    requiredExports: Object.freeze([
+      "Scene",
+      "BufferGeometry",
+      "BufferAttribute",
+    ]),
   }),
 ]);
 
@@ -51,9 +69,9 @@ export async function sha384Hex(bytes) {
 }
 
 export function assertRuntimeManifest() {
-  if (RUNTIME_DEPENDENCIES.length !== 2) {
+  if (RUNTIME_DEPENDENCIES.length !== 3) {
     throw new Error(
-      "runtime dependency manifest must contain exactly two records",
+      "runtime dependency manifest must contain exactly three records",
     );
   }
   const urls = new Set();
@@ -112,7 +130,7 @@ export function assertDocumentSecurity(documentText) {
   );
   if (declaredUrls.length !== RUNTIME_DEPENDENCIES.length) {
     throw new Error(
-      "index.html does not declare the exact two-request runtime manifest",
+      "index.html does not declare the exact three-request runtime manifest",
     );
   }
 }
@@ -170,60 +188,91 @@ export function assertForbiddenRuntimeApis(documentText) {
 
 export async function verifyRuntimeDependencies(fetchImpl = globalThis.fetch) {
   assertRuntimeManifest();
-  const results = await Promise.all(
+  const buffers = await Promise.all(
     RUNTIME_DEPENDENCIES.map(async (record) => {
       const response = await fetchImpl(record.url, {
         credentials: "omit",
         redirect: "error",
         referrerPolicy: "no-referrer",
       });
-      if (!response.ok || response.url !== record.url) {
+      if (!response.ok || response.url !== record.url)
         throw new Error(`${record.name} returned an unexpected response`);
-      }
       const bytes = await response.arrayBuffer();
-      if (bytes.byteLength !== record.expectedBytes) {
+      if (bytes.byteLength !== record.expectedBytes)
         throw new Error(
           `${record.name} byte count ${bytes.byteLength} did not match ${record.expectedBytes}`,
         );
-      }
-      const actualHash = await sha384Hex(bytes);
-      if (actualHash !== record.sha384Hex) {
+      if ((await sha384Hex(bytes)) !== record.sha384Hex)
         throw new Error(
           `${record.name} SHA-384 did not match the reviewed digest`,
         );
-      }
-      let sourceText = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-      if (record.format === "cjs-default-adapter") {
-        if (/\brequire\s*\(|\bmodule\.exports\b/.test(sourceText)) {
-          throw new Error(
-            `${record.name} contains an unsupported CommonJS dependency`,
-          );
-        }
-        sourceText = `const exports = Object.create(null);\n${sourceText}\nexport default exports;`;
-      }
-      const source = Buffer.from(sourceText).toString("base64");
-      const namespace = await import(`data:text/javascript;base64,${source}`);
-      const exportsObject =
-        record.format === "cjs-default-adapter" ? namespace.default : namespace;
-      for (const exportName of record.requiredExports) {
-        if (!(exportName in exportsObject)) {
-          throw new Error(`${record.name} is missing export ${exportName}`);
-        }
+      return bytes;
+    }),
+  );
+  const sources = RUNTIME_DEPENDENCIES.map((record, index) =>
+    prepareModuleSource(record, buffers[index], "./three.core.js"),
+  );
+  const dataUrl = (/** @type {string} */ source) =>
+    `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`;
+  const coreUrl = dataUrl(sources[2]);
+  const urls = [
+    dataUrl(prepareModuleSource(RUNTIME_DEPENDENCIES[0], buffers[0], coreUrl)),
+    dataUrl(sources[1]),
+    coreUrl,
+  ];
+  await Promise.all(
+    urls.map(async (url, index) => {
+      const namespace = await import(url);
+      const record = RUNTIME_DEPENDENCIES[index];
+      for (const name of record.requiredExports) {
+        if (!(name in namespace))
+          throw new Error(`${record.name} is missing export ${name}`);
       }
       if (
         record.name === "simplex-noise" &&
         typeof namespace.createNoise2D !== "function"
-      ) {
+      )
         throw new Error("simplex-noise createNoise2D export is not callable");
-      }
-      return Object.freeze({
-        name: record.name,
-        bytes: bytes.byteLength,
-        sha384Hex: actualHash,
-      });
     }),
   );
-  return Object.freeze(results);
+  return Object.freeze(
+    RUNTIME_DEPENDENCIES.map((record) =>
+      Object.freeze({
+        name: record.name,
+        bytes: record.expectedBytes,
+        sha384Hex: record.sha384Hex,
+      }),
+    ),
+  );
+}
+
+/** @param {{coreReferences: number}} record @param {ArrayBuffer} bytes @param {string} coreUrl */
+export function prepareModuleSource(record, bytes, coreUrl) {
+  let source = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  if (/\bimport\s*\(|\brequire\s*\(|\bmodule\.exports\b/.test(source)) {
+    throw new Error("unsupported module reference");
+  }
+  let references = 0;
+  source = source.replace(
+    /\b(?:import|export)\s+(?:[^;"']*?\s+from\s*)?(["'])([^"']+)\1/g,
+    (statement, quote, specifier) => {
+      if (
+        specifier !== "./three.core.js" ||
+        !record.coreReferences ||
+        !coreUrl
+      ) {
+        throw new Error("unexpected module reference");
+      }
+      references += 1;
+      return statement.replace(
+        `${quote}${specifier}${quote}`,
+        `${quote}${coreUrl}${quote}`,
+      );
+    },
+  );
+  if (references !== record.coreReferences)
+    throw new Error("module graph changed");
+  return source;
 }
 
 /** @type {Readonly<Record<string, string>>} */
@@ -235,7 +284,78 @@ const DIRECT_PURPOSES = Object.freeze({
   "http-server": "deterministic local static server for browser tests",
   prettier: "deterministic source and evidence formatting",
   typescript: "strict JavaScript checkJs validation without emitted output",
+  semver: "engine-aware stable dependency release comparisons",
+  "@types/semver": "type declarations for dependency compatibility checks",
 });
+
+/** @param {string} name @param {any} metadata @param {string} nodeVersion */
+export function selectCompatibleRelease(name, metadata, nodeVersion) {
+  if (!metadata?.versions || !valid(nodeVersion))
+    throw new Error(`Missing registry metadata or Node baseline for ${name}`);
+  const stable = Object.keys(metadata.versions)
+    .filter((version) => valid(version) && !prerelease(version))
+    .sort(rcompare);
+  const target = stable.find((version) => {
+    const entry = metadata.versions[version];
+    return (
+      !entry.deprecated &&
+      (name !== "@types/node" || major(version) === major(nodeVersion)) &&
+      satisfies(nodeVersion, entry.engines?.node || "*")
+    );
+  });
+  if (!target)
+    throw new Error(`No compatible stable release found for ${name}`);
+  return {
+    latestStable: stable[0],
+    compatibleVersion: target,
+    nodeEngine: metadata.versions[target].engines?.node || null,
+    policy:
+      name === "@types/node"
+        ? `Node ${major(nodeVersion)} declarations`
+        : "latest non-deprecated stable release supporting the Node baseline",
+  };
+}
+
+/** @param {string} url @param {typeof fetch} fetchImpl @param {RequestInit} [options] @returns {Promise<any>} */
+async function registryJson(url, fetchImpl, options = {}) {
+  const response = await fetchImpl(url, {
+    ...options,
+    signal: globalThis.AbortSignal.timeout(30_000),
+  });
+  if (!response.ok)
+    throw new Error(`Registry request failed: ${response.status} ${url}`);
+  const result = await response.json();
+  if (!result || typeof result !== "object" || result.error)
+    throw new Error(`Invalid registry response: ${url}`);
+  return result;
+}
+
+/** @param {Record<string, string>} dependencies @param {string} nodeVersion @param {typeof fetch} [fetchImpl] */
+export async function reviewDirectReleases(
+  dependencies,
+  nodeVersion,
+  fetchImpl = globalThis.fetch,
+) {
+  return Object.fromEntries(
+    await Promise.all(
+      Object.entries(dependencies).map(async ([name, current]) => {
+        const metadata = await registryJson(
+          `https://registry.npmjs.org/${encodeURIComponent(name)}`,
+          fetchImpl,
+        );
+        const release = selectCompatibleRelease(name, metadata, nodeVersion);
+        return [
+          name,
+          {
+            current,
+            ...release,
+            currentCompatible: current === release.compatibleVersion,
+          },
+        ];
+      }),
+    ),
+  );
+}
 
 /** @param {string} packagePath */
 function packageNameFromPath(packagePath) {
@@ -291,8 +411,22 @@ function readInstalledPackage(root, packagePath) {
  * @param {string} root
  * @param {any} auditReport
  * @param {Record<string, any>} outdatedReport
+ * @param {Record<string, any>} releaseReview
+ * @param {Record<string, any>} runtimeAdvisories
  */
-export function auditLockfile(root, auditReport, outdatedReport) {
+export function auditLockfile(
+  root,
+  auditReport,
+  outdatedReport,
+  releaseReview,
+  runtimeAdvisories,
+) {
+  if (
+    !auditReport?.metadata?.vulnerabilities ||
+    auditReport.error ||
+    typeof auditReport.metadata.vulnerabilities.total !== "number"
+  )
+    throw new Error("npm audit returned no valid vulnerability report");
   const lockfilePath = join(root, "package-lock.json");
   const lockfileBytes = readFileSync(lockfilePath);
   const lockfile = JSON.parse(lockfileBytes.toString("utf8"));
@@ -369,14 +503,11 @@ export function auditLockfile(root, auditReport, outdatedReport) {
             typeof entry.integrity === "string" && entry.integrity.length > 0,
           nodeEngine: entry.engines?.node || null,
           repository: installed?.repository || null,
-          directPackageCurrent:
-            direct &&
-            (!(name in outdatedReport) ||
-              outdatedReport[name].current === outdatedReport[name].wanted)
-              ? true
-              : direct
-                ? false
-                : null,
+          directPackageCurrent: direct
+            ? releaseReview[name]?.currentCompatible === true &&
+              entry.version === releaseReview[name]?.compatibleVersion
+            : null,
+          releaseReview: direct ? releaseReview[name] : null,
         },
         vulnerability: auditReport.vulnerabilities?.[name] || {
           status: "none reported by npm audit",
@@ -400,18 +531,24 @@ export function auditLockfile(root, auditReport, outdatedReport) {
     (record) => !record.developmentOnly,
   );
   const vulnerabilityTotals = auditReport.metadata?.vulnerabilities || {};
-  const directBehindCompatibleVersions = Object.values(outdatedReport).filter(
-    (record) => record.current !== record.wanted,
+  const directBehindCompatibleVersions = directNames.filter(
+    (name) =>
+      releaseReview[name]?.currentCompatible !== true ||
+      lockfile.packages[`node_modules/${name}`]?.version !==
+        releaseReview[name]?.compatibleVersion,
   );
   const reviewResult =
     vulnerabilityTotals.total === 0 &&
+    Object.keys(runtimeAdvisories).length === 0 &&
     unknownLicenses.length === 0 &&
     nonDevelopmentPackages.length === 0 &&
     directBehindCompatibleVersions.length === 0
-      ? "pass-with-reviewed-transitive-deprecation"
+      ? deprecatedPackages.length
+        ? "pass-with-reviewed-transitive-deprecation"
+        : "pass"
       : "fail";
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedAt: new Date().toISOString(),
     provenance: {
       command: "npm run audit:dependencies",
@@ -419,6 +556,10 @@ export function auditLockfile(root, auditReport, outdatedReport) {
       lockfileSha256: createHash("sha256").update(lockfileBytes).digest("hex"),
       npmAuditReportVersion: auditReport.auditReportVersion,
       npmOutdated: outdatedReport,
+      nodeBaseline: rootRecord.engines.node,
+      nodeVersion: globalThis.process.version,
+      npmUserAgent: globalThis.process.env.npm_config_user_agent || null,
+      directReleaseReview: releaseReview,
       directBehindCompatibleVersionCount: directBehindCompatibleVersions.length,
     },
     runtimeDependencies: RUNTIME_DEPENDENCIES.map((record) => ({
@@ -430,10 +571,9 @@ export function auditLockfile(root, auditReport, outdatedReport) {
       expectedBytes: record.expectedBytes,
       sha384Hex: record.sha384Hex,
       requiredExports: [...record.requiredExports],
-      licenseNotice:
-        record.name === "Three.js"
-          ? "evidence/licenses/three-MIT.txt"
-          : "evidence/licenses/simplex-noise-MIT.txt",
+      licenseNotice: record.name.startsWith("Three.js")
+        ? "evidence/licenses/three-MIT.txt"
+        : "evidence/licenses/simplex-noise-MIT.txt",
     })),
     developmentDependencies: {
       count: packages.length,
@@ -455,12 +595,42 @@ export function auditLockfile(root, auditReport, outdatedReport) {
       packages,
     },
     vulnerabilities: vulnerabilityTotals,
+    runtimeAdvisories,
     reviewResult,
   };
 }
 
 /** @param {string} root */
-export function generateDependencyEvidence(root = globalThis.process.cwd()) {
+export async function generateDependencyEvidence(
+  root = globalThis.process.cwd(),
+) {
+  const packageJson = JSON.parse(
+    readFileSync(join(root, "package.json"), "utf8"),
+  );
+  const releaseReview = await reviewDirectReleases(
+    packageJson.devDependencies,
+    packageJson.engines.node,
+  );
+  const runtimeReleaseReview = await reviewDirectReleases(
+    {
+      three: RUNTIME_DEPENDENCIES[0].version,
+      "simplex-noise": RUNTIME_DEPENDENCIES[1].version,
+    },
+    packageJson.engines.node,
+  );
+  const runtimeAdvisories = await registryJson(
+    "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+    globalThis.fetch,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        three: [RUNTIME_DEPENDENCIES[0].version],
+        "simplex-noise": [RUNTIME_DEPENDENCIES[1].version],
+      }),
+    },
+  );
+  const runtimeVerification = await verifyRuntimeDependencies();
   const auditReport = runJsonCommand(
     globalThis.process.platform === "win32" ? "npm.cmd" : "npm",
     ["audit", "--json", "--audit-level=low"],
@@ -471,7 +641,23 @@ export function generateDependencyEvidence(root = globalThis.process.cwd()) {
     ["outdated", "--json"],
     root,
   );
-  const manifest = auditLockfile(root, auditReport, outdatedReport);
+  const manifest = {
+    ...auditLockfile(
+      root,
+      auditReport,
+      outdatedReport,
+      releaseReview,
+      runtimeAdvisories,
+    ),
+    runtimeReleaseReview,
+  };
+  if (
+    Object.values(runtimeReleaseReview).some(
+      (record) => !record.currentCompatible,
+    )
+  ) {
+    manifest.reviewResult = "fail";
+  }
   const manifestPath = join(root, "evidence/dependency-manifest.json");
   atomicWrite(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
@@ -485,21 +671,24 @@ export function generateDependencyEvidence(root = globalThis.process.cwd()) {
   const review = `# Dependency Review
 
 - Generated: ${manifest.generatedAt}
-- Result: **${manifest.reviewResult === "fail" ? "FAIL" : "PASS WITH REVIEWED TRANSITIVE DEPRECATION"}**
+- Result: **${manifest.reviewResult.toUpperCase().replaceAll("-", " ")}**
 - Lockfile SHA-256: \`${manifest.provenance.lockfileSha256}\`
-- Runtime dependencies: ${manifest.runtimeDependencies.length}
+- Runtime libraries: 2 (${manifest.runtimeDependencies.length} verified artifacts)
+- Runtime advisory packages: ${Object.keys(runtimeAdvisories).length}
+- Runtime packages behind compatible releases: ${Object.values(runtimeReleaseReview).filter((record) => !record.currentCompatible).length}
 - Development lockfile packages: ${manifest.developmentDependencies.count} (${manifest.developmentDependencies.directCount} direct)
 - npm audit vulnerabilities: ${manifest.vulnerabilities.total}
-- Direct packages behind compatible wanted versions: ${manifest.provenance.directBehindCompatibleVersionCount}
+- Direct packages behind compatible stable releases: ${manifest.provenance.directBehindCompatibleVersionCount}
 - Unknown licenses: ${manifest.developmentDependencies.unknownLicenseCount}
 - Non-development lockfile packages: ${manifest.developmentDependencies.allDevelopmentOnly ? 0 : "present"}
 
 ## Runtime verification
 
-\`npm run verify:runtime-deps\` fetched the exact Three.js 0.185.1 and simplex-noise
-4.0.3 URLs, matched 2,093,053 and 18,735 bytes respectively, matched both SHA-384
-digests, adapted/imported the reviewed module formats, and shape-checked every required
-export. The full upstream MIT notices are retained in \`evidence/licenses/\`.
+All three artifacts were fetched, hash-verified before evaluation, linked through the reviewed ESM graph, and shape-checked during this audit:
+
+${runtimeVerification.map((record) => `- ${record.name}: ${record.bytes} bytes; SHA-384 ${record.sha384Hex}`).join("\n")}
+
+The full upstream MIT notices are retained in \`evidence/licenses/\`.
 
 ## Complete development graph
 
@@ -513,9 +702,7 @@ License totals: ${Object.entries(manifest.developmentDependencies.licenseCounts)
     .map(([license, count]) => `${license} ${count}`)
     .join(", ")}.
 
-\`@types/node\` intentionally tracks the Node 20 engine declared by the project. Its
-installed version matches npm's compatible wanted version; the registry's newer major
-targets a different Node release and is retained in the manifest as reviewed metadata.
+Registry metadata is checked against Node ${packageJson.engines.node}, independently of exact manifest pins. \`@types/node\` tracks that Node major. Compatible release decisions and newer incompatible stable releases are recorded in the manifest. Missing registry or advisory responses fail the audit.
 
 ## Reviewed maintenance exception
 
@@ -523,12 +710,7 @@ targets a different Node release and is retained in the manifest as reviewed met
 | --- | --- | --- | --- |
 ${deprecatedRows || "| None | - | - | - |"}
 
-\`whatwg-encoding\` is an indirect local-test-server dependency through
-\`http-server -> html-encoding-sniffer\`; it is never shipped or imported by
-\`index.html\`. The exact direct \`http-server\` release is current, npm audit reports
-zero vulnerabilities, and replacing this transitive package locally would diverge from
-the reviewed upstream lock graph. Keep the exception visible and re-evaluate it whenever
-the local server dependency changes.
+Deprecations above are retained only through the supported upstream dependency ranges; no forced overrides are used. They are development-only, and the vulnerability counts above determine the security result. Re-evaluate these paths when their direct parent changes.
 `;
   atomicWrite(reviewPath, review);
   return { manifest, manifestPath, reviewPath };
@@ -540,7 +722,7 @@ if (
 ) {
   if (globalThis.process.argv[2] === "audit") {
     try {
-      const result = generateDependencyEvidence();
+      const result = await generateDependencyEvidence();
       console.log(
         `dependency review ${result.manifest.reviewResult}: ${result.manifest.developmentDependencies.count} packages`,
       );
@@ -597,3 +779,5 @@ import {
 } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
+
+import { major, prerelease, rcompare, satisfies, valid } from "semver";

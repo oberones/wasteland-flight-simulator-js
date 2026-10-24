@@ -258,8 +258,8 @@ verify the paused rotate-device flow in portrait.
 - **FR-025**: The delivered simulator MUST contain its authored code, styles, interface,
   and visual content in one browser-openable document and MUST request no external visual,
   audio, font, model, texture, or data assets.
-- **FR-026**: The only permitted external runtime requests MUST be the two user-approved,
-  version-pinned libraries needed for 3D presentation and terrain variation.
+- **FR-026**: The only permitted external runtime requests MUST be three pinned artifacts of the two user-approved
+  libraries: Three.js renderer/core and simplex-noise, needed for 3D presentation and terrain variation.
 - **FR-027**: The simulator MUST present a visible control legend before or during the
   first flight and MUST show controls appropriate to the active input device, including
   how to enable, center, and release desktop virtual-joystick control.
@@ -288,7 +288,7 @@ verify the paused rotate-device flow in portrait.
 
 - **SR-001**: The simulator MUST NOT request, collect, retain, or transmit personal data,
   gameplay telemetry, credentials, or location data.
-- **SR-002**: External runtime dependencies MUST be limited to the two approved sources,
+- **SR-002**: External runtime dependencies MUST be limited to three artifacts of the two approved libraries,
   pinned to reviewed versions, covered by compatible license records, and verified by
   dependency and vulnerability review before release.
 - **SR-003**: Query parameters, URL fragments, stored browser data, and external content
@@ -414,7 +414,7 @@ verify the paused rotate-device flow in portrait.
 - **SC-009**: Manual review confirms all required wasteland, glider, ruin, sunset, fog,
   shadow, and ash characteristics at the supported representative viewports.
 - **SC-010**: Network inspection records no requests other than the single document and
-  two approved runtime libraries, and no player or gameplay data leaves the browser.
+  three artifacts of the two approved runtime libraries, and no player or gameplay data leaves the browser.
 - **SC-011**: Blocking either approved runtime dependency produces a readable error and
   working retry action in every test, with no blank, frozen, or partially interactive scene.
 - **SC-012**: In every tested mobile orientation change, entering portrait pauses motion

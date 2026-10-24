@@ -5,30 +5,15 @@
 
 ## Runtime Libraries and Delivery
 
-**Decision**: Pin Three.js `0.185.1` and `simplex-noise` `4.0.3` from exact jsDelivr
-module URLs. Load no Three.js addons and no PRNG package.
+**Decision (updated 2026-10-24)**: Pin Three.js `0.186.1` and simplex-noise `4.0.3`.
+Use the official `three.module.js`, `three.core.js`, and simplex-noise ESM artifacts.
+The user approved expanding the runtime budget from two to three requests for this migration.
 
-**Rationale**: Three.js `0.185.1` is the current reviewed npm release and provides the
-required WebGL renderer, scene graph, buffer geometry, fog, points, lights, and shadow
-maps. Its package is MIT-licensed and has no runtime dependencies. `simplex-noise` 4.0.3
-is MIT-licensed, dependency-free, provides `createNoise2D`, and accepts a caller-supplied
-PRNG. The simplex-noise file is a self-contained ES module. Three.js `0.185.1` splits its
-ES module across `three.module.min.js` and `three.core.min.js`, so the reviewed loader uses
-the package's self-contained `three.cjs` artifact and a local post-verification blob-module
-adapter. The two selected artifacts keep the runtime request count exactly two.
-
-**Alternatives considered**:
-
-- Unversioned CDN aliases were rejected because upgrades could silently change behavior.
-- Three.js addons such as `BufferGeometryUtils` were rejected because they add a third
-  runtime request; a small local merger handles only the attributes this simulator owns.
-- A third-party seeded PRNG was rejected because a compact deterministic `mulberry32`
-  implementation is sufficient for world fixtures and avoids another dependency.
-- Local library copies or a build-time bundle were rejected because the user explicitly
-  requested CDN delivery and the product must ship as one authored document.
-- Three.js `three.module.min.js` was rejected after implementation verification showed
-  that revision 185 imports `./three.core.min.js`; a blob import cannot resolve that
-  relative file and a network import would violate the two-request contract.
+**Rationale**: Three.js 0.186.x replaces the standalone CommonJS build with a Node-only
+shim calling `process.emitWarning` and `require('./three.module.js')`. It cannot run in
+the former browser adapter. The official ESM renderer has exactly two static references
+to its core module; both can be linked to one verified blob without additional requests.
+The authored merger, seeded PRNG, deterministic terrain, and no-addons boundary remain.
 
 **Primary sources**:
 
@@ -40,16 +25,16 @@ adapter. The two selected artifacts keep the runtime request count exactly two.
 
 ## Development Tooling Baseline
 
-**Decision**: Pin `@playwright/test` `1.62.1` (Apache-2.0), ESLint `10.9.0` (MIT),
-TypeScript `7.0.2` (Apache-2.0), Prettier `3.9.6` (MIT), and `http-server` `14.1.1`
-(MIT) as exact development-only dependencies in `package.json` and `package-lock.json`.
+**Decision**: Pin `@playwright/test` `1.64.1` (Apache-2.0), ESLint `10.13.0` (MIT),
+TypeScript `7.0.2` (Apache-2.0), Prettier `3.9.10` (MIT), and `http-server` `14.1.1`
+(MIT), `@types/node` `24.19.2`, `semver` `7.8.5`, and `@types/semver` `7.8.0` (MIT) as exact development-only dependencies in `package.json` and `package-lock.json`.
 Review the complete lockfile license and vulnerability surface before release, not only
-the two runtime CDN modules.
+the three runtime CDN artifacts.
 
-**Rationale**: These reviewed 2026-08-22 registry releases cover browser automation,
+**Rationale**: These reviewed 2026-10-24 registry releases cover browser automation,
 linting, strict JavaScript analysis, formatting, and deterministic local static serving.
 Exact package and lockfile versions keep development checks reproducible. None of these
-packages is imported by `index.html` or changes the two-request runtime boundary.
+packages is imported by `index.html` or changes the three-request runtime boundary.
 
 **Primary sources**:
 
@@ -61,37 +46,24 @@ packages is imported by `index.html` or changes the two-request runtime boundary
 
 ## Dependency Integrity and Failure Isolation
 
-**Decision**: Fetch both library byte streams, compute SHA-384 with Web Crypto, compare
-against embedded lowercase hex digests, then import verified blob URLs. Decode the
-verified Three.js CommonJS artifact with fatal UTF-8 handling and wrap it in a minimal
-authored ES-module adapter (`exports` object plus default export); import the verified
-simplex-noise ES module without transformation. Apply a meta CSP that permits only inline
-authored code, verified blob modules, and connections to `https://cdn.jsdelivr.net`.
-Perform export-shape checks before application startup.
+**Decision**: Fetch and hash all three raw byte streams before evaluation. Validate the
+reviewed static import graph, create a verified core blob, and replace only the two
+approved renderer core references with that blob URL. Import namespaces, check required
+exports, and revoke all URLs after all imports settle. Keep the existing restrictive CSP.
 
-**Rationale**: Static ES module imports do not provide an integrity attribute. Fetching
-and hashing before evaluation honors the fail-closed requirement while preserving exactly
-two requests and one `index.html`. Both selected artifacts are self-contained, so blob
-imports do not trigger relative dependency requests. The fixed Three.js adapter adds no
-network or resolution input and runs only after the reviewed bytes verify. A digest mismatch, CORS error,
-timeout, parse failure, or missing export produces the same recoverable dependency-error
-state and never starts partial flight behavior.
-
-**Alternatives considered**:
-
-- An import map matches official Three.js guidance but cannot by itself prove response
-  integrity before execution.
-- Older UMD/global builds were rejected because modern Three.js removed them and they
-  would require an obsolete library release.
-- Automatic fallback CDNs were rejected because they broaden the trust boundary and
-  network request count. Retry uses the same two pinned URLs only after player action.
+**Rationale**: This supports current Three.js while preserving integrity before evaluation,
+the one-document delivery, and an exact three-request allowlist. Unexpected graph edges,
+redirects, bad hashes, invalid exports, and failed imports remain controlled failures.
+Retry always uses the same three reviewed URLs. Direct CDN imports or import maps alone
+would not establish the required integrity boundary.
 
 **Verified artifacts**:
 
-| Package             | Exact URL                                                                    |   Bytes | SHA-384 (hex)                                                                                      |
-| ------------------- | ---------------------------------------------------------------------------- | ------: | -------------------------------------------------------------------------------------------------- |
-| Three.js 0.185.1    | `https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs`                 | 2093053 | `718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178` |
-| simplex-noise 4.0.3 | `https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.js` |   18735 | `5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2` |
+| Artifact      | Version | License | Exact URL                                                                    | Expected bytes | SHA-384 (hex)                                                                                      |
+| ------------- | ------- | ------- | ---------------------------------------------------------------------------- | -------------: | -------------------------------------------------------------------------------------------------- |
+| Three.js      | 0.186.1 | MIT     | `https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js`           |         662772 | `9bc268157e7657a346bf6bac8a99e52c92a725f2fb204f1d6e788f0c309219242fdc79b89fa3e37d5eacc95c1fba845c` |
+| simplex-noise | 4.0.3   | MIT     | `https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.js` |          18735 | `5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2` |
+| Three.js core | 0.186.1 | MIT     | `https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js`             |        1458113 | `99d29e0b03c471b0efcdac70866f8c56e2e8328bbe13b8d0aabb38b66bbf9fc1c160f188d6466dd0c909c65311e3314c` |
 
 ## Renderer and Capability Baseline
 

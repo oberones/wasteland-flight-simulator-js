@@ -244,6 +244,9 @@ announcements; lifecycle changes use the status live region.
 
 ### DependencyRecord
 
+Three records represent two libraries: Three.js renderer/core and simplex-noise.
+`coreReferences` is 2 for the renderer and 0 for the other modules; all use ESM.
+
 | Field                        | Type                                           | Rules                                    |
 | ---------------------------- | ---------------------------------------------- | ---------------------------------------- |
 | `name`, `version`, `license` | controlled constants                           | Embedded manifest                        |

@@ -1,18 +1,87 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-08-23T02:14:02.367Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T17:32:03.781Z",
   "provenance": {
     "command": "npm run audit:dependencies",
     "lockfileVersion": 3,
-    "lockfileSha256": "c0393b0c8e61f9f625dbed24fc2e7a6b9cf5a3155df99ac87dbbcad8a03677ba",
+    "lockfileSha256": "baac4120dd9aa57ade62d86e19caa35c2aea396e4d35f88145abf2b1161c790d",
     "npmAuditReportVersion": 2,
     "npmOutdated": {
       "@types/node": {
-        "current": "20.19.43",
-        "wanted": "20.19.43",
-        "latest": "26.2.0",
+        "current": "24.19.2",
+        "wanted": "24.19.2",
+        "latest": "26.6.5",
         "dependent": "wasteland-flight-simulator",
         "location": "/Users/oberon/Projects/coding/javascript/wasteland-flight-simulator/node_modules/@types/node"
+      }
+    },
+    "nodeBaseline": "24.22.1",
+    "nodeVersion": "v24.21.0",
+    "npmUserAgent": "npm/12.2.0 node/v24.21.0 darwin arm64 workspaces/false",
+    "directReleaseReview": {
+      "@playwright/test": {
+        "current": "1.64.1",
+        "latestStable": "1.64.1",
+        "compatibleVersion": "1.64.1",
+        "nodeEngine": ">=20",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "@types/node": {
+        "current": "24.19.2",
+        "latestStable": "26.6.5",
+        "compatibleVersion": "24.19.2",
+        "nodeEngine": null,
+        "policy": "Node 24 declarations",
+        "currentCompatible": true
+      },
+      "@types/semver": {
+        "current": "7.8.0",
+        "latestStable": "7.8.0",
+        "compatibleVersion": "7.8.0",
+        "nodeEngine": null,
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "eslint": {
+        "current": "10.13.0",
+        "latestStable": "10.13.0",
+        "compatibleVersion": "10.13.0",
+        "nodeEngine": "^20.19.0 || ^22.13.0 || >=24",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "http-server": {
+        "current": "14.1.1",
+        "latestStable": "14.1.1",
+        "compatibleVersion": "14.1.1",
+        "nodeEngine": ">=12",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "prettier": {
+        "current": "3.9.10",
+        "latestStable": "3.9.10",
+        "compatibleVersion": "3.9.10",
+        "nodeEngine": ">=14",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "semver": {
+        "current": "7.8.5",
+        "latestStable": "7.8.5",
+        "compatibleVersion": "7.8.5",
+        "nodeEngine": ">=10",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
+      },
+      "typescript": {
+        "current": "7.0.2",
+        "latestStable": "7.0.2",
+        "compatibleVersion": "7.0.2",
+        "nodeEngine": ">=16.20.0",
+        "policy": "latest non-deprecated stable release supporting the Node baseline",
+        "currentCompatible": true
       }
     },
     "directBehindCompatibleVersionCount": 0
@@ -20,12 +89,12 @@
   "runtimeDependencies": [
     {
       "name": "Three.js",
-      "version": "0.185.1",
+      "version": "0.186.1",
       "purpose": "runtime rendering or deterministic procedural noise",
       "license": "MIT",
-      "url": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs",
-      "expectedBytes": 2093053,
-      "sha384Hex": "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "expectedBytes": 662772,
+      "sha384Hex": "9bc268157e7657a346bf6bac8a99e52c92a725f2fb204f1d6e788f0c309219242fdc79b89fa3e37d5eacc95c1fba845c",
       "requiredExports": [
         "Scene",
         "PerspectiveCamera",
@@ -50,11 +119,22 @@
       "sha384Hex": "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
       "requiredExports": ["createNoise2D"],
       "licenseNotice": "evidence/licenses/simplex-noise-MIT.txt"
+    },
+    {
+      "name": "Three.js core",
+      "version": "0.186.1",
+      "purpose": "runtime rendering or deterministic procedural noise",
+      "license": "MIT",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js",
+      "expectedBytes": 1458113,
+      "sha384Hex": "99d29e0b03c471b0efcdac70866f8c56e2e8328bbe13b8d0aabb38b66bbf9fc1c160f188d6466dd0c909c65311e3314c",
+      "requiredExports": ["Scene", "BufferGeometry", "BufferAttribute"],
+      "licenseNotice": "evidence/licenses/three-MIT.txt"
     }
   ],
   "developmentDependencies": {
-    "count": 143,
-    "directCount": 6,
+    "count": 152,
+    "directCount": 8,
     "allDevelopmentOnly": true,
     "licenseCounts": {
       "(WTFPL OR MIT)": 1,
@@ -62,8 +142,8 @@
       "BlueOak-1.0.0": 1,
       "BSD-2-Clause": 6,
       "BSD-3-Clause": 2,
-      "ISC": 4,
-      "MIT": 93
+      "ISC": 5,
+      "MIT": 101
     },
     "deprecatedCount": 1,
     "deprecatedPackages": [
@@ -76,6 +156,66 @@
     ],
     "unknownLicenseCount": 0,
     "packages": [
+      {
+        "installPath": "node_modules/@cacheable/memory",
+        "name": "@cacheable/memory",
+        "version": "2.2.0",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by cacheable",
+        "requiredBy": ["cacheable"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/@cacheable/memory/-/memory-2.2.0.tgz",
+        "integrity": "sha512-CTLKqLItRCEixEAewD3/j9DB3/o96gpTPD4eJ1v+DGOlxZRZncRQkGYqqnAGCscYd6RNeXfGeiuCphsPtqyIfQ==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/cacheable.git",
+            "directory": "packages/cacheable"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/@cacheable/utils",
+        "name": "@cacheable/utils",
+        "version": "2.5.0",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by @cacheable/memory, cacheable",
+        "requiredBy": ["@cacheable/memory", "cacheable"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/@cacheable/utils/-/utils-2.5.0.tgz",
+        "integrity": "sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/cacheable.git",
+            "directory": "packages/utils"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
       {
         "installPath": "node_modules/@eslint-community/eslint-utils",
         "name": "@eslint-community/eslint-utils",
@@ -98,7 +238,8 @@
             "type": "git",
             "url": "https://github.com/eslint-community/eslint-utils"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -123,7 +264,8 @@
           "integrityPinned": true,
           "nodeEngine": "^12.22.0 || ^14.17.0 || >=16.0.0",
           "repository": "eslint/eslint-visitor-keys",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -151,7 +293,8 @@
             "type": "git",
             "url": "https://github.com/eslint-community/regexpp"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -180,7 +323,8 @@
             "url": "git+https://github.com/eslint/rewrite.git",
             "directory": "packages/config-array"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -209,7 +353,8 @@
             "url": "git+https://github.com/eslint/rewrite.git",
             "directory": "packages/config-helpers"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -242,7 +387,8 @@
             "url": "git+https://github.com/eslint/rewrite.git",
             "directory": "packages/core"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -271,7 +417,8 @@
             "url": "git+https://github.com/eslint/rewrite.git",
             "directory": "packages/object-schema"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -280,15 +427,15 @@
       {
         "installPath": "node_modules/@eslint/plugin-kit",
         "name": "@eslint/plugin-kit",
-        "version": "0.7.2",
+        "version": "0.7.3",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by eslint",
         "requiredBy": ["eslint"],
         "license": "Apache-2.0",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/@eslint/plugin-kit/-/plugin-kit-0.7.2.tgz",
-        "integrity": "sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==",
+        "resolved": "https://registry.npmjs.org/@eslint/plugin-kit/-/plugin-kit-0.7.3.tgz",
+        "integrity": "sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -300,7 +447,8 @@
             "url": "git+https://github.com/eslint/rewrite.git",
             "directory": "packages/plugin-kit"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -328,7 +476,8 @@
             "type": "git",
             "url": "git+https://github.com/humanwhocodes/humanfs.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -357,7 +506,8 @@
             "url": "git+https://github.com/humanwhocodes/humanfs.git",
             "directory": "packages/node"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -385,7 +535,8 @@
             "type": "git",
             "url": "git+https://github.com/humanwhocodes/humanfs.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -413,7 +564,8 @@
             "type": "git",
             "url": "git+https://github.com/humanwhocodes/module-importer.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -441,7 +593,66 @@
             "type": "git",
             "url": "git+https://github.com/humanwhocodes/retry.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/@keyv/bigmap",
+        "name": "@keyv/bigmap",
+        "version": "1.3.1",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by @cacheable/memory",
+        "requiredBy": ["@cacheable/memory"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/@keyv/bigmap/-/bigmap-1.3.1.tgz",
+        "integrity": "sha512-WbzE9sdmQtKy8vrNPa9BRnwZh5UF4s1KTmSK0KUVLo3eff5BlQNNWDnFOouNpKfPKDnms9xynJjsMYjMaT/aFQ==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": ">= 18",
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/keyv.git"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/@keyv/serialize",
+        "name": "@keyv/serialize",
+        "version": "1.1.1",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by keyv",
+        "requiredBy": ["keyv"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/@keyv/serialize/-/serialize-1.1.1.tgz",
+        "integrity": "sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/keyv.git"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -450,15 +661,15 @@
       {
         "installPath": "node_modules/@playwright/test",
         "name": "@playwright/test",
-        "version": "1.62.1",
+        "version": "1.64.1",
         "direct": true,
         "developmentOnly": true,
         "purpose": "Chromium/WebKit browser automation and journey tests",
         "requiredBy": ["project root"],
         "license": "Apache-2.0",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/@playwright/test/-/test-1.62.1.tgz",
-        "integrity": "sha512-DTcUc8qii+cpHvtOwggMtBRMjKZHXYWdw8syRYu2vtzuq4Wxphqq4NfCs5Zt44L6mA8rfDfj+PHnxFc/FeK6mQ==",
+        "resolved": "https://registry.npmjs.org/@playwright/test/-/test-1.64.1.tgz",
+        "integrity": "sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -469,7 +680,15 @@
             "type": "git",
             "url": "git+https://github.com/microsoft/playwright.git"
           },
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "1.64.1",
+            "latestStable": "1.64.1",
+            "compatibleVersion": "1.64.1",
+            "nodeEngine": ">=20",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -498,7 +717,8 @@
             "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
             "directory": "types/esrecurse"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -527,7 +747,8 @@
             "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
             "directory": "types/estree"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -556,7 +777,8 @@
             "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
             "directory": "types/json-schema"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -565,15 +787,15 @@
       {
         "installPath": "node_modules/@types/node",
         "name": "@types/node",
-        "version": "20.19.43",
+        "version": "24.19.2",
         "direct": true,
         "developmentOnly": true,
         "purpose": "Node.js declarations for strict development-tool checkJs validation",
         "requiredBy": ["project root"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/@types/node/-/node-20.19.43.tgz",
-        "integrity": "sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==",
+        "resolved": "https://registry.npmjs.org/@types/node/-/node-24.19.2.tgz",
+        "integrity": "sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -585,7 +807,52 @@
             "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
             "directory": "types/node"
           },
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "24.19.2",
+            "latestStable": "26.6.5",
+            "compatibleVersion": "24.19.2",
+            "nodeEngine": null,
+            "policy": "Node 24 declarations",
+            "currentCompatible": true
+          }
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/@types/semver",
+        "name": "@types/semver",
+        "version": "7.8.0",
+        "direct": true,
+        "developmentOnly": true,
+        "purpose": "type declarations for dependency compatibility checks",
+        "requiredBy": ["project root"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/@types/semver/-/semver-7.8.0.tgz",
+        "integrity": "sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+            "directory": "types/semver"
+          },
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "7.8.0",
+            "latestStable": "7.8.0",
+            "compatibleVersion": "7.8.0",
+            "nodeEngine": null,
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -610,7 +877,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -638,7 +906,8 @@
             "type": "git",
             "url": "https://github.com/microsoft/TypeScript.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -663,7 +932,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -688,7 +958,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -713,7 +984,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -738,7 +1010,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -763,7 +1036,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -788,7 +1062,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -813,7 +1088,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -838,7 +1114,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -863,7 +1140,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -888,7 +1166,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -913,7 +1192,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -938,7 +1218,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -963,7 +1244,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -988,7 +1270,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1013,7 +1296,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1038,7 +1322,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1063,7 +1348,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1088,7 +1374,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=16.20.0",
           "repository": null,
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1097,15 +1384,15 @@
       {
         "installPath": "node_modules/acorn",
         "name": "acorn",
-        "version": "8.18.0",
+        "version": "8.19.0",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by espree",
         "requiredBy": ["espree"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/acorn/-/acorn-8.18.0.tgz",
-        "integrity": "sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==",
+        "resolved": "https://registry.npmjs.org/acorn/-/acorn-8.19.0.tgz",
+        "integrity": "sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -1116,7 +1403,8 @@
             "type": "git",
             "url": "git+https://github.com/acornjs/acorn.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1144,7 +1432,8 @@
             "type": "git",
             "url": "https://github.com/acornjs/acorn-jsx"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1172,7 +1461,8 @@
             "type": "git",
             "url": "https://github.com/ajv-validator/ajv.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1197,7 +1487,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "chalk/ansi-styles",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1225,7 +1516,8 @@
             "type": "git",
             "url": "https://github.com/caolan/async.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1253,7 +1545,8 @@
             "type": "git",
             "url": "git://github.com/juliangruber/balanced-match.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1278,7 +1571,8 @@
           "integrityPinned": true,
           "nodeEngine": ">= 0.8",
           "repository": "jshttp/basic-auth",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1287,15 +1581,15 @@
       {
         "installPath": "node_modules/brace-expansion",
         "name": "brace-expansion",
-        "version": "5.0.9",
+        "version": "5.0.12",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by minimatch",
         "requiredBy": ["minimatch"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.9.tgz",
-        "integrity": "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==",
+        "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.12.tgz",
+        "integrity": "sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -1306,7 +1600,38 @@
             "type": "git",
             "url": "git+https://github.com/juliangruber/brace-expansion.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/cacheable",
+        "name": "cacheable",
+        "version": "2.5.0",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by flat-cache",
+        "requiredBy": ["flat-cache"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/cacheable/-/cacheable-2.5.0.tgz",
+        "integrity": "sha512-60cyAOytib/OzBw1JNSoSV/boK1AtHryDIjvVBk7XbN4ugfkM3+Sry7fEjNgPMGgOjuaZPAp8ruZ0Cxafwyq9g==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/cacheable.git",
+            "directory": "packages/cacheable"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1334,7 +1659,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/call-bind-apply-helpers.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1362,7 +1688,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/call-bound.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1387,7 +1714,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "chalk/chalk",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1412,7 +1740,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=7.0.0",
           "repository": "Qix-/color-convert",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1440,7 +1769,8 @@
             "type": "git",
             "url": "git@github.com:colorjs/color-name.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1468,7 +1798,8 @@
             "type": "git",
             "url": "https://github.com/agrueneberg/Corser.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1496,7 +1827,8 @@
             "type": "git",
             "url": "git@github.com:moxystudio/node-cross-spawn.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1524,7 +1856,8 @@
             "type": "git",
             "url": "git://github.com/debug-js/debug.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1552,7 +1885,8 @@
             "type": "git",
             "url": "http://github.com/thlorenz/deep-is.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1580,7 +1914,8 @@
             "type": "git",
             "url": "git+https://github.com/es-shims/dunder-proto.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1608,7 +1943,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/es-define-property.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1645,7 +1981,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/es-errors.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1673,7 +2010,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/es-object-atoms.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1698,7 +2036,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/escape-string-regexp",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1707,15 +2046,15 @@
       {
         "installPath": "node_modules/eslint",
         "name": "eslint",
-        "version": "10.9.0",
+        "version": "10.13.0",
         "direct": true,
         "developmentOnly": true,
         "purpose": "zero-warning JavaScript linting and forbidden-pattern rules",
         "requiredBy": ["project root"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.9.0.tgz",
-        "integrity": "sha512-5KeEOJZBfEVA47boFiBsf+6MmmJpffM7qEBg4pLla2e4nlKgdKlqCW0oSLOGsT8Wl5uCGJptLV1bkaiShj90Gw==",
+        "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.13.0.tgz",
+        "integrity": "sha512-UohDjD4zSzEwhf58M3O7vc/ycc8O1I7dNlhtD0WxE8Px8EHNJKtUwzBqrzeGhisRuv2ag4sAYswszCJRgKXYUg==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -1723,7 +2062,15 @@
           "integrityPinned": true,
           "nodeEngine": "^20.19.0 || ^22.13.0 || >=24",
           "repository": "eslint/eslint",
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "10.13.0",
+            "latestStable": "10.13.0",
+            "compatibleVersion": "10.13.0",
+            "nodeEngine": "^20.19.0 || ^22.13.0 || >=24",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1752,7 +2099,8 @@
             "url": "https://github.com/eslint/js.git",
             "directory": "packages/eslint-scope"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1781,7 +2129,8 @@
             "url": "https://github.com/eslint/js.git",
             "directory": "packages/eslint-visitor-keys"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1810,7 +2159,8 @@
             "url": "https://github.com/eslint/js.git",
             "directory": "packages/espree"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1838,7 +2188,8 @@
             "type": "git",
             "url": "https://github.com/estools/esquery.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1866,7 +2217,8 @@
             "type": "git",
             "url": "https://github.com/estools/esrecurse.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1894,7 +2246,8 @@
             "type": "git",
             "url": "http://github.com/estools/estraverse.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1922,7 +2275,8 @@
             "type": "git",
             "url": "http://github.com/estools/esutils.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1950,7 +2304,8 @@
             "type": "git",
             "url": "git://github.com/primus/eventemitter3.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -1978,7 +2333,8 @@
             "type": "git",
             "url": "git+https://github.com/epoberezkin/fast-deep-equal.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2006,7 +2362,8 @@
             "type": "git",
             "url": "git://github.com/epoberezkin/fast-json-stable-stringify.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2034,7 +2391,8 @@
             "type": "git",
             "url": "https://github.com/hiddentao/fast-levenshtein.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2043,23 +2401,28 @@
       {
         "installPath": "node_modules/file-entry-cache",
         "name": "file-entry-cache",
-        "version": "8.0.0",
+        "version": "11.1.5",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by eslint",
         "requiredBy": ["eslint"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-8.0.0.tgz",
-        "integrity": "sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==",
+        "resolved": "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-11.1.5.tgz",
+        "integrity": "sha512-+PFTHITI08JIGhnNpGNI8T8inUpgZfk3GNEqfT9R2zZV2iFXg3CvqzSl/uEhs7TSGujYRELEANyDvS8Fj7+S7Q==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
           "registryArtifactPinned": true,
           "integrityPinned": true,
-          "nodeEngine": ">=16.0.0",
-          "repository": "jaredwray/file-entry-cache",
-          "directPackageCurrent": null
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/cacheable.git",
+            "directory": "packages/file-entry-cache"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2084,7 +2447,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/find-up",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2093,23 +2457,28 @@
       {
         "installPath": "node_modules/flat-cache",
         "name": "flat-cache",
-        "version": "4.0.1",
+        "version": "6.1.23",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by file-entry-cache",
         "requiredBy": ["file-entry-cache"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/flat-cache/-/flat-cache-4.0.1.tgz",
-        "integrity": "sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==",
+        "resolved": "https://registry.npmjs.org/flat-cache/-/flat-cache-6.1.23.tgz",
+        "integrity": "sha512-f++BY9pTk+983xK1FLzlLpmM0i0z+jHmx3QESGkURMXujQZz1k5wzwX6hjnQ8goaD0B+sYnDK1yZ6MTyZfUaqA==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
           "registryArtifactPinned": true,
           "integrityPinned": true,
-          "nodeEngine": ">=16",
-          "repository": "jaredwray/flat-cache",
-          "directPackageCurrent": null
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/cacheable.git",
+            "directory": "packages/flat-cache"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2137,7 +2506,8 @@
             "type": "git",
             "url": "git+https://github.com/WebReflection/flatted.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2146,15 +2516,15 @@
       {
         "installPath": "node_modules/follow-redirects",
         "name": "follow-redirects",
-        "version": "1.16.0",
+        "version": "1.16.1",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by http-proxy",
         "requiredBy": ["http-proxy"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.0.tgz",
-        "integrity": "sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==",
+        "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.1.tgz",
+        "integrity": "sha512-FNvFGzoMLWmE6Yj9spb/zjd7yiNCHiAW9/Tg9CXrQ8wuu32HtlJOwWO11OJafl5FfY3DxTdQ0vj42zU1kvv5jg==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -2165,35 +2535,8 @@
             "type": "git",
             "url": "git+ssh://git@github.com/follow-redirects/follow-redirects.git"
           },
-          "directPackageCurrent": null
-        },
-        "vulnerability": {
-          "status": "none reported by npm audit"
-        }
-      },
-      {
-        "installPath": "node_modules/fsevents",
-        "name": "fsevents",
-        "version": "2.3.2",
-        "direct": false,
-        "developmentOnly": true,
-        "purpose": "Transitive development dependency required by the exact lockfile graph",
-        "requiredBy": [],
-        "license": "MIT",
-        "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz",
-        "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
-        "maintenance": {
-          "status": "non-deprecated-exact-registry-artifact",
-          "deprecated": null,
-          "registryArtifactPinned": true,
-          "integrityPinned": true,
-          "nodeEngine": "^8.16.0 || ^10.6.0 || >=11.0.0",
-          "repository": {
-            "type": "git",
-            "url": "https://github.com/fsevents/fsevents.git"
-          },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2221,7 +2564,8 @@
             "type": "git",
             "url": "https://github.com/Raynos/function-bind.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2253,7 +2597,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/get-intrinsic.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2281,7 +2626,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/get-proto.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2306,7 +2652,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10.13.0",
           "repository": "gulpjs/glob-parent",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2334,7 +2681,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/gopd.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2359,7 +2707,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "sindresorhus/has-flag",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2387,7 +2736,34 @@
             "type": "git",
             "url": "git://github.com/inspect-js/has-symbols.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/hashery",
+        "name": "hashery",
+        "version": "1.5.1",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by @cacheable/utils, @keyv/bigmap",
+        "requiredBy": ["@cacheable/utils", "@keyv/bigmap"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/hashery/-/hashery-1.5.1.tgz",
+        "integrity": "sha512-iZyKG96/JwPz1N55vj2Ie2vXbhu440zfUfJvSwEqEbeLluk7NnapfGqa7LH0mOsnDxTF85Mx8/dyR6HfqcbmbQ==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": ">=20",
+          "repository": "https://github.com/jaredwray/hashery.git",
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2415,7 +2791,8 @@
             "type": "git",
             "url": "git+https://github.com/inspect-js/hasOwn.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2443,7 +2820,44 @@
             "type": "git",
             "url": "https://github.com/mathiasbynens/he.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/hookified",
+        "name": "hookified",
+        "version": "1.15.1",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by @cacheable/memory, @keyv/bigmap, cacheable, flat-cache, hashery, qified",
+        "requiredBy": [
+          "@cacheable/memory",
+          "@keyv/bigmap",
+          "cacheable",
+          "flat-cache",
+          "hashery",
+          "qified"
+        ],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/hookified/-/hookified-1.15.1.tgz",
+        "integrity": "sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/hookified.git"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2468,7 +2882,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=12",
           "repository": "jsdom/html-encoding-sniffer",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2496,7 +2911,8 @@
             "type": "git",
             "url": "https://github.com/http-party/node-http-proxy.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2524,7 +2940,15 @@
             "type": "git",
             "url": "git://github.com/http-party/http-server.git"
           },
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "14.1.1",
+            "latestStable": "14.1.1",
+            "compatibleVersion": "14.1.1",
+            "nodeEngine": ">=12",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2552,7 +2976,8 @@
             "type": "git",
             "url": "git://github.com/ashtuchkin/iconv-lite.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2580,7 +3005,8 @@
             "type": "git",
             "url": "git@github.com:kaelzhang/node-ignore.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2608,7 +3034,8 @@
             "type": "git",
             "url": "https://github.com/jensyt/imurmurhash-js"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2633,7 +3060,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=0.10.0",
           "repository": "jonschlinkert/is-extglob",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2658,7 +3086,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=0.10.0",
           "repository": "micromatch/is-glob",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2686,35 +3115,8 @@
             "type": "git",
             "url": "git+https://github.com/isaacs/isexe.git"
           },
-          "directPackageCurrent": null
-        },
-        "vulnerability": {
-          "status": "none reported by npm audit"
-        }
-      },
-      {
-        "installPath": "node_modules/json-buffer",
-        "name": "json-buffer",
-        "version": "3.0.1",
-        "direct": false,
-        "developmentOnly": true,
-        "purpose": "Transitive development dependency required by keyv",
-        "requiredBy": ["keyv"],
-        "license": "MIT",
-        "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.1.tgz",
-        "integrity": "sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==",
-        "maintenance": {
-          "status": "non-deprecated-exact-registry-artifact",
-          "deprecated": null,
-          "registryArtifactPinned": true,
-          "integrityPinned": true,
-          "nodeEngine": null,
-          "repository": {
-            "type": "git",
-            "url": "git://github.com/dominictarr/json-buffer.git"
-          },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2742,7 +3144,8 @@
             "type": "git",
             "url": "git+https://github.com/epoberezkin/json-schema-traverse.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2770,7 +3173,8 @@
             "type": "git",
             "url": "git://github.com/samn/json-stable-stringify.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2779,15 +3183,15 @@
       {
         "installPath": "node_modules/keyv",
         "name": "keyv",
-        "version": "4.5.4",
+        "version": "5.6.0",
         "direct": false,
         "developmentOnly": true,
-        "purpose": "Transitive development dependency required by flat-cache",
-        "requiredBy": ["flat-cache"],
+        "purpose": "Transitive development dependency required by @cacheable/memory, @cacheable/utils, cacheable",
+        "requiredBy": ["@cacheable/memory", "@cacheable/utils", "cacheable"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/keyv/-/keyv-4.5.4.tgz",
-        "integrity": "sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==",
+        "resolved": "https://registry.npmjs.org/keyv/-/keyv-5.6.0.tgz",
+        "integrity": "sha512-CYDD3SOtsHtyXeEORYRx2qBtpDJFjRTGXUtmNEMGyzYOKj1TE3tycdlho7kA1Ufx9OYWZzg52QFBGALTirzDSw==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -2798,7 +3202,8 @@
             "type": "git",
             "url": "git+https://github.com/jaredwray/keyv.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2826,7 +3231,8 @@
             "type": "git",
             "url": "git://github.com/gkz/levn.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2851,7 +3257,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/locate-path",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2879,7 +3286,8 @@
             "type": "git",
             "url": "git+https://github.com/es-shims/math-intrinsics.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2907,7 +3315,8 @@
             "url": "https://github.com/broofa/node-mime",
             "type": "git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2935,7 +3344,8 @@
             "type": "git",
             "url": "git@github.com:isaacs/minimatch"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2963,7 +3373,8 @@
             "type": "git",
             "url": "git://github.com/minimistjs/minimist.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -2988,7 +3399,8 @@
           "integrityPinned": true,
           "nodeEngine": null,
           "repository": "vercel/ms",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3013,7 +3425,8 @@
           "integrityPinned": true,
           "nodeEngine": null,
           "repository": "git://github.com/litejs/natural-compare-lite.git",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3046,7 +3459,8 @@
             "type": "git",
             "url": "git://github.com/inspect-js/object-inspect.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3071,7 +3485,8 @@
           "integrityPinned": true,
           "nodeEngine": null,
           "repository": "domenic/opener",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3099,7 +3514,8 @@
             "type": "git",
             "url": "git://github.com/gkz/optionator.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3124,7 +3540,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/p-limit",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3149,7 +3566,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/p-locate",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3174,7 +3592,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "sindresorhus/path-exists",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3199,7 +3618,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "sindresorhus/path-key",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3208,15 +3628,15 @@
       {
         "installPath": "node_modules/playwright",
         "name": "playwright",
-        "version": "1.62.1",
+        "version": "1.64.1",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by @playwright/test",
         "requiredBy": ["@playwright/test"],
         "license": "Apache-2.0",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/playwright/-/playwright-1.62.1.tgz",
-        "integrity": "sha512-0M+L3LAD8/nm554LOla9Ayx0j0tmFZ0FBcoQ7F1VuVHpM/XpiC8RcDzBQB8W5+hA8L22THxELzeF+2WcUzvcLg==",
+        "resolved": "https://registry.npmjs.org/playwright/-/playwright-1.64.1.tgz",
+        "integrity": "sha512-HCrVhHr5QQuwYoswEUGTb7gGp522yflbv/ST8nF4sFWGuLjQCt17Q/EubpGGSNKYn1tsTCPZxqHhHCfVURu7UA==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -3227,7 +3647,8 @@
             "type": "git",
             "url": "git+https://github.com/microsoft/playwright.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3236,15 +3657,15 @@
       {
         "installPath": "node_modules/playwright-core",
         "name": "playwright-core",
-        "version": "1.62.1",
+        "version": "1.64.1",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by playwright",
         "requiredBy": ["playwright"],
         "license": "Apache-2.0",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.62.1.tgz",
-        "integrity": "sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw==",
+        "resolved": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.64.1.tgz",
+        "integrity": "sha512-BC4s8y6SEVA6Q1rSxZTto8hI1KUI3xXlHGZgvGqP4IqPdI/a6FX9H29IDNz7vKo9l21b6LfYosScPL6M3xxyDQ==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -3255,7 +3676,8 @@
             "type": "git",
             "url": "git+https://github.com/microsoft/playwright.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3283,7 +3705,8 @@
             "type": "git",
             "url": "git@github.com:http-party/node-portfinder.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3311,7 +3734,8 @@
             "type": "git",
             "url": "git://github.com/gkz/prelude-ls.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3320,15 +3744,15 @@
       {
         "installPath": "node_modules/prettier",
         "name": "prettier",
-        "version": "3.9.6",
+        "version": "3.9.10",
         "direct": true,
         "developmentOnly": true,
         "purpose": "deterministic source and evidence formatting",
         "requiredBy": ["project root"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/prettier/-/prettier-3.9.6.tgz",
-        "integrity": "sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==",
+        "resolved": "https://registry.npmjs.org/prettier/-/prettier-3.9.10.tgz",
+        "integrity": "sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -3336,7 +3760,15 @@
           "integrityPinned": true,
           "nodeEngine": ">=14",
           "repository": "prettier/prettier",
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "3.9.10",
+            "latestStable": "3.9.10",
+            "compatibleVersion": "3.9.10",
+            "nodeEngine": ">=14",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3364,7 +3796,73 @@
             "type": "git",
             "url": "https://github.com/mathiasbynens/punycode.js.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/qified",
+        "name": "qified",
+        "version": "0.10.1",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by cacheable",
+        "requiredBy": ["cacheable"],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/qified/-/qified-0.10.1.tgz",
+        "integrity": "sha512-+Owyggi9IxT1ePKGafcI87ubSmxol6smwJ+RAHDQlx9+9cPwFWDiKFFCPuWhr9ignlGpZ9vDQLw67N4dcTVFEA==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": ">=20",
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/qified.git"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/qified/node_modules/hookified",
+        "name": "hookified",
+        "version": "2.2.0",
+        "direct": false,
+        "developmentOnly": true,
+        "purpose": "Transitive development dependency required by @cacheable/memory, @keyv/bigmap, cacheable, flat-cache, hashery, qified",
+        "requiredBy": [
+          "@cacheable/memory",
+          "@keyv/bigmap",
+          "cacheable",
+          "flat-cache",
+          "hashery",
+          "qified"
+        ],
+        "license": "MIT",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/hookified/-/hookified-2.2.0.tgz",
+        "integrity": "sha512-p/LgFzRN5FeoD3DLS6bkUapeye6E4SI6yJs6KetENd18S+FBthqYq2amJUWpt5z0EQwwHemidjY5OqJGEKm5uA==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": null,
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/jaredwray/hookified.git"
+          },
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3373,15 +3871,15 @@
       {
         "installPath": "node_modules/qs",
         "name": "qs",
-        "version": "6.15.3",
+        "version": "6.16.1",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by union",
         "requiredBy": ["union"],
         "license": "BSD-3-Clause",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/qs/-/qs-6.15.3.tgz",
-        "integrity": "sha512-O9gl3zCl5h5blw1KGUzQKhA5oUXSl8rwUIM5o0S3nCXMliSvy5Dzx7/DJcI+SwgICv+IneSZwhBh1oSyEHA71A==",
+        "resolved": "https://registry.npmjs.org/qs/-/qs-6.16.1.tgz",
+        "integrity": "sha512-5Px6J7rfHBAGUhNQ3es4YzcOdBBw0SDcVtThJml4RdnKw4tKs2epA0kPZ+K8X+WiHktT93RHVcQ/3ym5aTCgtg==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -3392,7 +3890,8 @@
             "type": "git",
             "url": "https://github.com/ljharb/qs.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3420,7 +3919,8 @@
             "type": "git",
             "url": "https://github.com/unshiftio/requires-port"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3448,7 +3948,8 @@
             "type": "git",
             "url": "git://github.com/feross/safe-buffer.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3476,7 +3977,8 @@
             "type": "git",
             "url": "git+https://github.com/ChALkeR/safer-buffer.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3504,7 +4006,44 @@
             "type": "git",
             "url": "https://github.com/vdemedes/secure-compare.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
+        },
+        "vulnerability": {
+          "status": "none reported by npm audit"
+        }
+      },
+      {
+        "installPath": "node_modules/semver",
+        "name": "semver",
+        "version": "7.8.5",
+        "direct": true,
+        "developmentOnly": true,
+        "purpose": "engine-aware stable dependency release comparisons",
+        "requiredBy": ["project root"],
+        "license": "ISC",
+        "licenseSource": "package-lock.json",
+        "resolved": "https://registry.npmjs.org/semver/-/semver-7.8.5.tgz",
+        "integrity": "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==",
+        "maintenance": {
+          "status": "non-deprecated-exact-registry-artifact",
+          "deprecated": null,
+          "registryArtifactPinned": true,
+          "integrityPinned": true,
+          "nodeEngine": ">=10",
+          "repository": {
+            "type": "git",
+            "url": "git+https://github.com/npm/node-semver.git"
+          },
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "7.8.5",
+            "latestStable": "7.8.5",
+            "compatibleVersion": "7.8.5",
+            "nodeEngine": ">=10",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3529,7 +4068,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "kevva/shebang-command",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3554,7 +4094,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "sindresorhus/shebang-regex",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3582,7 +4123,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/side-channel.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3610,7 +4152,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/side-channel-list.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3638,7 +4181,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/side-channel-map.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3666,7 +4210,8 @@
             "type": "git",
             "url": "git+https://github.com/ljharb/side-channel-weakmap.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3691,7 +4236,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=8",
           "repository": "chalk/supports-color",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3719,7 +4265,8 @@
             "type": "git",
             "url": "git://github.com/gkz/type-check.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3747,7 +4294,15 @@
             "type": "git",
             "url": "https://github.com/microsoft/TypeScript.git"
           },
-          "directPackageCurrent": true
+          "directPackageCurrent": true,
+          "releaseReview": {
+            "current": "7.0.2",
+            "latestStable": "7.0.2",
+            "compatibleVersion": "7.0.2",
+            "nodeEngine": ">=16.20.0",
+            "policy": "latest non-deprecated stable release supporting the Node baseline",
+            "currentCompatible": true
+          }
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3756,15 +4311,15 @@
       {
         "installPath": "node_modules/undici-types",
         "name": "undici-types",
-        "version": "6.21.0",
+        "version": "7.24.6",
         "direct": false,
         "developmentOnly": true,
         "purpose": "Transitive development dependency required by @types/node",
         "requiredBy": ["@types/node"],
         "license": "MIT",
         "licenseSource": "package-lock.json",
-        "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz",
-        "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==",
+        "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.24.6.tgz",
+        "integrity": "sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==",
         "maintenance": {
           "status": "non-deprecated-exact-registry-artifact",
           "deprecated": null,
@@ -3775,7 +4330,8 @@
             "type": "git",
             "url": "git+https://github.com/nodejs/undici.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3803,7 +4359,8 @@
             "type": "git",
             "url": "http://github.com/flatiron/union.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3831,7 +4388,8 @@
             "type": "git",
             "url": "http://github.com/garycourt/uri-js"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3859,7 +4417,8 @@
             "type": "git",
             "url": "git://github.com/jfromaniello/url-join.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3884,7 +4443,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=12",
           "repository": "jsdom/whatwg-encoding",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3912,7 +4472,8 @@
             "type": "git",
             "url": "git://github.com/isaacs/node-which.git"
           },
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3937,7 +4498,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=0.10.0",
           "repository": "jonschlinkert/word-wrap",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3962,7 +4524,8 @@
           "integrityPinned": true,
           "nodeEngine": ">=10",
           "repository": "sindresorhus/yocto-queue",
-          "directPackageCurrent": null
+          "directPackageCurrent": null,
+          "releaseReview": null
         },
         "vulnerability": {
           "status": "none reported by npm audit"
@@ -3978,5 +4541,24 @@
     "critical": 0,
     "total": 0
   },
-  "reviewResult": "pass-with-reviewed-transitive-deprecation"
+  "runtimeAdvisories": {},
+  "reviewResult": "pass-with-reviewed-transitive-deprecation",
+  "runtimeReleaseReview": {
+    "three": {
+      "current": "0.186.1",
+      "latestStable": "0.186.1",
+      "compatibleVersion": "0.186.1",
+      "nodeEngine": null,
+      "policy": "latest non-deprecated stable release supporting the Node baseline",
+      "currentCompatible": true
+    },
+    "simplex-noise": {
+      "current": "4.0.3",
+      "latestStable": "4.0.3",
+      "compatibleVersion": "4.0.3",
+      "nodeEngine": null,
+      "policy": "latest non-deprecated stable release supporting the Node baseline",
+      "currentCompatible": true
+    }
+  }
 }

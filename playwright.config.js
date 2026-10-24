@@ -9,7 +9,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [["line"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: process.env.WFS_TEST_BASE_URL || "http://127.0.0.1:4173",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -39,6 +39,7 @@ export default defineConfig({
       use: {
         ...devices["Pixel 7"],
         viewport: { width: 915, height: 412 },
+        screen: { width: 915, height: 412 },
         isMobile: true,
         hasTouch: true,
       },
@@ -50,17 +51,21 @@ export default defineConfig({
       use: {
         ...devices["iPhone 13"],
         viewport: { width: 844, height: 390 },
+        // Keep screen and viewport in the same orientation so WebKit emits a real resize.
+        screen: { width: 844, height: 390 },
         isMobile: true,
         hasTouch: true,
       },
     },
   ],
-  webServer: {
-    command: "npm run serve",
-    url: "http://127.0.0.1:4173",
-    reuseExistingServer: false,
-    stdout: "pipe",
-    stderr: "pipe",
-    timeout: 30_000,
-  },
+  webServer: process.env.WFS_TEST_BASE_URL
+    ? undefined
+    : {
+        command: "npm run serve",
+        url: "http://127.0.0.1:4173",
+        reuseExistingServer: false,
+        stdout: "pipe",
+        stderr: "pipe",
+        timeout: 30_000,
+      },
 });

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { FlightFixture } from "../helpers/flight-fixture.js";
 import {
+  DEPENDENCY_HASHES,
   calculateBudgetResults,
   collectFrameDurations,
   collectQualityTransitions,
@@ -18,13 +19,6 @@ import {
 const PERFORMANCE_PROFILE =
   process.env.WFS_PERFORMANCE_PROFILE === "full" ? "full" : "smoke";
 const FRAME_SAMPLE_COUNT = PERFORMANCE_PROFILE === "full" ? 1_200 : 120;
-
-const DEPENDENCY_HASHES = Object.freeze({
-  "Three.js":
-    "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
-  "simplex-noise":
-    "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
-});
 
 /** @param {string} runId @param {string} workload */
 function qualificationRun(runId, workload = "flight-five-minute") {
@@ -102,6 +96,15 @@ test.describe("performance evidence contract", () => {
         viewport: { width: 1280, height: 720 },
       }),
     ).toThrow(/viewport/i);
+    expect(() =>
+      validatePreflight({
+        ...qualificationRun("desktop-m1-chrome-flight-five-minute"),
+        dependencyHashes: {
+          ...DEPENDENCY_HASHES,
+          "Three.js core": "0".repeat(96),
+        },
+      }),
+    ).toThrow(/dependency hash/i);
   });
 
   test("merges environment runs atomically in lexical order and rejects duplicates", async ({
@@ -217,6 +220,7 @@ test.describe("performance evidence contract", () => {
 test.describe("normative performance workload smoke", () => {
   test("records cold-load feedback, control, network, and initial capture", async ({
     page,
+    baseURL,
   }, testInfo) => {
     const collector = createNetworkCollector(page);
     const startedAt = performance.now();
@@ -240,12 +244,12 @@ test.describe("normative performance workload smoke", () => {
     const unexpectedRequests = requests.filter(
       (request) =>
         /^https?:/.test(request.url) &&
-        request.url !== "http://127.0.0.1:4173/" &&
+        request.url !== new URL("/", baseURL).href &&
         !request.url.startsWith("https://cdn.jsdelivr.net/"),
     );
     expect(coldFeedbackMs).toBeLessThanOrEqual(500);
     expect(coldControlMs).toBeLessThanOrEqual(5_000);
-    expect(externalRequests).toHaveLength(2);
+    expect(externalRequests).toHaveLength(3);
     expect(unexpectedRequests).toEqual([]);
     expect(externalRequests.every((request) => request.status === 200)).toBe(
       true,

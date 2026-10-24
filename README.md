@@ -38,14 +38,14 @@ Browser --HTTPS--> static web server --file--> index.html
 ```
 
 `index.html` is the only shipped application artifact. At startup, the browser
-fetches exactly two pinned runtime dependencies:
+fetches three pinned artifacts from two runtime libraries:
 
 | Dependency    | Version   | Purpose                                         |
 | ------------- | --------- | ----------------------------------------------- |
-| Three.js      | `0.185.1` | WebGL scene, geometry, materials, and rendering |
+| Three.js      | `0.186.1` | WebGL scene, geometry, materials, and rendering |
 | simplex-noise | `4.0.3`   | Seeded procedural terrain noise                 |
 
-The application verifies the SHA-384 digest of both responses before importing
+The application verifies the SHA-384 digest of all three responses before importing
 them through local blob URLs. Redirects, timeouts, unexpected sizes, hash
 mismatches, parse errors, or missing exports fail closed and expose a controlled
 Retry action. The exact URLs, byte counts, hashes, and allowed Content Security
@@ -97,11 +97,12 @@ returns the stick to neutral.
 
 ### Prerequisites
 
-- Node.js `20.20.2`
-- npm `10.8.2`
+- Node.js `24.22.1`
+- npm `12.2.1`
 - Current Chrome and Safari for manual desktop checks
 
-The exact Node and npm versions are declared in [`package.json`](./package.json).
+The exact Node and npm versions are declared in [`package.json`](./package.json);
+`.nvmrc` selects the matching Node release.
 Using those versions keeps results aligned with the checked-in lockfile and
 validation evidence.
 
@@ -130,13 +131,16 @@ npm run serve
 Open <http://127.0.0.1:4173/>. Expected startup behavior is:
 
 1. The loading state appears immediately.
-2. The two pinned CDN responses are fetched in parallel.
-3. Both SHA-384 digests and required exports verify.
+2. The three pinned CDN responses are fetched in parallel.
+3. All three SHA-384 digests and required exports verify.
 4. WebGL 2 initializes.
 5. The glider, terrain, HUD, and relevant controls appear.
 
 Playwright starts the same local server automatically when a test command runs,
 so a separate server process is not required for automated tests.
+
+The Three.js ESM renderer and core are verified separately. Both renderer core references
+are linked to the verified core blob; unexpected imports fail closed.
 
 ## Development workflow
 
@@ -234,9 +238,9 @@ Development files and `evidence/` are never copied into the runtime package.
 Changes must preserve these production boundaries:
 
 - Ship only root `index.html`.
-- Keep the runtime request budget to the document plus the two exact jsDelivr
+- Keep the runtime request budget to the document plus the three exact jsDelivr
   dependency responses.
-- Verify both dependencies with SHA-384 before evaluation.
+- Verify all three artifacts with SHA-384 before evaluation.
 - Do not add analytics, telemetry, external assets, fonts, textures, models,
   source maps, fallback CDNs, or automatic retry loops.
 - Do not use cookies, local/session storage, IndexedDB, service workers, URL
@@ -266,7 +270,7 @@ Whichever topology is used:
 - Redirect HTTP to HTTPS.
 - Add an HTTP CSP header equivalent to or stricter than the document's meta CSP.
 - Serve only the release copy of `index.html`; unknown paths should return 404.
-- Let browsers reach `https://cdn.jsdelivr.net` for the two verified dependency
+- Let browsers reach `https://cdn.jsdelivr.net` for the three verified artifact
   downloads. The Ubuntu server itself does not fetch those runtime files.
 - Do not configure an SPA fallback that serves `index.html` for every path.
 
@@ -375,131 +379,305 @@ also confirm:
 - the page is served over HTTPS;
 - the CSP and other security headers are present;
 - the console contains no application error;
-- the Network panel shows the document and exactly two jsDelivr runtime
+- the Network panel shows the document and exactly three jsDelivr runtime
   responses; and
 - unknown paths return 404.
 
 To roll back, repoint `current` to a previously retained release, run
 `sudo nginx -t`, and reload Nginx.
 
-### Option B: Docker behind host Nginx
+### Option B: Docker behind an HTTPS reverse proxy
 
-Use this option when immutable container images, a Compose-based service catalog,
-or image-based rollback are operational requirements. Keep the container's HTTP
-port bound to loopback so clients cannot bypass the public TLS proxy.
+The checked-in `Dockerfile`, `docker-compose.yml`, and `nginx/` configuration
+package only `index.html` as application content. No Node runtime, build step,
+server persistence, or application environment variables are needed. The
+`.dockerignore` allowlist excludes repository metadata, environment files,
+artwork sources, tests, and development dependencies.
 
-Create a `Dockerfile`:
+The container runs Nginx as UID/GID `101:101` on port `8080`, with a read-only
+filesystem, all capabilities dropped, a 64-process limit,
+and a 16 MiB `/tmp` tmpfs mounted `noexec,nosuid,nodev`. Logs go to stdout/stderr
+with rotation at 10 MiB and three retained files. The HTTP health check requests
+`/index.html`. Use Compose to apply these restrictions; plain `docker run` does
+not automatically inherit them.
 
-```dockerfile
-FROM nginx:1.28.3-alpine
-
-RUN find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -delete
-COPY deploy/container-nginx.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
-```
-
-Treat the Nginx version as a reviewed dependency. For a repeatable production
-release, pin the approved image by digest and update it deliberately after image
-security review.
-
-Create `deploy/container-nginx.conf`:
-
-```nginx
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-
-    root /usr/share/nginx/html;
-    index index.html;
-    autoindex off;
-
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-
-    location / {
-        try_files $uri =404;
-
-        limit_except GET HEAD {
-            deny all;
-        }
-    }
-}
-```
-
-Create `.dockerignore` so the image build cannot accidentally include tests,
-evidence, or repository metadata:
-
-```dockerignore
-*
-!index.html
-!Dockerfile
-!deploy/
-!deploy/container-nginx.conf
-```
-
-Create `compose.yaml`:
-
-```yaml
-services:
-  simulator:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: wasteland-flight-simulator:local
-    restart: unless-stopped
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /var/cache/nginx
-      - /var/run
-    pids_limit: 64
-    ports:
-      - "127.0.0.1:8088:80"
-    healthcheck:
-      test: ["CMD-SHELL", "test -s /usr/share/nginx/html/index.html || exit 1"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-```
-
-Build and start it:
+Create the external proxy network if it does not already exist, then start:
 
 ```bash
-docker compose build --pull
-docker compose up -d
-docker compose ps
+docker network inspect web-backend >/dev/null 2>&1 || docker network create web-backend
+make docker-config
+make docker-build
+make docker-up
 curl -fsSI http://127.0.0.1:8088/
 ```
 
-In the host's HTTPS Nginx `server` block, include the same security-header
-snippet from Option A and proxy to the loopback port:
+The Makefile also provides `docker-logs` and `docker-down`. Equivalent lifecycle
+commands are `docker compose build --pull`, `docker compose up -d --wait`,
+`docker compose logs -f`, and `docker compose down`.
+
+Compose accepts these optional settings from the shell or a local `.env` file
+(which never enters the build context):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `WFS_PORT` | `8088` | Loopback host port |
+| `WFS_NETWORK` | `web-backend` | Existing external proxy network |
+| `WFS_IMAGE` | `wasteland-flight-simulator:local` | Image tag or retained release reference |
+
+The container serves only `/` and `/index.html`, permits GET/HEAD on those
+routes, and returns 404 for unknown paths. Security headers belong to the app
+container, including the document's CSP plus `frame-ancestors 'none'` and
+`Cache-Control: no-cache`. Preserve these headers through the proxy; do not
+add a second application CSP/security-header snippet there. TLS, the public
+HTTP-to-HTTPS redirect, and any hostname-wide HSTS policy belong to the proxy.
+Browser access to jsDelivr is still required for the three verified modules.
+
+For `/apps/wasteland-flight-simulator/`, add these locations to the existing
+HTTPS server block:
 
 ```nginx
-include /etc/nginx/snippets/wfs-security.conf;
+location = /apps/wasteland-flight-simulator {
+    return 308 /apps/wasteland-flight-simulator/;
+}
 
-location / {
-    proxy_pass http://127.0.0.1:8088;
-    proxy_http_version 1.1;
+location /apps/wasteland-flight-simulator/ {
+    proxy_pass http://wasteland-flight-simulator:8080/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
 ```
 
-Validate and reload the host proxy after changing it:
+The proxy container must join the same `web-backend` network. For host Nginx,
+use `http://127.0.0.1:8088/` instead. The trailing slash on `proxy_pass` strips
+the public prefix; the simulator needs no base-path build argument. Validate
+and reload the proxy after configuration changes and container recreation if
+it caches the old upstream IP. For a dedicated hostname, use `location /`.
+
+Verify the container and then repeat HTTP/browser checks through public HTTPS:
 
 ```bash
-sudo nginx -t
-sudo systemctl reload nginx
-curl -fsSI https://flight.example.com/
+docker compose ps
+docker compose exec wasteland-flight-simulator nginx -t
+docker compose logs --tail=100 wasteland-flight-simulator
+curl -fsS http://127.0.0.1:8088/ | openssl dgst -sha384
+openssl dgst -sha384 index.html
+curl -fsSI https://YOUR_HOST/apps/wasteland-flight-simulator/
+curl -I https://YOUR_HOST/apps/wasteland-flight-simulator/missing.js
 ```
 
-Keep security headers at one clearly owned layer. The examples put them on the
-public host Nginx, not the inner container, so configuration drift cannot create
-conflicting duplicate policies.
+The two digests must match; the missing path must return 404. Confirm the
+slashless public path redirects, the HTML and error responses retain security
+headers, and the browser starts with exactly three CDN requests and no CSP
+errors. To run the browser suite against an already running container:
+
+```bash
+WFS_TEST_BASE_URL=http://127.0.0.1:8088 npm test
+```
+
+This disables Playwright's development server. Use the container origin root
+for the automated suite; public-prefix checks remain deployment acceptance.
+
+For a locally built release, set `WFS_IMAGE=wasteland-flight-simulator:RELEASE_ID`
+consistently for build and startup and retain the previous image. To roll back
+without rebuilding, select that retained tag or registry digest and run:
+
+```bash
+WFS_IMAGE=wasteland-flight-simulator:PREVIOUS_RELEASE docker compose up -d --no-build --wait
+```
+
+The base image is pinned by version and multi-platform digest. Review upstream
+security updates, resolve the new digest with `docker buildx imagetools inspect`,
+update both in the Dockerfile, and rebuild/revalidate. `--pull` alone does not
+advance a digest pin. Review image vulnerability scan results before release;
+pinning and runtime restrictions are not a vulnerability assessment.
+
+### Versioned images on GHCR
+
+The [publishing workflow](./.github/workflows/publish.yml) publishes the
+existing Dockerfile to `ghcr.io/oberones/wasteland-flight-simulator-js` when a
+`v*` tag is pushed. It first requires strict stable `vMAJOR.MINOR.PATCH` syntax:
+`v1.2.3` and `v0.0.0` are valid; `v01.2.3`, `v1.2`, `v1.2.3-rc.1`, and
+`v1.2.3+build` are rejected before builds or GHCR login. The Git tag determines
+the image version; it does not need to match `package.json`.
+
+Each architecture is built and smoke-tested on Ubuntu with Buildx/QEMU after
+Compose configuration validation. The checks run with the same non-root,
+read-only, capability-free restrictions and temporary `/tmp` storage as Compose.
+They require a healthy container, exact checked-out HTML at `/` and `/index.html`,
+working HEAD and gzip responses, 404s for unknown paths, denied write methods,
+and the configured security headers on success and error responses. Test
+containers are removed after success or failure. Both `linux/amd64` and
+`linux/arm64` must pass before the publishing job can authenticate or push.
+
+A successful `v1.2.3` publication creates these multi-platform references:
+
+| Image reference | Meaning |
+| --- | --- |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3` | Stable release version |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:sha-<full-commit-sha>` | Tagged source commit |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:latest` | Last successfully published stable release |
+
+`latest` follows successful publication order, which may differ from semantic
+version order. Publishing or rerunning an older release can move it backwards.
+Use a version tag or, for an exact immutable reference, the multi-platform
+`@sha256:...` digest reported in the workflow summary. Images carry OCI source,
+revision, and version labels. Never move an existing release tag to new code.
+
+After reviewing the intended commit and completing the applicable qualification,
+create and push a new tag explicitly (replace the example version):
+
+```bash
+git tag -a v1.2.3 -m "Release v1.2.3"
+git push origin refs/tags/v1.2.3
+```
+
+The tagged commit must contain the workflow. Publishing uses `github.actor` and
+the automatic `GITHUB_TOKEN`; no personal token or deployment secrets are
+needed in Actions. Repository/package policy must allow publishing: only the
+publish job requests `packages: write`, with `contents: read` elsewhere. If the
+package already exists, ensure this repository has Actions write access to it.
+New packages are private by default. The workflow does not change visibility
+or deploy anything. See [GitHub's GHCR access documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+Public packages can be pulled anonymously. To pull a private package, use a
+GitHub account with package read access and a personal access token (classic)
+with `read:packages` (authorize organization SSO if required). With that token
+already supplied securely in `GHCR_READ_TOKEN`:
+
+```bash
+printf '%s' "$GHCR_READ_TOKEN" | docker login ghcr.io --username YOUR_GITHUB_USER --password-stdin
+```
+
+#### Production Compose setup
+
+The standalone [production Compose file](./deploy/compose.production.yml)
+follows the `local-dope-wars` deployment layout. It pulls the GHCR image without
+a build section or source mounts, uses the stable project/container name
+`wasteland-flight-simulator`, and sets `restart: always`. Docker selects the
+host's native architecture from the published AMD64/ARM64 manifest. Runtime
+restrictions, loopback port, external network, and log limits match the local
+Compose configuration; the image provides its health check.
+
+After the first successful publication, copy `deploy/compose.production.yml`
+to a dedicated directory on the target host as `compose.yml`, for example
+`/opt/wasteland-flight-simulator/compose.yml`. That directory needs only this
+file and a `.env`; no source checkout, Node tooling, or build is required.
+Authenticate to GHCR as described above if the package is private. Keep
+registry credentials outside Compose and `.env`.
+
+In the deployment directory, create `.env` with a successfully published image:
+
+```dotenv
+WFS_IMAGE=ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3
+WFS_PORT=8088
+WFS_NETWORK=web-backend
+```
+
+`WFS_IMAGE` accepts a version tag, `sha-<full-commit-sha>` tag, or full
+`ghcr.io/oberones/wasteland-flight-simulator-js@sha256:...` digest. Record the
+previous reference before updating it. An absent or empty `WFS_IMAGE` selects
+`ghcr.io/oberones/wasteland-flight-simulator-js:latest` in production; the root
+`docker-compose.yml` still defaults to `wasteland-flight-simulator:local`.
+Shell variables override `.env`, so clear old shell overrides before use.
+
+```bash
+cd /opt/wasteland-flight-simulator
+unset WFS_IMAGE WFS_PORT WFS_NETWORK
+docker network inspect web-backend >/dev/null 2>&1 || docker network create web-backend
+docker compose --env-file .env config --quiet
+docker compose --env-file .env pull wasteland-flight-simulator
+```
+
+Inspect/create the configured network instead if overriding `WFS_NETWORK`.
+The reverse proxy must join that same external network.
+
+If replacing an existing local-build instance, pull the new image first, then
+stop and remove only the old app service from its original checkout, using its
+original Compose project/options:
+
+```bash
+docker compose --file docker-compose.yml stop wasteland-flight-simulator
+docker compose --file docker-compose.yml rm --force wasteland-flight-simulator
+```
+
+Keep the old image until acceptance. This cutover causes a brief outage;
+the two stacks must not compete for the loopback port or proxy service name.
+After cutover, use the production Compose file for subsequent operations.
+
+Start the selected image from the deployment directory:
+
+```bash
+cd /opt/wasteland-flight-simulator
+docker compose --env-file .env up -d --no-build --wait --wait-timeout 120 wasteland-flight-simulator
+docker compose --env-file .env ps
+docker inspect --format '{{.Config.Image}} {{.State.Health.Status}}' wasteland-flight-simulator
+docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' wasteland-flight-simulator
+docker compose --env-file .env exec wasteland-flight-simulator nginx -t
+docker compose --env-file .env logs --tail=100 wasteland-flight-simulator
+curl -fsSI http://127.0.0.1:8088/
+```
+
+Confirm the selected image and source revision, and require `healthy`. Use
+the configured host port if overriding `WFS_PORT`. Keep the proxy upstream
+`http://wasteland-flight-simulator:8080/` and repeat the public HTTPS/browser
+checks above; reload the proxy if it caches the old container IP.
+
+For updates, persist the new image reference in `.env`, then run the following
+from the deployment directory. To roll back, set `WFS_IMAGE` in `.env` to the
+previous successful version, SHA tag, or digest and run the same commands:
+
+```bash
+unset WFS_IMAGE WFS_PORT WFS_NETWORK
+docker compose --env-file .env config --quiet
+docker compose --env-file .env pull wasteland-flight-simulator
+docker compose --env-file .env up -d --no-build --wait --wait-timeout 120 wasteland-flight-simulator
+```
+
+Repeat the health and public checks after either operation. Persisting the
+selected image in `.env` keeps later commands on that release. When operating
+directly from this checkout instead, select the standalone file explicitly
+with `docker compose --file deploy/compose.production.yml`; do not merge it
+with the root Compose file, which contains local build settings.
+
+#### Verify publication
+
+After the first authorized tag push, inspect the **Publish container image**
+run in GitHub Actions: tag validation, both verification jobs, and publication
+must succeed. Record its published digest and compare all three references:
+
+```bash
+git rev-parse 'v1.2.3^{commit}'
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:sha-FULL_COMMIT_SHA
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:latest
+```
+
+Replace `FULL_COMMIT_SHA` with the full resolved commit. Each manifest must
+include `linux/amd64` and `linux/arm64` and match the summary digest (`latest`
+may have advanced if another release published since then). Additional
+attestation manifests may also appear. Local smoke checks cannot establish
+hosted workflow or GHCR publishing success. Container checks gate publication;
+the full browser suite and physical-device release qualification remain separate.
+
+To reproduce the container gate locally for either architecture:
+
+```bash
+docker compose config --quiet
+docker compose --file deploy/compose.production.yml config --quiet
+docker buildx build --platform linux/amd64 --load -t wasteland-flight-simulator:smoke-amd64 .
+bash .github/scripts/smoke-container.sh wasteland-flight-simulator:smoke-amd64 linux/amd64
+docker buildx build --platform linux/arm64 --load -t wasteland-flight-simulator:smoke-arm64 .
+bash .github/scripts/smoke-container.sh wasteland-flight-simulator:smoke-arm64 linux/arm64
+```
+
+The host needs Docker/Buildx, Bash, Python 3, and emulation support for a
+non-native architecture. For workflow changes, also run
+`actionlint .github/workflows/publish.yml` and exercise the tag-validation step with valid,
+leading-zero, incomplete, and prerelease versions. The workflow uses
+[Docker's multi-platform build](https://docs.docker.com/build/ci/github-actions/multi-platform/)
+and [GitHub Actions cache](https://docs.docker.com/build/ci/github-actions/cache/)
+support with SHA-pinned actions.
 
 ### Production operations checklist
 
@@ -515,7 +693,7 @@ conflicting duplicate policies.
   without adding browser telemetry to the application.
 - Apply an HSTS policy only when the hostname and any selected subdomains are
   intended to remain HTTPS-only.
-- Never replace the two pinned CDN URLs or hashes as an emergency fallback;
+- Never replace the three pinned CDN URLs or hashes as an emergency fallback;
   review and test any dependency update as a source change.
 
 ## Release qualification

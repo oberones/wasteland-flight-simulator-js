@@ -10,8 +10,10 @@ single-file runtime distribution. Root `index.html` is the sole shipped artifact
   source captures, result, and unresolved deviations.
 - `derived`: deterministic summaries that identify their source files and command.
 
-Every JSON evidence document uses an integer `schemaVersion`. The current schema version
-is `1`. Writers must validate before an atomic rename, reject duplicate run identifiers,
+Every JSON evidence document uses an integer `schemaVersion`. Performance and environment
+evidence use version `1`. The dependency manifest uses version `2`, adding registry-based
+compatible release decisions, the Node baseline, three runtime artifact records, and
+runtime advisory results. Writers must validate before an atomic rename, reject duplicate run identifiers,
 and never overwrite a prior qualification entry.
 
 ## Fail-closed policy
@@ -26,3 +28,7 @@ Manual records must distinguish observations from automated assertions. Generate
 must identify the exact command, commit, runtime hash, tool/browser version, timestamp,
 and inputs needed to reproduce them. Review edits are append-only or explicitly retain
 the original attachment and change rationale.
+
+The 2026-10-24 dependency migration changes the Three.js hashes and runtime request
+budget. Earlier validation records remain historical evidence; they do not qualify the
+updated runtime. See `validation/dependency-upgrade-2026-10-24.md` for fresh results.
