@@ -1,16 +1,57 @@
+# Dependencies, build output, and local tooling caches
 node_modules/
 dist/
 build/
+.npm/
+.cache/
+.eslintcache
+.prettiercache
+*.tsbuildinfo
+
+# Disposable test reports (keep reviewed evidence/ and art/ artifacts tracked)
 coverage/
+.nyc_output/
 playwright-report/
 test-results/
 blob-report/
-*.log
+
+# Python tooling for Blender authoring and exporter checks
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Blender save backups; the editable .blend sources remain tracked
+*.blend[0-9]*
+
+# Local environment settings; allow sanitized examples and templates
 .env*
-.DS_Store
-Thumbs.db
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.sample
+!.env.template
+!.env.*.template
+
+# Machine-specific Compose overrides, including copies under deploy/
+compose.override.yml
+compose.override.yaml
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Logs and temporary/editor files
+*.log
 *.tmp
+*.temp
 *.swp
+*.swo
+*~
 .vscode/
 .idea/
 
+# Operating-system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
