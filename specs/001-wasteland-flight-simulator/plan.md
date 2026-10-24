@@ -11,10 +11,10 @@ dependency-ordered implementation work; this command does not implement the simu
 Deliver a free-flight 3D wasteland simulator whose entire shipped application—semantic
 markup, CSS, shaders, scene construction, deterministic world generation, flight logic,
 controls, HUD, and lifecycle—is contained in root `index.html`. The document retrieves
-exactly two reviewed library artifacts from pinned jsDelivr URLs: Three.js `0.185.1`
-`three.cjs` and the `simplex-noise` `4.0.3` ES module. It verifies each SHA-384 digest,
-wraps the verified self-contained Three.js CommonJS export object in a local blob-module
-adapter, imports both verified blob URLs, then builds the procedural world and a
+exactly three reviewed library artifacts from pinned jsDelivr URLs: Three.js `0.186.1`
+`three.module.js` and `three.core.js`, and the `simplex-noise` `4.0.3` ES module.
+It verifies every SHA-384 digest before evaluation, rewrites the two reviewed core
+references to a verified local blob URL, imports the verified modules, then builds the procedural world and a
 Blender-authored glider and mixed building set from embedded geometry without external runtime assets.
 
 The implementation uses a fixed 60 Hz pure simulation step, an in-memory session seed,
@@ -26,11 +26,11 @@ not part of the shipped runtime.
 ## Technical Context
 
 **Language/Version**: HTML5, CSS, and browser-native ECMAScript 2023 modules; Node.js
-20.20.2 and npm 10.8.2 for development tooling only
-**Primary Dependencies**: Runtime—Three.js `0.185.1` and `simplex-noise` `4.0.3`, both
-MIT-licensed and loaded from exact jsDelivr URLs; development—`@playwright/test` `1.62.1`
-(Apache-2.0), ESLint `10.9.0` (MIT), TypeScript `7.0.2` (Apache-2.0), Prettier `3.9.6`
-(MIT), and `http-server` `14.1.1` (MIT), all development-only and exact-lockfile resolved
+24.22.1 and npm 12.2.1 for development tooling only
+**Primary Dependencies**: Runtime—Three.js `0.186.1` and `simplex-noise` `4.0.3`, both
+MIT-licensed and loaded from exact jsDelivr URLs; development—`@playwright/test` `1.64.1`
+(Apache-2.0), ESLint `10.13.0` (MIT), TypeScript `7.0.2` (Apache-2.0), Prettier `3.9.10`
+(MIT), and `http-server` `14.1.1` (MIT), plus `@types/node` `24.19.2`, `semver` `7.8.5`, and `@types/semver` `7.8.0` (MIT), all development-only and exact-lockfile resolved
 **Storage**: In-memory state only; no cookies, local/session storage, IndexedDB, service
 worker, telemetry, or server persistence
 **Testing**: Playwright browser tests against Chromium and WebKit; deterministic
@@ -42,7 +42,7 @@ current stable Safari on macOS and iOS; mobile gameplay is landscape-only
 **Supported Environments**: Desktop 1024x576–2560x1440 at 100%, 150%, and 200% zoom;
 mobile landscape 640x360–1366x1024 with safe-area insets; keyboard, optional desktop
 pointer lock, and multi-touch controls
-**Security & Privacy**: No user data or untrusted input; exact two-URL network allowlist;
+**Security & Privacy**: No user data or untrusted input; exact three-URL network allowlist;
 SHA-384 verification before module evaluation; restrictive meta CSP; no URL/storage-driven
 behavior; dependency license and vulnerability evidence required
 **UX & Accessibility**: Semantic HTML status/actions; visible focus; keyboard-equivalent
@@ -52,7 +52,7 @@ rotation states
 **Performance Goals**: Median ≥60 frames/s and 99% of frames ≤33.3 ms on each reference
 environment; cold controllable load ≤5 s at 25 Mbps; 95% input-to-render response ≤100 ms;
 ≤10% steady-state memory growth from minute 2 through minute 10
-**Constraints**: Root `index.html` is the only runtime artifact; exactly two external
+**Constraints**: Root `index.html` is the only runtime artifact; exactly three external
 runtime requests and no addons/external assets; fixed 60 Hz simulation; deterministic restarts;
 terrain collision must match rendered terrain; mobile performance evidence must come
 from physical devices rather than emulation
@@ -72,8 +72,8 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
   terrain/ruin renderer, aircraft simulation, input router, camera, ash, HUD, quality
   manager, and application coordinator. JSDoc contracts and development-only static
   checks prevent the single-file constraint from becoming unstructured global code.
-- **Security — PASS**: The only trust boundary is two immutable CDN responses. Exact URLs,
-  byte sizes, SHA-384 hashes, licenses, CSP, failure states, and a two-request network
+- **Security — PASS**: The only trust boundary is three immutable CDN responses. Exact URLs,
+  byte sizes, SHA-384 hashes, licenses, CSP, failure states, and a three-request network
   assertion are defined in [runtime-dependency-contract.md](./contracts/runtime-dependency-contract.md).
   The app reads no URL values, stored data, credentials, or personal data.
 - **Testing — PASS**: Pure fixed-step behavior and seeded world functions are reachable
@@ -184,11 +184,12 @@ than external source modules.
 
 `index.html` contains, in order: metadata and restrictive CSP; all responsive CSS;
 semantic loading/error/paused/crashed/HUD/control markup; one inline module loader; and
-the application module. The loader fetches the two pinned artifact byte streams in
-parallel and verifies their SHA-384 digests with Web Crypto. It UTF-8 decodes the verified
-Three.js `three.cjs` bytes, prepends an owned `exports` object, appends a default ES-module
-export, and imports that adapted blob; the verified simplex-noise bytes import directly
-as a blob module. Application startup waits until both export objects pass shape checks.
+the application module. The loader fetches all three pinned artifacts in parallel and
+verifies every SHA-384 digest before evaluation. It validates the reviewed import graph,
+creates a blob for Three.js core, and rewrites the two `./three.core.js` import/re-export
+specifiers in `three.module.js` to that blob URL. The renderer and simplex-noise modules
+then import as verified blobs. All imports settle and pass export checks before startup;
+all blob URLs are revoked on success or failure. Unexpected references fail closed.
 Terrain geometry, colors, shaders, UI icons, ash, and cracks are authored procedurally
 or with CSS/SVG-like HTML primitives inside the document. The original Dustkite
 glider is authored offline in Blender and embedded as indexed position, split-normal,
@@ -353,8 +354,8 @@ hardware, failed budgets, or a changed dependency hash blocks the associated rel
 ## Phase 0: Research Outcomes
 
 All technical unknowns are resolved in [research.md](./research.md). The decisions pin
-runtime versions and hashes, justify verified blob imports and the reviewed CommonJS
-adapter required by the current Three.js package layout, select WebGL 2 and fixed-step
+runtime versions and hashes, justify verified blob imports and the reviewed ESM graph
+required by the current Three.js package layout, select WebGL 2 and fixed-step
 custom physics, define deterministic generation and region pooling, choose responsive
 input/lifecycle patterns, and establish the automated/physical-device validation split.
 

@@ -39,6 +39,7 @@ export default defineConfig({
       use: {
         ...devices["Pixel 7"],
         viewport: { width: 915, height: 412 },
+        screen: { width: 915, height: 412 },
         isMobile: true,
         hasTouch: true,
       },
@@ -50,6 +51,8 @@ export default defineConfig({
       use: {
         ...devices["iPhone 13"],
         viewport: { width: 844, height: 390 },
+        // Keep screen and viewport in the same orientation so WebKit emits a real resize.
+        screen: { width: 844, height: 390 },
         isMobile: true,
         hasTouch: true,
       },

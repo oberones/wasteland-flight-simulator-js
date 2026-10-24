@@ -6,7 +6,7 @@ test or performance claim has been completed.
 
 ## Prerequisites
 
-- Node.js `20.20.2` and npm `10.8.2` (the planning environment baseline)
+- Node.js `24.22.1` and npm `12.2.1` (the planning environment baseline)
 - Current stable Chrome and Safari on desktop
 - Physical Pixel 7 with current stable Chrome for final Android qualification
 - Physical iPhone 13 with current stable Safari and Chrome for final iOS qualification
@@ -21,7 +21,7 @@ npx playwright install chromium webkit
 ```
 
 All npm dependencies are development-only and exact-resolved by `package-lock.json`.
-Runtime Three.js and simplex-noise still come only from the two contract URLs.
+Runtime Three.js and simplex-noise still come only from the three contract URLs.
 
 ## Run Locally
 
@@ -36,7 +36,7 @@ trusted HTTPS preview so `crypto.subtle` and module loading match production beh
 Expected startup behavior:
 
 1. Loading text appears immediately.
-2. Exactly two external module requests complete.
+2. Exactly three external module requests complete.
 3. The dependency hashes verify.
 4. WebGL 2 initializes.
 5. The glider appears above stable terrain with HUD and contextual controls.
@@ -77,7 +77,7 @@ npm run test:network
 ```
 
 Confirm the exact URLs, sizes, SHA-384 values, MIT license records, namespace exports,
-two-request allowlist, CSP, data favicon, and error/retry cases in
+three-request allowlist, CSP, data favicon, and error/retry cases in
 [runtime-dependency-contract.md](./contracts/runtime-dependency-contract.md). Intercept
 and test redirect, timeout, HTTP failure, truncation, oversize, one-bit mutation, parse
 failure, and missing-export responses.

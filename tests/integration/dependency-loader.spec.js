@@ -38,7 +38,55 @@ async function acceptInjectedSimplexHash(page) {
 }
 
 test.describe("verified runtime dependency loader", () => {
-  test("uses the exact two-request manifest and exposes no partial application", async ({
+  test("waits for the verified core before creating any executable blobs", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      const create = URL.createObjectURL.bind(URL);
+      globalThis.__WFS_BLOB_AUDIT__ = { created: 0, revoked: 0 };
+      URL.createObjectURL = (blob) => {
+        globalThis.__WFS_BLOB_AUDIT__.created += 1;
+        return create(blob);
+      };
+    });
+    /** @type {() => void} */
+    let releaseCore = () => {};
+    const coreGate = new Promise((resolve) => {
+      releaseCore = () => resolve(undefined);
+    });
+    await page.route(RUNTIME_DEPENDENCIES[2].url, async (route) => {
+      await coreGate;
+      await route.continue();
+    });
+    const otherResponses = Promise.all(
+      RUNTIME_DEPENDENCIES.slice(0, 2).map((record) =>
+        page
+          .waitForResponse(record.url)
+          .then((response) => response.finished()),
+      ),
+    );
+    try {
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await otherResponses;
+      await expect(page.getByTestId("application-state")).toHaveAttribute(
+        "data-phase",
+        "loading",
+      );
+      expect(
+        await page.evaluate(() => globalThis.__WFS_BLOB_AUDIT__.created),
+      ).toBe(0);
+      await expect(page.locator("canvas")).toHaveCount(0);
+    } finally {
+      releaseCore();
+    }
+    await expect(page.getByTestId("application-state")).toHaveAttribute(
+      "data-phase",
+      /ready|flying/,
+      { timeout: 15_000 },
+    );
+  });
+
+  test("uses the exact three-request manifest and exposes no partial application", async ({
     page,
   }, testInfo) => {
     /** @type {string[]} */
@@ -92,7 +140,7 @@ test.describe("verified runtime dependency loader", () => {
       ].sort(),
     );
     const requestPolicies = await Promise.all(runtimeRequestPolicies);
-    expect(requestPolicies).toHaveLength(2);
+    expect(requestPolicies).toHaveLength(3);
     expect(
       requestPolicies.every(({ cookie, referer }) => !cookie && !referer),
     ).toBe(true);
@@ -169,63 +217,68 @@ test.describe("verified runtime dependency loader", () => {
     expect(boundary.sessionTestMode).toBe(storageMarker);
   });
 
-  for (const failure of [
-    { name: "HTTP error", mode: "http", code: "DEPENDENCY_NETWORK" },
-    { name: "truncated body", mode: "truncate", code: "DEPENDENCY_SIZE" },
-    { name: "oversized body", mode: "oversize", code: "DEPENDENCY_SIZE" },
-    { name: "one-bit mutation", mode: "mutate", code: "DEPENDENCY_INTEGRITY" },
-  ]) {
-    test(`${failure.name} fails closed with controlled Retry`, async ({
-      page,
-    }) => {
-      let changed = false;
-      await page.route(RUNTIME_DEPENDENCIES[0].url, async (route) => {
-        if (failure.mode === "http") {
-          await route.fulfill({ status: 503, body: "untrusted diagnostic" });
-          return;
-        }
-        const response = await route.fetch();
-        const original = await response.body();
-        const body = Buffer.from(original);
-        if (failure.mode === "truncate") body.subarray(0, body.length - 1);
-        if (failure.mode === "oversize") {
+  for (const record of RUNTIME_DEPENDENCIES) {
+    for (const failure of [
+      { name: "HTTP error", mode: "http", code: "DEPENDENCY_NETWORK" },
+      { name: "truncated body", mode: "truncate", code: "DEPENDENCY_SIZE" },
+      { name: "oversized body", mode: "oversize", code: "DEPENDENCY_SIZE" },
+      {
+        name: "one-bit mutation",
+        mode: "mutate",
+        code: "DEPENDENCY_INTEGRITY",
+      },
+    ]) {
+      test(`${record.name}: ${failure.name} fails closed with controlled Retry`, async ({
+        page,
+      }) => {
+        let changed = false;
+        await page.route(record.url, async (route) => {
+          if (failure.mode === "http") {
+            await route.fulfill({ status: 503, body: "untrusted diagnostic" });
+            return;
+          }
+          const response = await route.fetch();
+          const original = await response.body();
+          const body = Buffer.from(original);
+          if (failure.mode === "truncate") body.subarray(0, body.length - 1);
+          if (failure.mode === "oversize") {
+            await route.fulfill({
+              response,
+              body: Buffer.concat([body, Buffer.from(" ")]),
+            });
+            return;
+          }
+          if (failure.mode === "mutate") {
+            body[Math.floor(body.length / 2)] ^= 1;
+            changed = true;
+          }
           await route.fulfill({
             response,
-            body: Buffer.concat([body, Buffer.from(" ")]),
+            body:
+              failure.mode === "truncate"
+                ? body.subarray(0, body.length - 1)
+                : body,
           });
-          return;
-        }
-        if (failure.mode === "mutate") {
-          body[Math.floor(body.length / 2)] ^= 1;
-          changed = true;
-        }
-        await route.fulfill({
-          response,
-          body:
-            failure.mode === "truncate"
-              ? body.subarray(0, body.length - 1)
-              : body,
         });
+
+        await page.goto("/");
+        await expect(page.getByTestId("application-state")).toHaveAttribute(
+          "data-phase",
+          "error",
+          {
+            timeout: 15_000,
+          },
+        );
+        await expect(page.getByRole("button", { name: "Retry" })).toBeVisible();
+        await expect(page.getByTestId("error-code")).toHaveText(failure.code);
+        await expect(page.locator("body")).not.toContainText(
+          "untrusted diagnostic",
+        );
+        await expect(page.locator("canvas")).toHaveCount(0);
+        if (failure.mode === "mutate") expect(changed).toBe(true);
       });
-
-      await page.goto("/");
-      await expect(page.getByTestId("application-state")).toHaveAttribute(
-        "data-phase",
-        "error",
-        {
-          timeout: 15_000,
-        },
-      );
-      await expect(page.getByRole("button", { name: "Retry" })).toBeVisible();
-      await expect(page.getByTestId("error-code")).toHaveText(failure.code);
-      await expect(page.locator("body")).not.toContainText(
-        "untrusted diagnostic",
-      );
-      await expect(page.locator("canvas")).toHaveCount(0);
-      if (failure.mode === "mutate") expect(changed).toBe(true);
-    });
+    }
   }
-
   test("redirect-selected final URL is rejected before bytes can execute", async ({
     page,
   }) => {
@@ -272,6 +325,22 @@ test.describe("verified runtime dependency loader", () => {
   });
 
   for (const failure of [
+    {
+      name: "unexpected static import",
+      source:
+        "import 'https://example.invalid/unapproved.js'; export const createNoise2D = () => {};",
+      code: "DEPENDENCY_SHAPE",
+    },
+    {
+      name: "unexpected dynamic import",
+      source: "import('https://example.invalid/unapproved.js');",
+      code: "DEPENDENCY_SHAPE",
+    },
+    {
+      name: "unexpected re-export",
+      source: "export * from './unexpected.js';",
+      code: "DEPENDENCY_SHAPE",
+    },
     { name: "parse failure", source: "export {", code: "DEPENDENCY_IMPORT" },
     {
       name: "missing export",
@@ -282,6 +351,17 @@ test.describe("verified runtime dependency loader", () => {
     test(`${failure.name} discards the verified partial module`, async ({
       page,
     }) => {
+      /** @type {string[]} */
+      const unexpectedRequests = [];
+      page.on("request", (request) => {
+        if (
+          /^https?:/.test(request.url()) &&
+          request.url() !== "http://127.0.0.1:4173/" &&
+          !RUNTIME_DEPENDENCIES.some((record) => record.url === request.url())
+        ) {
+          unexpectedRequests.push(request.url());
+        }
+      });
       await acceptInjectedSimplexHash(page);
       const body = Buffer.alloc(RUNTIME_DEPENDENCIES[1].expectedBytes, 0x20);
       body.write(failure.source, 0, "utf8");
@@ -300,6 +380,7 @@ test.describe("verified runtime dependency loader", () => {
       });
       await expect(page.locator("canvas")).toHaveCount(0);
       await expect(page.locator("body")).not.toContainText(failure.source);
+      expect(unexpectedRequests).toEqual([]);
     });
   }
 

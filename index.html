@@ -13452,13 +13452,14 @@
       const DEPENDENCIES = deepFreeze([
         {
           name: "Three.js",
-          version: "0.185.1",
+          version: "0.186.1",
           license: "MIT",
-          url: "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs",
-          expectedBytes: 2_093_053,
+          url: "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+          expectedBytes: 662_772,
           sha384Hex:
-            "718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178",
-          format: "cjs-default-adapter",
+            "9bc268157e7657a346bf6bac8a99e52c92a725f2fb204f1d6e788f0c309219242fdc79b89fa3e37d5eacc95c1fba845c",
+          format: "esm",
+          coreReferences: 2,
           requiredExports: [
             "Scene",
             "PerspectiveCamera",
@@ -13481,7 +13482,20 @@
           sha384Hex:
             "5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2",
           format: "esm",
+          coreReferences: 0,
           requiredExports: ["createNoise2D"],
+        },
+        {
+          name: "Three.js core",
+          version: "0.186.1",
+          license: "MIT",
+          url: "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js",
+          expectedBytes: 1_458_113,
+          sha384Hex:
+            "99d29e0b03c471b0efcdac70866f8c56e2e8328bbe13b8d0aabb38b66bbf9fc1c160f188d6466dd0c909c65311e3314c",
+          format: "esm",
+          coreReferences: 0,
+          requiredExports: ["Scene", "BufferGeometry", "BufferAttribute"],
         },
       ]);
 
@@ -13665,82 +13679,105 @@
         }
       }
 
-      async function importVerified(record, bytes) {
-        let blob;
-        try {
-          if (record.format === "cjs-default-adapter") {
-            const source = new TextDecoder("utf-8", { fatal: true }).decode(
-              bytes,
-            );
-            if (/\brequire\s*\(|\bmodule\.exports\b/.test(source)) {
-              throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+      function prepareModuleSource(record, bytes, coreUrl) {
+        let source = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+        if (/\bimport\s*\(|\brequire\s*\(|\bmodule\.exports\b/.test(source)) {
+          throw new Error("unsupported module reference");
+        }
+        let references = 0;
+        source = source.replace(
+          /\b(?:import|export)\s+(?:[^;"']*?\s+from\s*)?(["'])([^"']+)\1/g,
+          (statement, quote, specifier) => {
+            if (
+              specifier !== "./three.core.js" ||
+              !record.coreReferences ||
+              !coreUrl
+            ) {
+              throw new Error("unexpected module reference");
             }
-            blob = new Blob(
-              [
-                "const exports = Object.create(null);\n",
-                source,
-                "\nexport default exports;",
-              ],
-              { type: "text/javascript" },
+            references += 1;
+            return statement.replace(
+              `${quote}${specifier}${quote}`,
+              `${quote}${coreUrl}${quote}`,
             );
-          } else {
-            blob = new Blob([bytes], { type: "text/javascript" });
-          }
-        } catch (error) {
-          if (error instanceof ControlledFailure) throw error;
+          },
+        );
+        if (references !== record.coreReferences)
+          throw new Error("module graph changed");
+        return source;
+      }
+      async function importVerified(record, blobUrl) {
+        let namespace;
+        try {
+          namespace = await import(blobUrl);
+        } catch {
           throw new ControlledFailure("DEPENDENCY_IMPORT", record.name);
         }
-
-        const blobUrl = URL.createObjectURL(blob);
-        try {
-          let namespace;
-          try {
-            namespace = await import(blobUrl);
-          } catch {
-            throw new ControlledFailure("DEPENDENCY_IMPORT", record.name);
-          }
-          const exportObject =
-            record.format === "cjs-default-adapter"
-              ? namespace.default
-              : namespace;
-          if (!exportObject || typeof exportObject !== "object") {
+        for (const exportName of record.requiredExports) {
+          if (!(exportName in namespace)) {
             throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
           }
-          for (const exportName of record.requiredExports) {
-            if (!(exportName in exportObject)) {
-              throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
-            }
-          }
-          if (
-            record.name === "simplex-noise" &&
-            typeof exportObject.createNoise2D !== "function"
-          ) {
-            throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
-          }
-          return exportObject;
-        } finally {
-          URL.revokeObjectURL(blobUrl);
         }
+        if (
+          record.name === "simplex-noise" &&
+          typeof namespace.createNoise2D !== "function"
+        ) {
+          throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+        }
+        return namespace;
       }
 
       async function loadDependencies() {
         assertCapabilities();
         const attemptController = new AbortController();
+        const blobUrls = [];
         try {
           const bytes = await Promise.all(
             DEPENDENCIES.map((record) =>
               fetchVerified(record, attemptController.signal),
             ),
           );
-          const modules = await Promise.all(
-            DEPENDENCIES.map((record, index) =>
-              importVerified(record, bytes[index]),
+          // Validate the entire verified graph before constructing or evaluating modules.
+          const sources = DEPENDENCIES.map((record, index) => {
+            try {
+              return prepareModuleSource(
+                record,
+                bytes[index],
+                "./three.core.js",
+              );
+            } catch {
+              throw new ControlledFailure("DEPENDENCY_SHAPE", record.name);
+            }
+          });
+          const createBlob = (source) => {
+            const url = URL.createObjectURL(
+              new Blob([source], { type: "text/javascript" }),
+            );
+            blobUrls.push(url);
+            return url;
+          };
+          const coreUrl = createBlob(sources[2]);
+          const moduleUrl = createBlob(
+            prepareModuleSource(DEPENDENCIES[0], bytes[0], coreUrl),
+          );
+          const simplexUrl = createBlob(sources[1]);
+          // Wait for every import to settle before revoking shared core URLs or exposing Retry.
+          const results = await Promise.allSettled(
+            [moduleUrl, simplexUrl, coreUrl].map((url, index) =>
+              importVerified(DEPENDENCIES[index], url),
             ),
           );
-          return Object.freeze({ THREE: modules[0], simplex: modules[1] });
+          const failed = results.find((result) => result.status === "rejected");
+          if (failed) throw failed.reason;
+          return Object.freeze({
+            THREE: results[0].value,
+            simplex: results[1].value,
+          });
         } catch (error) {
           attemptController.abort();
           throw error;
+        } finally {
+          for (const url of blobUrls) URL.revokeObjectURL(url);
         }
       }
 
@@ -15283,7 +15320,11 @@
             this.sunLight.shadow.camera.near = 20;
             this.sunLight.shadow.camera.far = 1_500;
             this.sunLight.shadow.bias = -0.00035;
-            this.scene.add(this.ambientLight, this.sunLight);
+            this.scene.add(
+              this.ambientLight,
+              this.sunLight,
+              this.sunLight.target,
+            );
 
             this.world = new ProceduralWorld(
               THREE,
@@ -15308,7 +15349,7 @@
             this.cameraLookTarget = new THREE.Vector3();
             this.updateCamera();
             this.resize();
-            this.sceneObjectBudget = this.scene.children.length + 2;
+            this.sceneObjectBudget = this.scene.children.length + 1;
           } catch {
             throw new ControlledFailure("WEBGL2_UNAVAILABLE");
           }
@@ -15992,8 +16033,6 @@
             Math.round(state.localPosition.z / shadowSnap) * shadowSnap;
           this.sunLight.position.set(shadowX - 280, 520, shadowZ + 180);
           this.sunLight.target.position.set(shadowX, 0, shadowZ);
-          if (!this.sunLight.target.parent)
-            this.scene.add(this.sunLight.target);
           this.updateCamera();
           if (impact) this.dispatchLifecycle("TERRAIN_CRASH");
 

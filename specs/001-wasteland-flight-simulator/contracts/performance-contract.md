@@ -2,11 +2,11 @@
 
 ## Reference Matrix
 
-| ID | Physical reference | Required browser runs | Viewport |
-|---|---|---|---|
-| `desktop-m1` | Apple M1, 8-core CPU, 16 GiB RAM, AC power | Current stable Chrome and Safari | 1920x1080 CSS pixels, recorded DPR |
-| `android-pixel7` | Google Pixel 7, Tensor G2, 8 GiB RAM, battery ≥50%, cool start | Current stable Chrome | Native landscape CSS viewport |
-| `ios-iphone13` | Apple iPhone 13, A15, 4 GiB RAM, battery ≥50%, cool start | Current stable Safari and Chrome | Native landscape CSS viewport |
+| ID               | Physical reference                                             | Required browser runs            | Viewport                           |
+| ---------------- | -------------------------------------------------------------- | -------------------------------- | ---------------------------------- |
+| `desktop-m1`     | Apple M1, 8-core CPU, 16 GiB RAM, AC power                     | Current stable Chrome and Safari | 1920x1080 CSS pixels, recorded DPR |
+| `android-pixel7` | Google Pixel 7, Tensor G2, 8 GiB RAM, battery ≥50%, cool start | Current stable Chrome            | Native landscape CSS viewport      |
+| `ios-iphone13`   | Apple iPhone 13, A15, 4 GiB RAM, battery ≥50%, cool start      | Current stable Safari and Chrome | Native landscape CSS viewport      |
 
 Functional automation may add browsers/viewports, but it cannot replace these physical
 runs. Exact hardware model, OS build, browser version/UA, viewport, DPR, power mode,
@@ -60,16 +60,16 @@ listener counts, scene object counts, pool sizes, DOM overlay counts, memory, an
 
 ## Budgets
 
-| Metric | Pass condition |
-|---|---|
-| Frame cadence | Median ≥60 frames/s and ≥99% frames ≤33.3 ms in five-minute run |
-| Cold feedback | Loading state visible ≤500 ms |
-| Cold control | Controllable flight ≤5,000 ms at shaped network |
-| Input response | ≥95% event-to-render markers ≤100 ms for keyboard/pointer/touch |
-| Memory stability | Minute-10 steady-state usage ≤110% of minute-2 baseline |
+| Metric           | Pass condition                                                                     |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| Frame cadence    | Median ≥60 frames/s and ≥99% frames ≤33.3 ms in five-minute run                    |
+| Cold feedback    | Loading state visible ≤500 ms                                                      |
+| Cold control     | Controllable flight ≤5,000 ms at shaped network                                    |
+| Input response   | ≥95% event-to-render markers ≤100 ms for keyboard/pointer/touch                    |
+| Memory stability | Minute-10 steady-state usage ≤110% of minute-2 baseline                            |
 | World continuity | Zero visible gaps, missing collision regions, unbounded pool growth, or duplicates |
-| Restart | Each attempt controllable ≤2,000 ms; counts return to baseline |
-| Network | Exactly two external runtime requests; zero telemetry/assets/addons |
+| Restart          | Each attempt controllable ≤2,000 ms; counts return to baseline                     |
+| Network          | Exactly three external runtime requests; zero telemetry/assets/addons              |
 
 Chrome heap metrics alone are insufficient for cross-browser memory. Use browser/devtool
 or platform instrumentation appropriate to each physical reference and also record

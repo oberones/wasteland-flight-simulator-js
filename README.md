@@ -38,14 +38,14 @@ Browser --HTTPS--> static web server --file--> index.html
 ```
 
 `index.html` is the only shipped application artifact. At startup, the browser
-fetches exactly two pinned runtime dependencies:
+fetches three pinned artifacts from two runtime libraries:
 
 | Dependency    | Version   | Purpose                                         |
 | ------------- | --------- | ----------------------------------------------- |
-| Three.js      | `0.185.1` | WebGL scene, geometry, materials, and rendering |
+| Three.js      | `0.186.1` | WebGL scene, geometry, materials, and rendering |
 | simplex-noise | `4.0.3`   | Seeded procedural terrain noise                 |
 
-The application verifies the SHA-384 digest of both responses before importing
+The application verifies the SHA-384 digest of all three responses before importing
 them through local blob URLs. Redirects, timeouts, unexpected sizes, hash
 mismatches, parse errors, or missing exports fail closed and expose a controlled
 Retry action. The exact URLs, byte counts, hashes, and allowed Content Security
@@ -97,11 +97,12 @@ returns the stick to neutral.
 
 ### Prerequisites
 
-- Node.js `20.20.2`
-- npm `10.8.2`
+- Node.js `24.22.1`
+- npm `12.2.1`
 - Current Chrome and Safari for manual desktop checks
 
-The exact Node and npm versions are declared in [`package.json`](./package.json).
+The exact Node and npm versions are declared in [`package.json`](./package.json);
+`.nvmrc` selects the matching Node release.
 Using those versions keeps results aligned with the checked-in lockfile and
 validation evidence.
 
@@ -130,13 +131,16 @@ npm run serve
 Open <http://127.0.0.1:4173/>. Expected startup behavior is:
 
 1. The loading state appears immediately.
-2. The two pinned CDN responses are fetched in parallel.
-3. Both SHA-384 digests and required exports verify.
+2. The three pinned CDN responses are fetched in parallel.
+3. All three SHA-384 digests and required exports verify.
 4. WebGL 2 initializes.
 5. The glider, terrain, HUD, and relevant controls appear.
 
 Playwright starts the same local server automatically when a test command runs,
 so a separate server process is not required for automated tests.
+
+The Three.js ESM renderer and core are verified separately. Both renderer core references
+are linked to the verified core blob; unexpected imports fail closed.
 
 ## Development workflow
 
@@ -234,9 +238,9 @@ Development files and `evidence/` are never copied into the runtime package.
 Changes must preserve these production boundaries:
 
 - Ship only root `index.html`.
-- Keep the runtime request budget to the document plus the two exact jsDelivr
+- Keep the runtime request budget to the document plus the three exact jsDelivr
   dependency responses.
-- Verify both dependencies with SHA-384 before evaluation.
+- Verify all three artifacts with SHA-384 before evaluation.
 - Do not add analytics, telemetry, external assets, fonts, textures, models,
   source maps, fallback CDNs, or automatic retry loops.
 - Do not use cookies, local/session storage, IndexedDB, service workers, URL
@@ -266,7 +270,7 @@ Whichever topology is used:
 - Redirect HTTP to HTTPS.
 - Add an HTTP CSP header equivalent to or stricter than the document's meta CSP.
 - Serve only the release copy of `index.html`; unknown paths should return 404.
-- Let browsers reach `https://cdn.jsdelivr.net` for the two verified dependency
+- Let browsers reach `https://cdn.jsdelivr.net` for the three verified artifact
   downloads. The Ubuntu server itself does not fetch those runtime files.
 - Do not configure an SPA fallback that serves `index.html` for every path.
 
@@ -375,7 +379,7 @@ also confirm:
 - the page is served over HTTPS;
 - the CSP and other security headers are present;
 - the console contains no application error;
-- the Network panel shows the document and exactly two jsDelivr runtime
+- the Network panel shows the document and exactly three jsDelivr runtime
   responses; and
 - unknown paths return 404.
 
@@ -515,7 +519,7 @@ conflicting duplicate policies.
   without adding browser telemetry to the application.
 - Apply an HSTS policy only when the hostname and any selected subdomains are
   intended to remain HTTPS-only.
-- Never replace the two pinned CDN URLs or hashes as an emergency fallback;
+- Never replace the three pinned CDN URLs or hashes as an emergency fallback;
   review and test any dependency update as a source change.
 
 ## Release qualification

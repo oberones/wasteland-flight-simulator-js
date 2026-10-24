@@ -1,14 +1,15 @@
 # Runtime Dependency and Security Contract
 
 **Applies to**: shipped `index.html`
-**Network budget**: the document plus exactly two external runtime responses
+**Network budget**: the document plus exactly three external runtime responses
 
 ## Approved Dependencies
 
-| Name          | Version | License | Exact URL                                                                    | Expected bytes | SHA-384 (hex)                                                                                      |
+| Artifact      | Version | License | Exact URL                                                                    | Expected bytes | SHA-384 (hex)                                                                                      |
 | ------------- | ------- | ------- | ---------------------------------------------------------------------------- | -------------: | -------------------------------------------------------------------------------------------------- |
-| Three.js      | 0.185.1 | MIT     | `https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.cjs`                 |        2093053 | `718702a2c4b998a696c1cd9f891c7852c0d726bfe10a400f4175f4e2012e12e7b2140ce46e4aa4c8ff39bd1f67c8a178` |
+| Three.js      | 0.186.1 | MIT     | `https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js`           |         662772 | `9bc268157e7657a346bf6bac8a99e52c92a725f2fb204f1d6e788f0c309219242fdc79b89fa3e37d5eacc95c1fba845c` |
 | simplex-noise | 4.0.3   | MIT     | `https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.js` |          18735 | `5666e8c9abefc5348abc53555ae66de04d4a6364d29cbd6966cc6df76a0579bf1de23a85682b9e49f120471447f235a2` |
+| Three.js core | 0.186.1 | MIT     | `https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.core.js`             |        1458113 | `99d29e0b03c471b0efcdac70866f8c56e2e8328bbe13b8d0aabb38b66bbf9fc1c160f188d6466dd0c909c65311e3314c` |
 
 No alias, range, query parameter, redirect-selected URL, addon, fallback CDN, analytics,
 font, image, texture, model, audio, data, worker, source map, or favicon request is allowed.
@@ -26,18 +27,19 @@ The document MUST include a data-URL favicon to suppress an implicit `/favicon.i
    reviewed expected size.
 5. Digest the raw `ArrayBuffer` with SHA-384, encode lowercase hex, and compare using a
    length-stable exact comparison before constructing a blob.
-6. Adapt and import each verified response:
-   - Decode Three.js with `TextDecoder("utf-8", { fatal: true })`, prepend
-     `const exports = Object.create(null);`, append `export default exports;`, and import
-     that blob module. The adapter has no URL, storage, or response-controlled behavior.
-   - Import the verified simplex-noise bytes directly as a blob module.
-     Revoke each URL after the module namespace resolves or rejects.
-7. Shape-check required exports:
-   - Three.js default export object: `Scene`, `PerspectiveCamera`, `WebGLRenderer`, `BufferGeometry`,
-     `BufferAttribute`, `Mesh`, `Points`, `Fog`, `AmbientLight`, and `DirectionalLight`.
-   - simplex-noise: callable `createNoise2D`.
-8. Start application construction only after both records are `verified` and WebGL 2
-   renderer construction succeeds.
+6. Wait until all three responses pass size and hash checks, then decode with fatal UTF-8 handling.
+   Validate the reviewed graph: the renderer contains exactly two static references to
+   `./three.core.js`; core and simplex-noise contain no imports. Reject unexpected
+   references, dynamic imports, and CommonJS dependencies before evaluating any module.
+7. Create the verified core blob. Rewrite both renderer core specifiers to its URL, then
+   create renderer and simplex-noise blobs. Import all namespaces and wait for every
+   import to settle before revoking every blob URL, including on failure.
+8. Shape-check the renderer namespace for `Scene`, `PerspectiveCamera`, `WebGLRenderer`,
+   `BufferGeometry`, `BufferAttribute`, `Mesh`, `Points`, `Fog`, `AmbientLight`, and
+   `DirectionalLight`; core for `Scene`, `BufferGeometry`, and `BufferAttribute`; and
+   simplex-noise for callable `createNoise2D`.
+9. Start application construction only after all three records verify, the complete graph
+   imports successfully, and WebGL 2 renderer construction succeeds.
 
 The loader MUST never use `eval`, `Function`, DOM script injection, `innerHTML`, URL
 parameters, fragments, storage, or external text as code or interface content.
@@ -81,7 +83,7 @@ The error view MUST:
 - perform no automatic retry loop;
 - discard response buffers, blob URLs, partial module namespaces, listeners, renderer,
   and scene state from the failed attempt before an explicit retry;
-- retry the same exact two URLs and hashes only.
+- retry the same exact three URLs and hashes only.
 
 ## Privacy and Input Boundary
 
@@ -104,12 +106,12 @@ license notices remain available in source control even though no extra runtime 
 
 Automated checks MUST prove:
 
-- successful load performs only the document plus the two allowed requests;
-- each URL/version/hash/byte count matches this table, the Three.js artifact contains no
-  `require()` or `module.exports` dependency, and its adapted default object has the
+- successful load performs only the document plus the three allowed requests;
+- each URL/version/hash/byte count matches this table, the reviewed ESM graph has no
+  unexpected import, `require()`, or `module.exports` dependency, and its namespaces have the
   required exports;
 - redirect, timeout, HTTP error, truncated body, oversized body, one-bit mutation, parse
   failure, and missing export all fail closed;
-- Retry does not duplicate listeners, UI, renderer, scene, or requests beyond its new pair;
+- Retry does not duplicate listeners, UI, renderer, scene, or requests beyond its new set of three requests;
 - query/fragment/storage values do not change behavior or appear in trusted UI;
 - no source-map, addon, favicon, analytics, or asset request occurs.
