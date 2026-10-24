@@ -44,6 +44,7 @@ export default [
       "playwright.config.js",
       "art/glider/*.js",
       "art/buildings/*.js",
+      "art/scenery/*.js",
     ],
     languageOptions: {
       ecmaVersion: 2023,

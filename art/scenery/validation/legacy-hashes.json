@@ -1,0 +1,574 @@
+{
+  "baseline": "0d0bf9ee079dc6901d873016e7add2496286f7a0",
+  "indexSha256": "946d79a20173c2fe622de0403f668ceac9f43560630b435512cbe365ab1d4a8c",
+  "seed": 439041101,
+  "regions": [
+    {
+      "x": -4,
+      "z": -4,
+      "height": "df865a5a",
+      "ruin": "5f5a549e",
+      "descriptor": "7d4d4a19"
+    },
+    {
+      "x": -3,
+      "z": -4,
+      "height": "f82fc9e0",
+      "ruin": "41042b55",
+      "descriptor": "e9faec68"
+    },
+    {
+      "x": -2,
+      "z": -4,
+      "height": "94874be4",
+      "ruin": "1f8fa42b",
+      "descriptor": "551141d9"
+    },
+    {
+      "x": -1,
+      "z": -4,
+      "height": "42487a9a",
+      "ruin": "aa508fe5",
+      "descriptor": "9bc355d7"
+    },
+    {
+      "x": 0,
+      "z": -4,
+      "height": "04f6b5d8",
+      "ruin": "ac501da0",
+      "descriptor": "9df81651"
+    },
+    {
+      "x": 1,
+      "z": -4,
+      "height": "728cfdb8",
+      "ruin": "a298341c",
+      "descriptor": "ccbf293e"
+    },
+    {
+      "x": 2,
+      "z": -4,
+      "height": "d4c23206",
+      "ruin": "92eef737",
+      "descriptor": "ef0b6927"
+    },
+    {
+      "x": 3,
+      "z": -4,
+      "height": "0900cbd7",
+      "ruin": "4b3c51ac",
+      "descriptor": "b1e1768b"
+    },
+    {
+      "x": 4,
+      "z": -4,
+      "height": "b81e2e41",
+      "ruin": "2ca39003",
+      "descriptor": "87adcd06"
+    },
+    {
+      "x": -4,
+      "z": -3,
+      "height": "ece058c8",
+      "ruin": "e7166497",
+      "descriptor": "d8cf2a0b"
+    },
+    {
+      "x": -3,
+      "z": -3,
+      "height": "ef042b93",
+      "ruin": "2d65843f",
+      "descriptor": "c6e2e774"
+    },
+    {
+      "x": -2,
+      "z": -3,
+      "height": "509fe78f",
+      "ruin": "5be14012",
+      "descriptor": "fa1deeed"
+    },
+    {
+      "x": -1,
+      "z": -3,
+      "height": "3b364d91",
+      "ruin": "89cf8057",
+      "descriptor": "2473b03e"
+    },
+    {
+      "x": 0,
+      "z": -3,
+      "height": "cff515ee",
+      "ruin": "899e9499",
+      "descriptor": "854ec3da"
+    },
+    {
+      "x": 1,
+      "z": -3,
+      "height": "96d4d1a2",
+      "ruin": "a90a06cc",
+      "descriptor": "2c1292f0"
+    },
+    {
+      "x": 2,
+      "z": -3,
+      "height": "9792d379",
+      "ruin": "f3f83d0b",
+      "descriptor": "a343a8f0"
+    },
+    {
+      "x": 3,
+      "z": -3,
+      "height": "a31452b3",
+      "ruin": "8a8d100e",
+      "descriptor": "821d11a1"
+    },
+    {
+      "x": 4,
+      "z": -3,
+      "height": "3ba52823",
+      "ruin": "00bf156f",
+      "descriptor": "962eb64f"
+    },
+    {
+      "x": -4,
+      "z": -2,
+      "height": "917441f3",
+      "ruin": "ba37c91c",
+      "descriptor": "19b37f57"
+    },
+    {
+      "x": -3,
+      "z": -2,
+      "height": "0235b399",
+      "ruin": "67723217",
+      "descriptor": "dd0b3558"
+    },
+    {
+      "x": -2,
+      "z": -2,
+      "height": "4cc0c87c",
+      "ruin": "09ff5ccf",
+      "descriptor": "785895c3"
+    },
+    {
+      "x": -1,
+      "z": -2,
+      "height": "07b13509",
+      "ruin": "4f0aafca",
+      "descriptor": "965cba10"
+    },
+    {
+      "x": 0,
+      "z": -2,
+      "height": "f113848b",
+      "ruin": "ee64bf73",
+      "descriptor": "11929860"
+    },
+    {
+      "x": 1,
+      "z": -2,
+      "height": "d0dacdfd",
+      "ruin": "498a2dd6",
+      "descriptor": "1cbf62ad"
+    },
+    {
+      "x": 2,
+      "z": -2,
+      "height": "d24ce7a4",
+      "ruin": "9c94633f",
+      "descriptor": "c7886a54"
+    },
+    {
+      "x": 3,
+      "z": -2,
+      "height": "d1bfce3a",
+      "ruin": "77c303fb",
+      "descriptor": "5f49226a"
+    },
+    {
+      "x": 4,
+      "z": -2,
+      "height": "b18f2f60",
+      "ruin": "d087d155",
+      "descriptor": "03557e49"
+    },
+    {
+      "x": -4,
+      "z": -1,
+      "height": "41dc7c40",
+      "ruin": "bfe3ab13",
+      "descriptor": "435a488f"
+    },
+    {
+      "x": -3,
+      "z": -1,
+      "height": "1312a36e",
+      "ruin": "6c828dae",
+      "descriptor": "b46bbc44"
+    },
+    {
+      "x": -2,
+      "z": -1,
+      "height": "e44693ba",
+      "ruin": "9cb221ca",
+      "descriptor": "0d79c2d0"
+    },
+    {
+      "x": -1,
+      "z": -1,
+      "height": "56635bce",
+      "ruin": "27a8b9a3",
+      "descriptor": "5ac76932"
+    },
+    {
+      "x": 0,
+      "z": -1,
+      "height": "7c922a48",
+      "ruin": "064054b0",
+      "descriptor": "85f69e57"
+    },
+    {
+      "x": 1,
+      "z": -1,
+      "height": "aff186c0",
+      "ruin": "37839a70",
+      "descriptor": "63f0d8a8"
+    },
+    {
+      "x": 2,
+      "z": -1,
+      "height": "4e253a47",
+      "ruin": "58824630",
+      "descriptor": "27ee2898"
+    },
+    {
+      "x": 3,
+      "z": -1,
+      "height": "adb3d71a",
+      "ruin": "88ea7474",
+      "descriptor": "3c8122fe"
+    },
+    {
+      "x": 4,
+      "z": -1,
+      "height": "e1919c87",
+      "ruin": "42a6506e",
+      "descriptor": "eb37e4f8"
+    },
+    {
+      "x": -4,
+      "z": 0,
+      "height": "54a08871",
+      "ruin": "4010c96c",
+      "descriptor": "fd00a3b1"
+    },
+    {
+      "x": -3,
+      "z": 0,
+      "height": "3bded976",
+      "ruin": "734b69e9",
+      "descriptor": "9b45fc41"
+    },
+    {
+      "x": -2,
+      "z": 0,
+      "height": "62050045",
+      "ruin": "4317503f",
+      "descriptor": "e57910d5"
+    },
+    {
+      "x": -1,
+      "z": 0,
+      "height": "1b35be59",
+      "ruin": "c550cf0e",
+      "descriptor": "38476b59"
+    },
+    {
+      "x": 0,
+      "z": 0,
+      "height": "272605a7",
+      "ruin": "3016f8e9",
+      "descriptor": "88affd44"
+    },
+    {
+      "x": 1,
+      "z": 0,
+      "height": "37c27c7d",
+      "ruin": "5b358348",
+      "descriptor": "d9eafb0a"
+    },
+    {
+      "x": 2,
+      "z": 0,
+      "height": "767d9178",
+      "ruin": "ff59bc1a",
+      "descriptor": "b5d8dbfd"
+    },
+    {
+      "x": 3,
+      "z": 0,
+      "height": "ed326d87",
+      "ruin": "03054bf6",
+      "descriptor": "53ad2447"
+    },
+    {
+      "x": 4,
+      "z": 0,
+      "height": "234e1f19",
+      "ruin": "0cdd6398",
+      "descriptor": "c34f8a5c"
+    },
+    {
+      "x": -4,
+      "z": 1,
+      "height": "2a8b436d",
+      "ruin": "37541f66",
+      "descriptor": "ad6fd5d2"
+    },
+    {
+      "x": -3,
+      "z": 1,
+      "height": "fa6e1c8c",
+      "ruin": "ed4e0151",
+      "descriptor": "0a2935e5"
+    },
+    {
+      "x": -2,
+      "z": 1,
+      "height": "0390c50d",
+      "ruin": "68ba6614",
+      "descriptor": "c3cee9b7"
+    },
+    {
+      "x": -1,
+      "z": 1,
+      "height": "92fd5b3e",
+      "ruin": "37e6c015",
+      "descriptor": "9f20a019"
+    },
+    {
+      "x": 0,
+      "z": 1,
+      "height": "d883f253",
+      "ruin": "85820f74",
+      "descriptor": "693973e7"
+    },
+    {
+      "x": 1,
+      "z": 1,
+      "height": "3fc967f2",
+      "ruin": "cbb07074",
+      "descriptor": "64c5cfbb"
+    },
+    {
+      "x": 2,
+      "z": 1,
+      "height": "92c65ebb",
+      "ruin": "5cc29f95",
+      "descriptor": "0f2683ca"
+    },
+    {
+      "x": 3,
+      "z": 1,
+      "height": "c9fc7fa7",
+      "ruin": "6a3684cf",
+      "descriptor": "0f41d0f2"
+    },
+    {
+      "x": 4,
+      "z": 1,
+      "height": "cba66ec5",
+      "ruin": "61c65273",
+      "descriptor": "2bcb6d3b"
+    },
+    {
+      "x": -4,
+      "z": 2,
+      "height": "5912cc07",
+      "ruin": "38e91ccb",
+      "descriptor": "3b3aca1d"
+    },
+    {
+      "x": -3,
+      "z": 2,
+      "height": "be2d05fb",
+      "ruin": "2ee9e5d8",
+      "descriptor": "5a091c6d"
+    },
+    {
+      "x": -2,
+      "z": 2,
+      "height": "30ef4ed4",
+      "ruin": "7de07052",
+      "descriptor": "06ee5592"
+    },
+    {
+      "x": -1,
+      "z": 2,
+      "height": "480665dd",
+      "ruin": "f802fc57",
+      "descriptor": "23e604a2"
+    },
+    {
+      "x": 0,
+      "z": 2,
+      "height": "7124a950",
+      "ruin": "99ceb4a1",
+      "descriptor": "008ff1e3"
+    },
+    {
+      "x": 1,
+      "z": 2,
+      "height": "bca22190",
+      "ruin": "65e85146",
+      "descriptor": "e76852c9"
+    },
+    {
+      "x": 2,
+      "z": 2,
+      "height": "21788fb3",
+      "ruin": "d3e645bf",
+      "descriptor": "1c2b3b4c"
+    },
+    {
+      "x": 3,
+      "z": 2,
+      "height": "66c61e0d",
+      "ruin": "3dde7348",
+      "descriptor": "23cd009a"
+    },
+    {
+      "x": 4,
+      "z": 2,
+      "height": "cf81ae1a",
+      "ruin": "8c6703c0",
+      "descriptor": "4bacec00"
+    },
+    {
+      "x": -4,
+      "z": 3,
+      "height": "6a1de2ac",
+      "ruin": "f68058b5",
+      "descriptor": "cbe27c17"
+    },
+    {
+      "x": -3,
+      "z": 3,
+      "height": "a15db26f",
+      "ruin": "a4d8c623",
+      "descriptor": "fe530a77"
+    },
+    {
+      "x": -2,
+      "z": 3,
+      "height": "5b62968a",
+      "ruin": "2807c5f4",
+      "descriptor": "5aa41229"
+    },
+    {
+      "x": -1,
+      "z": 3,
+      "height": "48bf35f5",
+      "ruin": "e948f43f",
+      "descriptor": "91ffac00"
+    },
+    {
+      "x": 0,
+      "z": 3,
+      "height": "b1ad7d6c",
+      "ruin": "51b6f871",
+      "descriptor": "8fcc080f"
+    },
+    {
+      "x": 1,
+      "z": 3,
+      "height": "1018f589",
+      "ruin": "1ca6f6c4",
+      "descriptor": "e039d134"
+    },
+    {
+      "x": 2,
+      "z": 3,
+      "height": "bc4e83c4",
+      "ruin": "61b24750",
+      "descriptor": "4cfcc8e2"
+    },
+    {
+      "x": 3,
+      "z": 3,
+      "height": "8bc2be53",
+      "ruin": "d4ee3991",
+      "descriptor": "ebebc0e5"
+    },
+    {
+      "x": 4,
+      "z": 3,
+      "height": "6de003d0",
+      "ruin": "d9d1eedc",
+      "descriptor": "7d8535fd"
+    },
+    {
+      "x": -4,
+      "z": 4,
+      "height": "1453d659",
+      "ruin": "39ef8bf5",
+      "descriptor": "96a50f48"
+    },
+    {
+      "x": -3,
+      "z": 4,
+      "height": "4ff0249c",
+      "ruin": "b0508ad5",
+      "descriptor": "e6e51aec"
+    },
+    {
+      "x": -2,
+      "z": 4,
+      "height": "01b171eb",
+      "ruin": "5ba56e08",
+      "descriptor": "8dde5088"
+    },
+    {
+      "x": -1,
+      "z": 4,
+      "height": "87e9f422",
+      "ruin": "fed3d1da",
+      "descriptor": "b21179da"
+    },
+    {
+      "x": 0,
+      "z": 4,
+      "height": "a463c56b",
+      "ruin": "fa37aa43",
+      "descriptor": "eeaaf13c"
+    },
+    {
+      "x": 1,
+      "z": 4,
+      "height": "69fedb2b",
+      "ruin": "a36d5c24",
+      "descriptor": "35e222f9"
+    },
+    {
+      "x": 2,
+      "z": 4,
+      "height": "3012121f",
+      "ruin": "939300e5",
+      "descriptor": "5ece721a"
+    },
+    {
+      "x": 3,
+      "z": 4,
+      "height": "52a5c807",
+      "ruin": "595c420f",
+      "descriptor": "eaf3a984"
+    },
+    {
+      "x": 4,
+      "z": 4,
+      "height": "6a1e2802",
+      "ruin": "05c3a5fc",
+      "descriptor": "8b018476"
+    }
+  ]
+}

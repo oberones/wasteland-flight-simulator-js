@@ -1,0 +1,37 @@
+{
+  "baseline": "0d0bf9ee079dc6901d873016e7add2496286f7a0",
+  "checks": {
+    "world_generator": {
+      "unchanged": true,
+      "sha256": "fde7709b1196b1f8ebbd94f541053701f05232457a358d526ebc4462dbac813e"
+    },
+    "adaptive_quality": {
+      "unchanged": true,
+      "sha256": "ffafc87b72c88a9d071f9a311b1dc28ee62e22f4cdcc18136fd64ff986dbaaa9"
+    },
+    "dependency_loader": {
+      "unchanged": true,
+      "sha256": "1f1eb2ccd561d2327e29177bf5d1fb4add22f168e1d753f00eb641f7188f79b5"
+    },
+    "lifecycle": {
+      "unchanged": true,
+      "sha256": "76d05582e2d25bfe93385b521f2bc8b0a826da72669ddede8f7b365c50195eef"
+    },
+    "fixedStep": {
+      "unchanged": true,
+      "sha256": "ff72a131242518420e1ccf9083031e4c6658db3ac8c7249eed80e7f66668a6c7"
+    },
+    "updateCamera": {
+      "unchanged": true,
+      "sha256": "581b42a628fcaf13e9ba86ad8b5ec58247492f42ff8b820c48efdbea2133fdd4"
+    },
+    "restart": {
+      "unchanged": true,
+      "sha256": "1c5255138e10124babb138c06750c5ccca8cb7230b50cf880b970cd65b742409"
+    },
+    "createAircraftState": {
+      "unchanged": true,
+      "sha256": "b442df3502f95b16afd2092975524c0196da2b9f8edbd9ec06e38ed2c69b12f3"
+    }
+  }
+}

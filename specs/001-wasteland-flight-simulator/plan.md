@@ -135,6 +135,7 @@ specs/001-wasteland-flight-simulator/
 index.html                           # Only shipped runtime artifact
 art/glider/                          # Editable glider source and reproducible export evidence
 art/buildings/                       # Four editable building models, exports, previews, validation
+art/scenery/                         # 32 decorative assets, six site templates, previews, validation
 package.json                         # Development commands and exact dev constraints
 package-lock.json                    # Exact development dependency resolution
 eslint.config.js                     # Development-only static rules
@@ -252,6 +253,34 @@ materials, active draw ranges, and refreshed bounds even when empty. Window dens
 uses whole deterministic panels interleaved across buildings; it never changes opaque
 silhouettes. `npm run buildings:check` validates geometry, provenance, budgets, and
 embedding drift; a fresh Blender process verifies the saved source export.
+
+A separate scenery stream (region seed XOR `0x73636e79`) adds 32 original Blender
+assets through six civilian/industrial/rocky site templates. Regions target zero to
+two sites with eight bounded attempts each. Complete rotated footprints stay inside
+the region, outside the existing spawn corridor and 4 m clear of legacy ruins.
+Placement samples the rendered triangle surface across the full footprint, including
+clipped diagonal intersections, rejects steep or excessively varying ground, and
+embeds foundations and rock bases. No placement is mandatory. Scenery is decorative
+and does not change terrain, flight, collision, ruin placement, or the spawn landmark.
+
+`art/scenery/` owns the saved editable collection, generation and export scripts,
+geometry, provenance, labeled gallery, and browser evidence. Small assets have a
+200-triangle cap; buildings/wrecks an 800-triangle cap; the formatted embedding has a
+2 MiB cap. The shared exporter preserves the existing split-normal and active
+CORNER/POINT vertex-color precedence. `npm run scenery:embed` and
+`npm run scenery:check` maintain and validate the embedding; automated validation
+includes the scenery check. A fresh Blender process verifies saved-source export.
+
+Each pooled region owns two additional fixed merged batches sharing the opaque ruin
+material: 4,800 major triangles and 1,200 minor triangles, with at most two new
+buildings and 64 other instances. Main-pass overhead is at most two draws per visible
+region; only major scenery casts shadows. All scenery buffers total 17,100,000 bytes
+of CPU attribute/index storage, allocated once. Assignment refreshes active ranges,
+visibility, and culling bounds even for empty regions. Webdriver-only inspection
+reports descriptors, hashes, counts, bounds, identities, and allocated bytes.
+The existing quality sequence, request allowlist, dependency verification, and
+production facade boundary are preserved. Browser/emulated captures and local paced
+traversal measurements remain separate from physical-device release qualification.
 
 Global coordinates use JavaScript numbers while render-space objects are rebased in
 8,192 m increments. The HUD adds the accumulated origin offset, terrain keys remain
