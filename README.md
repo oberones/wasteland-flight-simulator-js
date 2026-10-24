@@ -789,3 +789,12 @@ for the application source.
 - [Nginx response-header directives](https://nginx.org/en/docs/http/ngx_http_headers_module.html)
 - [Docker Official Nginx image](https://hub.docker.com/_/nginx)
 - [Docker Compose service reference](https://docs.docker.com/reference/compose-file/services/)
+
+## Decorative scenery
+
+The world includes 32 original Blender-authored scenery assets arranged into six
+sparse civilian, industrial, and rocky site types. They are decorative and do not
+affect terrain or flight collision. Editable source, reproducible export commands,
+budgets, and validation are in [art/scenery/README.md](art/scenery/README.md); browse
+the [labeled asset gallery](art/scenery/previews/gallery.html). Run
+`npm run scenery:check` to verify geometry, provenance, budgets, and embedding.

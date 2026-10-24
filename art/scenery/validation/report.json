@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-24T15:44:00.636957-04:00",
+  "indexSha256": "670ff6980eb6b76f266be6eecf0c6576d45ec5190c20c1b96c42c7c4bc8457bc",
+  "baseline": "0d0bf9ee079dc6901d873016e7add2496286f7a0",
+  "assets": 32,
+  "assetTriangles": 6204,
+  "embeddedBytes": 1115765,
+  "automated": {
+    "fullPassed": 250,
+    "containerSkipped": 6,
+    "finalSceneryPassed": 16,
+    "fixedHashPassed": 4,
+    "malformedExportCasesPassed": 11
+  },
+  "memoryGrowthPercent": {
+    "Baseline": -0.9524884376554743,
+    "Expanded": 1.9623132855977943
+  },
+  "physicalDeviceQualification": "PENDING",
+  "sixtyFpsQualification": "NOT ESTABLISHED: baseline and expanded headless cadence miss the strict target",
+  "sourceAndVisualHashConsistency": "PASS"
+}

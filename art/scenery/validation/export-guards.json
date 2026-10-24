@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "results": [
+    {
+      "name": "invalid color",
+      "status": "PASS",
+      "expectedRejection": "invalid color"
+    },
+    {
+      "name": "stale bounds",
+      "status": "PASS",
+      "expectedRejection": "strictEqual"
+    },
+    {
+      "name": "ground anchor",
+      "status": "PASS",
+      "expectedRejection": "deepStrictEqual"
+    },
+    {
+      "name": "invalid index",
+      "status": "PASS",
+      "expectedRejection": "invalid index"
+    },
+    {
+      "name": "non-finite position",
+      "status": "PASS",
+      "expectedRejection": "non-finite position"
+    },
+    {
+      "name": "non-unit normal",
+      "status": "PASS",
+      "expectedRejection": "non-unit normal"
+    },
+    {
+      "name": "degenerate triangle",
+      "status": "PASS",
+      "expectedRejection": "degenerate triangle"
+    },
+    {
+      "name": "part boundary",
+      "status": "PASS",
+      "expectedRejection": "noncontiguous part range"
+    },
+    {
+      "name": "triangle budget",
+      "status": "PASS",
+      "expectedRejection": "triangle budget exceeded"
+    },
+    {
+      "name": "embedding drift",
+      "status": "PASS"
+    },
+    {
+      "name": "source drift",
+      "status": "PASS"
+    }
+  ]
+}
