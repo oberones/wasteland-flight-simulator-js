@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-24T16:33:00.945Z",
+  "generatedAt": "2026-10-24T17:32:03.781Z",
   "provenance": {
     "command": "npm run audit:dependencies",
     "lockfileVersion": 3,
@@ -16,8 +16,8 @@
       }
     },
     "nodeBaseline": "24.22.1",
-    "nodeVersion": "v24.22.1",
-    "npmUserAgent": "npm/12.2.1 node/v24.22.1 darwin arm64 workspaces/false",
+    "nodeVersion": "v24.21.0",
+    "npmUserAgent": "npm/12.2.0 node/v24.21.0 darwin arm64 workspaces/false",
     "directReleaseReview": {
       "@playwright/test": {
         "current": "1.64.1",

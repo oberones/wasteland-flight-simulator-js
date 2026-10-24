@@ -220,6 +220,7 @@ test.describe("performance evidence contract", () => {
 test.describe("normative performance workload smoke", () => {
   test("records cold-load feedback, control, network, and initial capture", async ({
     page,
+    baseURL,
   }, testInfo) => {
     const collector = createNetworkCollector(page);
     const startedAt = performance.now();
@@ -243,7 +244,7 @@ test.describe("normative performance workload smoke", () => {
     const unexpectedRequests = requests.filter(
       (request) =>
         /^https?:/.test(request.url) &&
-        request.url !== "http://127.0.0.1:4173/" &&
+        request.url !== new URL("/", baseURL).href &&
         !request.url.startsWith("https://cdn.jsdelivr.net/"),
     );
     expect(coldFeedbackMs).toBeLessThanOrEqual(500);

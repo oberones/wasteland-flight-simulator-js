@@ -375,6 +375,21 @@ input/lifecycle patterns, and establish the automated/physical-device validation
   responsive, security, accessibility, and physical-device validation workflow.
 - `AGENTS.md` points contributors to this plan as the current technology and structure authority.
 
+## Production Container Packaging
+
+The root Dockerfile packages the unchanged single runtime document in a digest-pinned
+Nginx Alpine image. `nginx/` owns HTTP routing and security headers;
+`docker-compose.yml` applies non-root, read-only, capability-free execution with
+bounded temporary storage and logs. It joins the external `web-backend` network
+and binds host loopback port 8088 by default. The HTTPS proxy strips
+`/apps/wasteland-flight-simulator/`; no application build or base-path setting is
+required. Unknown paths return 404, and only GET/HEAD can serve the document.
+
+`WFS_TEST_BASE_URL` points Playwright at an existing container origin instead of
+starting the development server. Container and automated browser checks do not
+replace physical-device release qualification. See the README for operations,
+image updates, proxy configuration, and rollback.
+
 ## Complexity Tracking
 
 No Constitution Check violations require justification. The single-file runtime is an

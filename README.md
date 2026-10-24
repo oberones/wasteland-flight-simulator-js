@@ -386,124 +386,111 @@ also confirm:
 To roll back, repoint `current` to a previously retained release, run
 `sudo nginx -t`, and reload Nginx.
 
-### Option B: Docker behind host Nginx
+### Option B: Docker behind an HTTPS reverse proxy
 
-Use this option when immutable container images, a Compose-based service catalog,
-or image-based rollback are operational requirements. Keep the container's HTTP
-port bound to loopback so clients cannot bypass the public TLS proxy.
+The checked-in `Dockerfile`, `docker-compose.yml`, and `nginx/` configuration
+package only `index.html` as application content. No Node runtime, build step,
+server persistence, or application environment variables are needed. The
+`.dockerignore` allowlist excludes repository metadata, environment files,
+artwork sources, tests, and development dependencies.
 
-Create a `Dockerfile`:
+The container runs Nginx as UID/GID `101:101` on port `8080`, with a read-only
+filesystem, all capabilities dropped, no new privileges, a 64-process limit,
+and a 16 MiB `/tmp` tmpfs mounted `noexec,nosuid,nodev`. Logs go to stdout/stderr
+with rotation at 10 MiB and three retained files. The HTTP health check requests
+`/index.html`. Use Compose to apply these restrictions; plain `docker run` does
+not automatically inherit them.
 
-```dockerfile
-FROM nginx:1.28.3-alpine
-
-RUN find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -delete
-COPY deploy/container-nginx.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
-```
-
-Treat the Nginx version as a reviewed dependency. For a repeatable production
-release, pin the approved image by digest and update it deliberately after image
-security review.
-
-Create `deploy/container-nginx.conf`:
-
-```nginx
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-
-    root /usr/share/nginx/html;
-    index index.html;
-    autoindex off;
-
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-
-    location / {
-        try_files $uri =404;
-
-        limit_except GET HEAD {
-            deny all;
-        }
-    }
-}
-```
-
-Create `.dockerignore` so the image build cannot accidentally include tests,
-evidence, or repository metadata:
-
-```dockerignore
-*
-!index.html
-!Dockerfile
-!deploy/
-!deploy/container-nginx.conf
-```
-
-Create `compose.yaml`:
-
-```yaml
-services:
-  simulator:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: wasteland-flight-simulator:local
-    restart: unless-stopped
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /var/cache/nginx
-      - /var/run
-    pids_limit: 64
-    ports:
-      - "127.0.0.1:8088:80"
-    healthcheck:
-      test: ["CMD-SHELL", "test -s /usr/share/nginx/html/index.html || exit 1"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-```
-
-Build and start it:
+Create the external proxy network if it does not already exist, then start:
 
 ```bash
-docker compose build --pull
-docker compose up -d
-docker compose ps
+docker network inspect web-backend >/dev/null 2>&1 || docker network create web-backend
+make docker-config
+make docker-build
+make docker-up
 curl -fsSI http://127.0.0.1:8088/
 ```
 
-In the host's HTTPS Nginx `server` block, include the same security-header
-snippet from Option A and proxy to the loopback port:
+The Makefile also provides `docker-logs` and `docker-down`. Equivalent lifecycle
+commands are `docker compose build --pull`, `docker compose up -d --wait`,
+`docker compose logs -f`, and `docker compose down`.
+
+Compose accepts these optional settings from the shell or a local `.env` file
+(which never enters the build context):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `WFS_PORT` | `8088` | Loopback host port |
+| `WFS_NETWORK` | `web-backend` | Existing external proxy network |
+| `WFS_IMAGE` | `wasteland-flight-simulator:local` | Image tag or retained release reference |
+
+The container serves only `/` and `/index.html`, permits GET/HEAD on those
+routes, and returns 404 for unknown paths. Security headers belong to the app
+container, including the document's CSP plus `frame-ancestors 'none'` and
+`Cache-Control: no-cache`. Preserve these headers through the proxy; do not
+add a second application CSP/security-header snippet there. TLS, the public
+HTTP-to-HTTPS redirect, and any hostname-wide HSTS policy belong to the proxy.
+Browser access to jsDelivr is still required for the three verified modules.
+
+For `/apps/wasteland-flight-simulator/`, add these locations to the existing
+HTTPS server block:
 
 ```nginx
-include /etc/nginx/snippets/wfs-security.conf;
+location = /apps/wasteland-flight-simulator {
+    return 308 /apps/wasteland-flight-simulator/;
+}
 
-location / {
-    proxy_pass http://127.0.0.1:8088;
-    proxy_http_version 1.1;
+location /apps/wasteland-flight-simulator/ {
+    proxy_pass http://wasteland-flight-simulator:8080/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
 ```
 
-Validate and reload the host proxy after changing it:
+The proxy container must join the same `web-backend` network. For host Nginx,
+use `http://127.0.0.1:8088/` instead. The trailing slash on `proxy_pass` strips
+the public prefix; the simulator needs no base-path build argument. Validate
+and reload the proxy after configuration changes and container recreation if
+it caches the old upstream IP. For a dedicated hostname, use `location /`.
+
+Verify the container and then repeat HTTP/browser checks through public HTTPS:
 
 ```bash
-sudo nginx -t
-sudo systemctl reload nginx
-curl -fsSI https://flight.example.com/
+docker compose ps
+docker compose exec wasteland-flight-simulator nginx -t
+docker compose logs --tail=100 wasteland-flight-simulator
+curl -fsS http://127.0.0.1:8088/ | openssl dgst -sha384
+openssl dgst -sha384 index.html
+curl -fsSI https://YOUR_HOST/apps/wasteland-flight-simulator/
+curl -I https://YOUR_HOST/apps/wasteland-flight-simulator/missing.js
 ```
 
-Keep security headers at one clearly owned layer. The examples put them on the
-public host Nginx, not the inner container, so configuration drift cannot create
-conflicting duplicate policies.
+The two digests must match; the missing path must return 404. Confirm the
+slashless public path redirects, the HTML and error responses retain security
+headers, and the browser starts with exactly three CDN requests and no CSP
+errors. To run the browser suite against an already running container:
+
+```bash
+WFS_TEST_BASE_URL=http://127.0.0.1:8088 npm test
+```
+
+This disables Playwright's development server. Use the container origin root
+for the automated suite; public-prefix checks remain deployment acceptance.
+
+For a release, set `WFS_IMAGE=wasteland-flight-simulator:RELEASE_ID` consistently
+for build and startup and retain the previous image. To roll back without
+rebuilding, select that retained tag or registry digest and run:
+
+```bash
+WFS_IMAGE=wasteland-flight-simulator:PREVIOUS_RELEASE docker compose up -d --no-build --wait
+```
+
+The base image is pinned by version and multi-platform digest. Review upstream
+security updates, resolve the new digest with `docker buildx imagetools inspect`,
+update both in the Dockerfile, and rebuild/revalidate. `--pull` alone does not
+advance a digest pin. Review image vulnerability scan results before release;
+pinning and runtime restrictions are not a vulnerability assessment.
 
 ### Production operations checklist
 

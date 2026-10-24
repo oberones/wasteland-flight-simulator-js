@@ -88,6 +88,7 @@ test.describe("verified runtime dependency loader", () => {
 
   test("uses the exact three-request manifest and exposes no partial application", async ({
     page,
+    baseURL,
   }, testInfo) => {
     /** @type {string[]} */
     const runtimeRequests = [];
@@ -135,7 +136,7 @@ test.describe("verified runtime dependency loader", () => {
     );
     expect(networkRequests.sort()).toEqual(
       [
-        "http://127.0.0.1:4173/",
+        new URL("/", baseURL).href,
         ...RUNTIME_DEPENDENCIES.map(({ url }) => url),
       ].sort(),
     );
@@ -350,13 +351,14 @@ test.describe("verified runtime dependency loader", () => {
   ]) {
     test(`${failure.name} discards the verified partial module`, async ({
       page,
+      baseURL,
     }) => {
       /** @type {string[]} */
       const unexpectedRequests = [];
       page.on("request", (request) => {
         if (
           /^https?:/.test(request.url()) &&
-          request.url() !== "http://127.0.0.1:4173/" &&
+          request.url() !== new URL("/", baseURL).href &&
           !RUNTIME_DEPENDENCIES.some((record) => record.url === request.url())
         ) {
           unexpectedRequests.push(request.url());

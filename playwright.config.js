@@ -9,7 +9,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [["line"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: process.env.WFS_TEST_BASE_URL || "http://127.0.0.1:4173",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -58,12 +58,14 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "npm run serve",
-    url: "http://127.0.0.1:4173",
-    reuseExistingServer: false,
-    stdout: "pipe",
-    stderr: "pipe",
-    timeout: 30_000,
-  },
+  webServer: process.env.WFS_TEST_BASE_URL
+    ? undefined
+    : {
+        command: "npm run serve",
+        url: "http://127.0.0.1:4173",
+        reuseExistingServer: false,
+        stdout: "pipe",
+        stderr: "pipe",
+        timeout: 30_000,
+      },
 });

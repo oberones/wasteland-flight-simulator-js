@@ -1,0 +1,30 @@
+services:
+  wasteland-flight-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${WFS_IMAGE:-wasteland-flight-simulator:local}
+    restart: unless-stopped
+    user: "101:101"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    pids_limit: 64
+    ports:
+      - "127.0.0.1:${WFS_PORT:-8088}:8080"
+    networks:
+      - web-backend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  web-backend:
+    name: ${WFS_NETWORK:-web-backend}
+    external: true
