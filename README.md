@@ -395,7 +395,7 @@ server persistence, or application environment variables are needed. The
 artwork sources, tests, and development dependencies.
 
 The container runs Nginx as UID/GID `101:101` on port `8080`, with a read-only
-filesystem, all capabilities dropped, no new privileges, a 64-process limit,
+filesystem, all capabilities dropped, a 64-process limit,
 and a 16 MiB `/tmp` tmpfs mounted `noexec,nosuid,nodev`. Logs go to stdout/stderr
 with rotation at 10 MiB and three retained files. The HTTP health check requests
 `/index.html`. Use Compose to apply these restrictions; plain `docker run` does
@@ -478,9 +478,9 @@ WFS_TEST_BASE_URL=http://127.0.0.1:8088 npm test
 This disables Playwright's development server. Use the container origin root
 for the automated suite; public-prefix checks remain deployment acceptance.
 
-For a release, set `WFS_IMAGE=wasteland-flight-simulator:RELEASE_ID` consistently
-for build and startup and retain the previous image. To roll back without
-rebuilding, select that retained tag or registry digest and run:
+For a locally built release, set `WFS_IMAGE=wasteland-flight-simulator:RELEASE_ID`
+consistently for build and startup and retain the previous image. To roll back
+without rebuilding, select that retained tag or registry digest and run:
 
 ```bash
 WFS_IMAGE=wasteland-flight-simulator:PREVIOUS_RELEASE docker compose up -d --no-build --wait
@@ -491,6 +491,193 @@ security updates, resolve the new digest with `docker buildx imagetools inspect`
 update both in the Dockerfile, and rebuild/revalidate. `--pull` alone does not
 advance a digest pin. Review image vulnerability scan results before release;
 pinning and runtime restrictions are not a vulnerability assessment.
+
+### Versioned images on GHCR
+
+The [publishing workflow](./.github/workflows/publish.yml) publishes the
+existing Dockerfile to `ghcr.io/oberones/wasteland-flight-simulator-js` when a
+`v*` tag is pushed. It first requires strict stable `vMAJOR.MINOR.PATCH` syntax:
+`v1.2.3` and `v0.0.0` are valid; `v01.2.3`, `v1.2`, `v1.2.3-rc.1`, and
+`v1.2.3+build` are rejected before builds or GHCR login. The Git tag determines
+the image version; it does not need to match `package.json`.
+
+Each architecture is built and smoke-tested on Ubuntu with Buildx/QEMU after
+Compose configuration validation. The checks run with the same non-root,
+read-only, capability-free restrictions and temporary `/tmp` storage as Compose.
+They require a healthy container, exact checked-out HTML at `/` and `/index.html`,
+working HEAD and gzip responses, 404s for unknown paths, denied write methods,
+and the configured security headers on success and error responses. Test
+containers are removed after success or failure. Both `linux/amd64` and
+`linux/arm64` must pass before the publishing job can authenticate or push.
+
+A successful `v1.2.3` publication creates these multi-platform references:
+
+| Image reference | Meaning |
+| --- | --- |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3` | Stable release version |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:sha-<full-commit-sha>` | Tagged source commit |
+| `ghcr.io/oberones/wasteland-flight-simulator-js:latest` | Last successfully published stable release |
+
+`latest` follows successful publication order, which may differ from semantic
+version order. Publishing or rerunning an older release can move it backwards.
+Use a version tag or, for an exact immutable reference, the multi-platform
+`@sha256:...` digest reported in the workflow summary. Images carry OCI source,
+revision, and version labels. Never move an existing release tag to new code.
+
+After reviewing the intended commit and completing the applicable qualification,
+create and push a new tag explicitly (replace the example version):
+
+```bash
+git tag -a v1.2.3 -m "Release v1.2.3"
+git push origin refs/tags/v1.2.3
+```
+
+The tagged commit must contain the workflow. Publishing uses `github.actor` and
+the automatic `GITHUB_TOKEN`; no personal token or deployment secrets are
+needed in Actions. Repository/package policy must allow publishing: only the
+publish job requests `packages: write`, with `contents: read` elsewhere. If the
+package already exists, ensure this repository has Actions write access to it.
+New packages are private by default. The workflow does not change visibility
+or deploy anything. See [GitHub's GHCR access documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+Public packages can be pulled anonymously. To pull a private package, use a
+GitHub account with package read access and a personal access token (classic)
+with `read:packages` (authorize organization SSO if required). With that token
+already supplied securely in `GHCR_READ_TOKEN`:
+
+```bash
+printf '%s' "$GHCR_READ_TOKEN" | docker login ghcr.io --username YOUR_GITHUB_USER --password-stdin
+```
+
+#### Production Compose setup
+
+The standalone [production Compose file](./deploy/compose.production.yml)
+follows the `local-dope-wars` deployment layout. It pulls the GHCR image without
+a build section or source mounts, uses the stable project/container name
+`wasteland-flight-simulator`, and sets `restart: always`. Docker selects the
+host's native architecture from the published AMD64/ARM64 manifest. Runtime
+restrictions, loopback port, external network, and log limits match the local
+Compose configuration; the image provides its health check.
+
+After the first successful publication, copy `deploy/compose.production.yml`
+to a dedicated directory on the target host as `compose.yml`, for example
+`/opt/wasteland-flight-simulator/compose.yml`. That directory needs only this
+file and a `.env`; no source checkout, Node tooling, or build is required.
+Authenticate to GHCR as described above if the package is private. Keep
+registry credentials outside Compose and `.env`.
+
+In the deployment directory, create `.env` with a successfully published image:
+
+```dotenv
+WFS_IMAGE=ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3
+WFS_PORT=8088
+WFS_NETWORK=web-backend
+```
+
+`WFS_IMAGE` accepts a version tag, `sha-<full-commit-sha>` tag, or full
+`ghcr.io/oberones/wasteland-flight-simulator-js@sha256:...` digest. Record the
+previous reference before updating it. An absent or empty `WFS_IMAGE` selects
+`ghcr.io/oberones/wasteland-flight-simulator-js:latest` in production; the root
+`docker-compose.yml` still defaults to `wasteland-flight-simulator:local`.
+Shell variables override `.env`, so clear old shell overrides before use.
+
+```bash
+cd /opt/wasteland-flight-simulator
+unset WFS_IMAGE WFS_PORT WFS_NETWORK
+docker network inspect web-backend >/dev/null 2>&1 || docker network create web-backend
+docker compose --env-file .env config --quiet
+docker compose --env-file .env pull wasteland-flight-simulator
+```
+
+Inspect/create the configured network instead if overriding `WFS_NETWORK`.
+The reverse proxy must join that same external network.
+
+If replacing an existing local-build instance, pull the new image first, then
+stop and remove only the old app service from its original checkout, using its
+original Compose project/options:
+
+```bash
+docker compose --file docker-compose.yml stop wasteland-flight-simulator
+docker compose --file docker-compose.yml rm --force wasteland-flight-simulator
+```
+
+Keep the old image until acceptance. This cutover causes a brief outage;
+the two stacks must not compete for the loopback port or proxy service name.
+After cutover, use the production Compose file for subsequent operations.
+
+Start the selected image from the deployment directory:
+
+```bash
+cd /opt/wasteland-flight-simulator
+docker compose --env-file .env up -d --no-build --wait --wait-timeout 120 wasteland-flight-simulator
+docker compose --env-file .env ps
+docker inspect --format '{{.Config.Image}} {{.State.Health.Status}}' wasteland-flight-simulator
+docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' wasteland-flight-simulator
+docker compose --env-file .env exec wasteland-flight-simulator nginx -t
+docker compose --env-file .env logs --tail=100 wasteland-flight-simulator
+curl -fsSI http://127.0.0.1:8088/
+```
+
+Confirm the selected image and source revision, and require `healthy`. Use
+the configured host port if overriding `WFS_PORT`. Keep the proxy upstream
+`http://wasteland-flight-simulator:8080/` and repeat the public HTTPS/browser
+checks above; reload the proxy if it caches the old container IP.
+
+For updates, persist the new image reference in `.env`, then run the following
+from the deployment directory. To roll back, set `WFS_IMAGE` in `.env` to the
+previous successful version, SHA tag, or digest and run the same commands:
+
+```bash
+unset WFS_IMAGE WFS_PORT WFS_NETWORK
+docker compose --env-file .env config --quiet
+docker compose --env-file .env pull wasteland-flight-simulator
+docker compose --env-file .env up -d --no-build --wait --wait-timeout 120 wasteland-flight-simulator
+```
+
+Repeat the health and public checks after either operation. Persisting the
+selected image in `.env` keeps later commands on that release. When operating
+directly from this checkout instead, select the standalone file explicitly
+with `docker compose --file deploy/compose.production.yml`; do not merge it
+with the root Compose file, which contains local build settings.
+
+#### Verify publication
+
+After the first authorized tag push, inspect the **Publish container image**
+run in GitHub Actions: tag validation, both verification jobs, and publication
+must succeed. Record its published digest and compare all three references:
+
+```bash
+git rev-parse 'v1.2.3^{commit}'
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:1.2.3
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:sha-FULL_COMMIT_SHA
+docker buildx imagetools inspect ghcr.io/oberones/wasteland-flight-simulator-js:latest
+```
+
+Replace `FULL_COMMIT_SHA` with the full resolved commit. Each manifest must
+include `linux/amd64` and `linux/arm64` and match the summary digest (`latest`
+may have advanced if another release published since then). Additional
+attestation manifests may also appear. Local smoke checks cannot establish
+hosted workflow or GHCR publishing success. Container checks gate publication;
+the full browser suite and physical-device release qualification remain separate.
+
+To reproduce the container gate locally for either architecture:
+
+```bash
+docker compose config --quiet
+docker compose --file deploy/compose.production.yml config --quiet
+docker buildx build --platform linux/amd64 --load -t wasteland-flight-simulator:smoke-amd64 .
+bash .github/scripts/smoke-container.sh wasteland-flight-simulator:smoke-amd64 linux/amd64
+docker buildx build --platform linux/arm64 --load -t wasteland-flight-simulator:smoke-arm64 .
+bash .github/scripts/smoke-container.sh wasteland-flight-simulator:smoke-arm64 linux/arm64
+```
+
+The host needs Docker/Buildx, Bash, Python 3, and emulation support for a
+non-native architecture. For workflow changes, also run
+`actionlint .github/workflows/publish.yml` and exercise the tag-validation step with valid,
+leading-zero, incomplete, and prerelease versions. The workflow uses
+[Docker's multi-platform build](https://docs.docker.com/build/ci/github-actions/multi-platform/)
+and [GitHub Actions cache](https://docs.docker.com/build/ci/github-actions/cache/)
+support with SHA-pinned actions.
 
 ### Production operations checklist
 

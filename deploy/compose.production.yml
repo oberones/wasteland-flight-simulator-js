@@ -1,0 +1,30 @@
+name: wasteland-flight-simulator
+
+services:
+  wasteland-flight-simulator:
+    image: ${WFS_IMAGE:-ghcr.io/oberones/wasteland-flight-simulator-js:latest}
+    # The published manifest supports both AMD64 and ARM64; use the host platform.
+    container_name: wasteland-flight-simulator
+    restart: always
+    user: "101:101"
+    read_only: true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    pids_limit: 64
+    ports:
+      - "127.0.0.1:${WFS_PORT:-8088}:8080"
+    networks:
+      - web-backend
+    # The image supplies the /index.html health check from Dockerfile.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  web-backend:
+    name: ${WFS_NETWORK:-web-backend}
+    external: true

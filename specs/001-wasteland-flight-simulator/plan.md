@@ -385,6 +385,15 @@ and binds host loopback port 8088 by default. The HTTPS proxy strips
 `/apps/wasteland-flight-simulator/`; no application build or base-path setting is
 required. Unknown paths return 404, and only GET/HEAD can serve the document.
 
+`deploy/compose.production.yml` is a standalone image-only configuration for
+operator-managed GHCR deployments. It defaults to
+`ghcr.io/oberones/wasteland-flight-simulator-js:latest`, accepts a full tag or
+digest through `WFS_IMAGE`, and selects the host architecture from the published
+AMD64/ARM64 manifest. It retains the runtime restrictions, port, network, and
+logging settings, with a stable project/container name and `restart: always`.
+The root Compose file remains the local-build entry point. The publishing
+workflow validates both configurations; it does not deploy them.
+
 `WFS_TEST_BASE_URL` points Playwright at an existing container origin instead of
 starting the development server. Container and automated browser checks do not
 replace physical-device release qualification. See the README for operations,
