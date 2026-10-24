@@ -1,3 +1,9 @@
+## 0.3.0 (2026-10-24)
+
+### Feat
+
+- add additional 3d assets to build out the world
+
 ## 0.2.0 (2026-10-24)
 
 ### Feat
